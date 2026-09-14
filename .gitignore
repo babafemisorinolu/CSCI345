@@ -1,0 +1,19 @@
+# Quarto
+/.quarto/
+/_site/
+
+# Quarto/Jupyter generated files
+**/*.quarto_ipynb
+
+# Python virtual environment
+.venv/
+
+# macOS
+.DS_Store
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/

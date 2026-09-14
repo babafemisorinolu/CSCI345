@@ -1,0 +1,10 @@
+---
+title: Welcome
+---
+Welcome to CSCI345! Here, you'll find slides for CSCI 345. 
+
+- **Class times** 🕘
+    8:00 AM to 9:50 AM, Tuesday and Thursday
+
+- **Where?** 📍
+    Paine 212 Building

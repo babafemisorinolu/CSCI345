@@ -1,0 +1,31 @@
+project:
+  type: website
+  output-dir: _site
+
+website: 
+  title: "CSCI 345 Slides"
+  page-navigation: true
+  navbar:
+    title: "CSCI 345"
+    background: light
+    left:
+      - href: index.qmd
+        text: Home
+      - href: slides.qmd
+        text: Slides        
+
+format:
+  html:
+    theme: 
+      - zephyr
+      - styles.scss
+    toc: false
+    lightbox: true
+    css: styles.css
+          
+editor:
+  render-on-save: true
+
+execute:
+  freeze: auto
+  
