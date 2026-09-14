@@ -1,4 +1,4 @@
-# cpsc330-slides
+# csci345-slides
 
 CSCI 345: Machine Learning lecture slides 
 
