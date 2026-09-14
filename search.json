@@ -1,0 +1,492 @@
+[
+  {
+    "objectID": "lectures/lecture-04.html#learning-objectives",
+    "href": "lectures/lecture-04.html#learning-objectives",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Learning objectives",
+    "text": "Learning objectives\nBy the end of this lecture, you should be able to:\n\nDefine a loss function.\nExplain why loss functions are useful in machine learning.\nInterpret the value of a loss function.\nIdentify common loss functions for classification.\nExplain the differences between:\n\nAbsolute loss\nLog loss\nCross-entropy loss\nHinge loss\n\nCompute classification losses using scikit-learn."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#where-do-loss-functions-fit",
+    "href": "lectures/lecture-04.html#where-do-loss-functions-fit",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Where do loss functions fit?",
+    "text": "Where do loss functions fit?\nRecall our supervised learning workflow:\nData → Model → Predictions → Loss → Optimization\nA loss function tells us:\n\nHow bad are the model’s predictions?\n\nDuring model fitting, we choose model parameters that minimize the loss."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#what-is-a-loss-function",
+    "href": "lectures/lecture-04.html#what-is-a-loss-function",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "What is a loss function?",
+    "text": "What is a loss function?\nA loss function quantifies the difference between:\n\nwhat actually happened, and\nwhat the model predicted.\n\nIn general:\n\\[\n\\text{Loss} =\n\\text{difference between predictions and observations}\n\\]\nLower loss = better predictions."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#why-do-we-need-loss-functions",
+    "href": "lectures/lecture-04.html#why-do-we-need-loss-functions",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Why do we need loss functions?",
+    "text": "Why do we need loss functions?\nSuppose two classifiers both get 90% of observations correct.\nAre they equally good?\nNot necessarily.\nA model might:\n\nmake confident correct predictions,\nmake uncertain correct predictions,\nmake confident incorrect predictions.\n\nA good loss function should capture more than simply:\n\n“Was the final class correct?”"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#a-simple-example",
+    "href": "lectures/lecture-04.html#a-simple-example",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "A simple example",
+    "text": "A simple example\nSuppose the observed class is:\n\\[\ny = 1\n\\]\nTwo models predict:\n\n\n\nModel\nPredicted probability\n\n\n\n\nModel A\n0.99\n\n\nModel B\n0.51\n\n\n\nBoth predict class 1.\nBut which prediction is better?\nModel A.\nIt is much more confident that the observation belongs to class 1."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#accuracy-vs.-probability",
+    "href": "lectures/lecture-04.html#accuracy-vs.-probability",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Accuracy vs. probability",
+    "text": "Accuracy vs. probability\nAccuracy only looks at the final class:\n\\[\n\\hat y =\n\\begin{cases}\n1 & \\hat p \\geq 0.5\\\\\n0 & \\hat p &lt; 0.5\n\\end{cases}\n\\]\nSo these predictions all produce the same class:\n\\[\n0.51,\\quad 0.70,\\quad 0.99\n\\]\nBut a loss function can distinguish between them."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#absolute-loss-1",
+    "href": "lectures/lecture-04.html#absolute-loss-1",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Absolute loss",
+    "text": "Absolute loss\nFor binary classification:\n\n\\(y\\) = observed class, either 0 or 1\n\\(\\hat p\\) = predicted probability of class 1\n\nAbsolute loss is:\n\\[\nL_{\\text{abs}}(y,\\hat p)\n=\n|y-\\hat p|\n\\]\nThe loss is simply the distance between:\n\nthe observed class, and\nthe predicted probability."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#absolute-loss-observed-class-1",
+    "href": "lectures/lecture-04.html#absolute-loss-observed-class-1",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Absolute loss: observed class = 1",
+    "text": "Absolute loss: observed class = 1\nSuppose:\n\\[\ny=1\n\\]\nThen:\n\\[\nL_{\\text{abs}} = |1-\\hat p|\n\\]\nConsider three predictions:\n\n\n\n\\(\\hat p\\)\nAbsolute loss\n\n\n\n\n0.99\n0.01\n\n\n0.70\n0.30\n\n\n0.20\n0.80\n\n\n\nThe farther the predicted probability is from 1, the larger the loss."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#absolute-loss-observed-class-0",
+    "href": "lectures/lecture-04.html#absolute-loss-observed-class-0",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Absolute loss: observed class = 0",
+    "text": "Absolute loss: observed class = 0\nSuppose:\n\\[\ny=0\n\\]\nThen:\n\\[\nL_{\\text{abs}} = |0-\\hat p| = \\hat p\n\\]\nFor example:\n\n\n\n\\(\\hat p\\)\nAbsolute loss\n\n\n\n\n0.01\n0.01\n\n\n0.30\n0.30\n\n\n0.80\n0.80\n\n\n\nFor an observed class of 0, we want the predicted probability of class 1 to be small."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#absolute-loss-intuition",
+    "href": "lectures/lecture-04.html#absolute-loss-intuition",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Absolute loss: intuition",
+    "text": "Absolute loss: intuition\nThink of the observed class as the target:\n\\[\n0 \\qquad\\text{or}\\qquad 1\n\\]\nThe predicted probability should be close to that target.\nSmall loss:\n\\[\ny=1,\\quad \\hat p=0.95\n\\]\nLarge loss:\n\\[\ny=1,\\quad \\hat p=0.10\n\\]"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#example-diabetes-prediction",
+    "href": "lectures/lecture-04.html#example-diabetes-prediction",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Example: diabetes prediction",
+    "text": "Example: diabetes prediction\nSuppose a patient actually has diabetes:\n\\[\ny=1\n\\]\nOur logistic regression model predicts:\n\\[\n\\hat p=0.9073\n\\]\nThen:\n\\[\nL_{\\text{abs}}\n=\n|1-0.9073|\n=\n0.0927\n\\]\nThat’s a relatively small loss."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#example-incorrect-confidence",
+    "href": "lectures/lecture-04.html#example-incorrect-confidence",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Example: incorrect confidence",
+    "text": "Example: incorrect confidence\nNow suppose a patient actually has diabetes:\n\\[\ny=1\n\\]\nbut the model predicts:\n\\[\n\\hat p=0.10\n\\]\nThen:\n\\[\nL_{\\text{abs}}\n=\n|1-0.10|\n=\n0.90\n\\]\nThe model is very wrong and very confident."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#absolute-loss-2",
+    "href": "lectures/lecture-04.html#absolute-loss-2",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Absolute loss",
+    "text": "Absolute loss\nKey takeaway\nAbsolute loss:\n\nranges from 0 to 1\nis smallest when predictions are close to the observed class\nis largest when predictions are far from the observed class\n\nFor \\(n\\) observations:\n\\[\nL_{\\text{overall}}\n=\n\\frac{1}{n}\n\\sum_{i=1}^{n}\n|y_i-\\hat p_i|\n\\]"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#clicker-exercise-1",
+    "href": "lectures/lecture-04.html#clicker-exercise-1",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Clicker Exercise 1",
+    "text": "Clicker Exercise 1\nWhich prediction has the smallest absolute loss?\nThe observed class is:\n\\[\ny=1\n\\]\n\n\n\\(\\hat p=0.05\\)\n\n\n\\(\\hat p=0.25\\)\n\n\n\\(\\hat p=0.75\\)\n\n\n\\(\\hat p=0.99\\)\n\n\nAnswer: D"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#activity-thinkpairshare",
+    "href": "lectures/lecture-04.html#activity-thinkpairshare",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Activity: Think–Pair–Share",
+    "text": "Activity: Think–Pair–Share\nAn individual does not have diabetes:\n\\[\ny=0\n\\]\nThe model predicts:\n\\[\n\\hat p=0.65\n\\]\nWhat is the absolute loss?\n\\[\nL_{\\text{abs}}\n=\n|0-0.65|\n=\n0.65\n\\]\nQuestion: Is this a good prediction?"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#why-do-we-need-another-loss",
+    "href": "lectures/lecture-04.html#why-do-we-need-another-loss",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Why do we need another loss?",
+    "text": "Why do we need another loss?\nAbsolute loss treats the difference between predictions linearly.\nBut sometimes we want to penalize confidently wrong predictions much more strongly.\nConsider:\n\\[\ny=1\n\\]\nCompare:\n\\[\n\\hat p=0.40\n\\]\nwith:\n\\[\n\\hat p=0.01\n\\]\nThe second prediction is not merely “a little worse.”\nIt is extremely confident and wrong."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#log-loss-1",
+    "href": "lectures/lecture-04.html#log-loss-1",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Log loss",
+    "text": "Log loss\nFor binary classification:\n\\[\nL_{\\text{log}}\n=\n-\\left[\ny\\log(\\hat p)\n+\n(1-y)\\log(1-\\hat p)\n\\right]\n\\]\nThis is also called:\n\nlog loss\nbinary cross-entropy\nbinary cross-entropy loss"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#log-loss-observed-class-1",
+    "href": "lectures/lecture-04.html#log-loss-observed-class-1",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Log loss: observed class = 1",
+    "text": "Log loss: observed class = 1\nIf:\n\\[\ny=1\n\\]\nthen:\n\\[\nL_{\\text{log}}\n=\n-\\log(\\hat p)\n\\]\nExamples:\n\n\n\n\\(\\hat p\\)\nLog loss\n\n\n\n\n0.99\n0.010\n\n\n0.90\n0.105\n\n\n0.50\n0.693\n\n\n0.10\n2.303\n\n\n0.01\n4.605\n\n\n\nNotice what happens near zero."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#log-loss-strongly-penalizes-confidence",
+    "href": "lectures/lecture-04.html#log-loss-strongly-penalizes-confidence",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Log loss strongly penalizes confidence",
+    "text": "Log loss strongly penalizes confidence\nFor an observed class of 1:\n\\[\n\\hat p \\rightarrow 1\n\\quad\\Rightarrow\\quad\nL_{\\text{log}}\\rightarrow 0\n\\]\nBut:\n\\[\n\\hat p \\rightarrow 0\n\\quad\\Rightarrow\\quad\nL_{\\text{log}}\\rightarrow \\infty\n\\]\nSo log loss strongly penalizes:\n\nbeing confidently wrong."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#comparing-absolute-loss-and-log-loss",
+    "href": "lectures/lecture-04.html#comparing-absolute-loss-and-log-loss",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Comparing absolute loss and log loss",
+    "text": "Comparing absolute loss and log loss\nSuppose:\n\\[\ny=1,\\quad \\hat p=0.01\n\\]\nAbsolute loss:\n\\[\n|1-0.01|=0.99\n\\]\nLog loss:\n\\[\n-\\log(0.01)\\approx4.605\n\\]\nThe log loss gives a much stronger penalty."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#why-use-log-loss",
+    "href": "lectures/lecture-04.html#why-use-log-loss",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Why use log loss?",
+    "text": "Why use log loss?\nLog loss rewards models that:\n\nassign high probability to the correct class,\navoid assigning tiny probability to the correct class,\nproduce useful probability estimates.\n\nThis makes it especially useful for models such as:\n\nLogistic Regression\nprobabilistic classifiers"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#log-loss-and-logistic-regression",
+    "href": "lectures/lecture-04.html#log-loss-and-logistic-regression",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Log loss and logistic regression",
+    "text": "Log loss and logistic regression\nRecall logistic regression:\n\\[\n\\hat p = P(Y=1\\mid X)\n\\]\nThe model learns coefficients that produce probabilities.\nThe coefficients can be fitted by minimizing log loss.\nSo:\n\nLogistic regression + log loss\n\nis a natural pairing."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#clicker-exercise-2",
+    "href": "lectures/lecture-04.html#clicker-exercise-2",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Clicker Exercise 2",
+    "text": "Clicker Exercise 2\nAn observation has:\n\\[\ny=1\n\\]\nWhich prediction produces the largest log loss?\n\n\n\\(\\hat p=0.99\\)\n\n\n\\(\\hat p=0.80\\)\n\n\n\\(\\hat p=0.50\\)\n\n\n\\(\\hat p=0.01\\)\n\n\nAnswer: D"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#log-loss-intuition",
+    "href": "lectures/lecture-04.html#log-loss-intuition",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Log loss: intuition",
+    "text": "Log loss: intuition\nAsk:\n\n“How much probability did the model give to the outcome that actually happened?”\n\nIf the observed class is 1:\n\\[\n\\hat p=0.99\n\\]\nGreat!\nIf:\n\\[\n\\hat p=0.01\n\\]\nVery bad.\nThe logarithm makes the penalty especially severe when the model assigns tiny probability to the observed outcome."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#from-binary-to-multiclass-classification",
+    "href": "lectures/lecture-04.html#from-binary-to-multiclass-classification",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "From binary to multiclass classification",
+    "text": "From binary to multiclass classification\nLog loss works naturally for:\n\\[\nY\\in\\{0,1\\}\n\\]\nWhat if we have three classes?\nFor example:\n\nNondiabetic\nPrediabetic\nDiabetic\n\nNow the model produces a probability for each class."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#multiclass-probabilities",
+    "href": "lectures/lecture-04.html#multiclass-probabilities",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Multiclass probabilities",
+    "text": "Multiclass probabilities\nSuppose the model predicts:\n\n\n\nClass\nProbability\n\n\n\n\nNondiabetic\n0.55\n\n\nPrediabetic\n0.08\n\n\nDiabetic\n0.37\n\n\n\nThe probabilities must add to 1:\n\\[\n0.55+0.08+0.37=1\n\\]"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#observed-class",
+    "href": "lectures/lecture-04.html#observed-class",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Observed class",
+    "text": "Observed class\nSuppose the actual class is:\nPrediabetic\nWe can represent the observed class using a one-hot vector:\n\\[\n\\mathbf y =\n[0,1,0]\n\\]\nThe model predicts:\n\\[\n\\hat{\\mathbf p}\n=\n[0.55,0.08,0.37]\n\\]"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#cross-entropy-loss-1",
+    "href": "lectures/lecture-04.html#cross-entropy-loss-1",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Cross-entropy loss",
+    "text": "Cross-entropy loss\nThe multiclass cross-entropy loss is:\n\\[\nL_{\\text{CE}}\n=\n-\\sum_{j=1}^{K}\ny_j\\log(\\hat p_j)\n\\]\nBecause \\(y_j\\) is 1 only for the observed class, this simplifies to:\n\\[\nL_{\\text{CE}}\n=\n-\\log(\\hat p_{\\text{observed}})\n\\]"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#example",
+    "href": "lectures/lecture-04.html#example",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Example",
+    "text": "Example\nActual class:\nPrediabetic\nPredicted probability:\n\\[\n\\hat p_{\\text{prediabetic}}=0.08\n\\]\nTherefore:\n\\[\nL_{\\text{CE}}\n=\n-\\log(0.08)\n\\approx2.526\n\\]\nThat’s a relatively large loss.\nThe model gave the correct class only 8% probability."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#cross-entropy-intuition",
+    "href": "lectures/lecture-04.html#cross-entropy-intuition",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Cross-entropy intuition",
+    "text": "Cross-entropy intuition\nThe model should assign a high probability to the class that actually occurs.\nGood:\n\\[\n[0.05,\\;0.90,\\;0.05]\n\\]\nwhen the true class is prediabetic.\nBad:\n\\[\n[0.55,\\;0.08,\\;0.37]\n\\]\nwhen the true class is prediabetic."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#binary-vs.-multiclass",
+    "href": "lectures/lecture-04.html#binary-vs.-multiclass",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Binary vs. multiclass",
+    "text": "Binary vs. multiclass\n\n\n\nTask\nCommon loss\n\n\n\n\nBinary classification\nLog loss\n\n\nMulticlass classification\nCross-entropy\n\n\nBinary cross-entropy\nSame mathematical idea as binary log loss\n\n\n\nIn scikit-learn, log_loss() handles both binary and multiclass cases."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#clicker-exercise-3",
+    "href": "lectures/lecture-04.html#clicker-exercise-3",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Clicker Exercise 3",
+    "text": "Clicker Exercise 3\nA three-class classifier predicts:\n\\[\n[0.70,\\;0.20,\\;0.10]\n\\]\nThe true class is class 3.\nWhat is the cross-entropy loss?\n\\[\n-\\log(0.10)\n\\approx2.303\n\\]\nIs this:\n\n\nSmall\n\n\nLarge\n\n\nAnswer: B"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#a-different-type-of-classifier",
+    "href": "lectures/lecture-04.html#a-different-type-of-classifier",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "A different type of classifier",
+    "text": "A different type of classifier\nSome classifiers don’t naturally output probabilities.\nFor example:\nSupport Vector Classifiers\nInstead, they can return a signed distance from a decision boundary."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#ml-workflow",
+    "href": "lectures/lecture-04.html#ml-workflow",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "ML workflow",
+    "text": "ML workflow"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#accuracy",
+    "href": "lectures/lecture-04.html#accuracy",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Accuracy",
+    "text": "Accuracy\n\nSo far, we’ve been measuring model performance using Accuracy.\n\nAccuracy is the proportion of all predictions that were correct — whether positive or negative.\n\n\\[\n\\text{Accuracy} = \\frac{\\text{correct classifications}}{\\text{total classifications}}\n\\]\n\nBut is accuracy always the right metric to evaluate a model? 🤔"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#a-fraud-classification-example",
+    "href": "lectures/lecture-04.html#a-fraud-classification-example",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "A fraud classification example",
+    "text": "A fraud classification example\n\n\n(139554, 29)\n\n\n\n\n\n\n\n\n\nClass\nTime\nAmount\nV1\nV2\nV3\nV4\nV5\nV6\nV7\n...\nV19\nV20\nV21\nV22\nV23\nV24\nV25\nV26\nV27\nV28\n\n\n\n\n64454\n0\n51150.0\n1.00\n-3.538816\n3.481893\n-1.827130\n-0.573050\n2.644106\n-0.340988\n2.102135\n...\n-1.509991\n1.345904\n0.530978\n-0.860677\n-0.201810\n-1.719747\n0.729143\n-0.547993\n-0.023636\n-0.454966\n\n\n37906\n0\n39163.0\n18.49\n-0.363913\n0.853399\n1.648195\n1.118934\n0.100882\n0.423852\n0.472790\n...\n0.810267\n-0.192932\n0.687055\n-0.094586\n0.121531\n0.146830\n-0.944092\n-0.558564\n-0.186814\n-0.257103\n\n\n79378\n0\n57994.0\n23.74\n1.193021\n-0.136714\n0.622612\n0.780864\n-0.823511\n-0.706444\n-0.206073\n...\n0.258815\n-0.178761\n-0.310405\n-0.842028\n0.085477\n0.366005\n0.254443\n0.290002\n-0.036764\n0.015039\n\n\n245686\n0\n152859.0\n156.52\n1.604032\n-0.808208\n-1.594982\n0.200475\n0.502985\n0.832370\n-0.034071\n...\n-1.009429\n-0.040448\n0.519029\n1.429217\n-0.139322\n-1.293663\n0.037785\n0.061206\n0.005387\n-0.057296\n\n\n60943\n0\n49575.0\n57.50\n-2.669614\n-2.734385\n0.662450\n-0.059077\n3.346850\n-2.549682\n-1.430571\n...\n0.157993\n-0.430295\n-0.228329\n-0.370643\n-0.211544\n-0.300837\n-1.174590\n0.573818\n0.388023\n0.161782\n\n\n\n\n5 rows × 31 columns"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#dummyclassifier",
+    "href": "lectures/lecture-04.html#dummyclassifier",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "DummyClassifier",
+    "text": "DummyClassifier\nLet’s try a DummyClassifier, which makes predictions without learning any patterns.\n\ndummy = DummyClassifier()\ncross_val_score(dummy, X_train, y_train).mean()\n\nnp.float64(0.9983017327649726)\n\n\n\nThe accuracy looks surprisingly high!\nShould we be happy with this model and deploy it?"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#problem-class-imbalance",
+    "href": "lectures/lecture-04.html#problem-class-imbalance",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Problem: Class imbalance",
+    "text": "Problem: Class imbalance\n\ny_train.value_counts()\n\nClass\n0    139317\n1       237\nName: count, dtype: int64\n\n\n\nIn many real-world problems, some classes are much rarer than others.\nA model that always predicts “no fraud” could still achieve &gt;99% accuracy!\nThis is why accuracy can be misleading in imbalanced datasets.\nWe need metrics that differentiate types of errors."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#dummyclassifier-confusion-matrix",
+    "href": "lectures/lecture-04.html#dummyclassifier-confusion-matrix",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "DummyClassifier: Confusion matrix",
+    "text": "DummyClassifier: Confusion matrix\nWhich types of errors would be most critical for the bank to address? Missing a fraud case or flagging a legitimate transaction as fraud?"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#logisticregression-confusion-matrix",
+    "href": "lectures/lecture-04.html#logisticregression-confusion-matrix",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "LogisticRegression: Confusion matrix",
+    "text": "LogisticRegression: Confusion matrix\nAre we doing better with logistic regression?"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#understanding-the-confusion-matrix",
+    "href": "lectures/lecture-04.html#understanding-the-confusion-matrix",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Understanding the confusion matrix",
+    "text": "Understanding the confusion matrix\n\n\n\n\n\nTN \\(\\rightarrow\\) True negatives\nFP \\(\\rightarrow\\) False positives\nFN \\(\\rightarrow\\) False negatives\nTP \\(\\rightarrow\\) True positives"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#confusion-matrix-questions",
+    "href": "lectures/lecture-04.html#confusion-matrix-questions",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Confusion matrix questions",
+    "text": "Confusion matrix questions\nImagine a spam filter model where emails labeled 1 = spam, 0 = not spam.\nIf a spam email is incorrectly classified as not spam, what kind of error is this?\n\n\nA false positive\n\n\nA true positive\n\n\nA false negative\n\n\nA true negative"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#confusion-matrix-questions-1",
+    "href": "lectures/lecture-04.html#confusion-matrix-questions-1",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Confusion matrix questions",
+    "text": "Confusion matrix questions\nIn an intrusion detection system, 1 = intrusion, 0 = safe.\nIf the system misses an actual intrusion and classifies it as safe, this is a:\n\n\nA false positive\n\n\nA true positive\n\n\nA false negative\n\n\nA true negative"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#confusion-matrix-questions-2",
+    "href": "lectures/lecture-04.html#confusion-matrix-questions-2",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Confusion matrix questions",
+    "text": "Confusion matrix questions\nIn a medical test for a disease, 1 = diseased, 0 = healthy.\nIf a healthy patient is incorrectly diagnosed as diseased, that’s a:\n\n\nA false positive\n\n\nA true positive\n\n\nA false negative\n\n\nA true negative"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#metrics-other-than-accuracy",
+    "href": "lectures/lecture-04.html#metrics-other-than-accuracy",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Metrics other than accuracy",
+    "text": "Metrics other than accuracy\nNow that we understand the different types of errors, we can explore metrics that better capture model performance when accuracy falls short, especially for imbalanced datasets.\nWe’ll start with three key ones:\n\nPrecision\nRecall\nF1-score"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#precision-and-recall",
+    "href": "lectures/lecture-04.html#precision-and-recall",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Precision and recall",
+    "text": "Precision and recall\nLet’s revisit our fraud detection scenario. The circle below represents all transactions predicted as fraud by an imaginary toy model designed to detect fraudulent activity."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#intuition-behind-the-two-metrics",
+    "href": "lectures/lecture-04.html#intuition-behind-the-two-metrics",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Intuition behind the two metrics",
+    "text": "Intuition behind the two metrics\n\nPrecision: Of all the transactions predicted as fraud, how many were actually fraud?\n\nHigh precision \\(\\rightarrow\\) few false alarms (low false positives).\n\nRecall: Of all the actual fraud cases, how many did the model catch?\n\nHigh recall \\(\\rightarrow\\) few missed frauds (low false negatives)."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#trade-off-between-precision-and-recall",
+    "href": "lectures/lecture-04.html#trade-off-between-precision-and-recall",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Trade-off between precision and recall",
+    "text": "Trade-off between precision and recall\n\nIncreasing recall often decreases precision, and vice versa.\n\nExample:\n\nPredict “fraud” for every transaction \\(\\rightarrow\\) perfect recall, terrible precision.\n\nPredict “fraud” only when 100% sure \\(\\rightarrow\\) high precision, low recall.\n\n\nThe right balance depends on the application and cost of errors."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#f1-score",
+    "href": "lectures/lecture-04.html#f1-score",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "F1-score",
+    "text": "F1-score\n\nSometimes, we want a single metric that balances precision and recall.\n\nThe F1-score is the harmonic mean of the two:\n\n\\[\nF1 = 2 \\times \\frac{\\text{Precision} \\times \\text{Recall}}{\\text{Precision} + \\text{Recall}}\n\\]\n\nHigh F1 means both precision and recall are strong.\n\nUseful when we care about both false positives and false negatives."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#summary",
+    "href": "lectures/lecture-04.html#summary",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Summary",
+    "text": "Summary\n\n\n\n\n\n\n\n\nMetric\nWhat it measures\nHigh value means\n\n\n\n\nAccuracy\nOverall correctness\nModel gets most predictions right\n\n\nPrecision\nQuality of positive predictions\nFew false alarms\n\n\nRecall\nQuantity of true positives caught\nFew missed positives\n\n\nF1-score\nBalance of precision & recall\nBoth precision and recall are high"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#activity-1-create-confusion-matrix",
+    "href": "lectures/lecture-04.html#activity-1-create-confusion-matrix",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Activity 1: Create Confusion Matrix",
+    "text": "Activity 1: Create Confusion Matrix\n\nSource: StatQuest"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#activity-2-calculate-precision-recall-specificity",
+    "href": "lectures/lecture-04.html#activity-2-calculate-precision-recall-specificity",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Activity 2: Calculate Precision, Recall, Specificity",
+    "text": "Activity 2: Calculate Precision, Recall, Specificity\n\nRecall (aka Sensitivity in biomedical literature)\n\nTP/(TP+FN)\n\nPrecision\n\nTP/(TP+FP)\n\nSpecificity\n\nTN/(TN+FP)"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#break",
+    "href": "lectures/lecture-04.html#break",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Break!",
+    "text": "Break!\nLet’s take a break!"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#clicker-exercise-9.1",
+    "href": "lectures/lecture-04.html#clicker-exercise-9.1",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Clicker Exercise 9.1",
+    "text": "Clicker Exercise 9.1\nSelect all of the following statements which are TRUE.\n\n\nIn medical diagnosis, false positives are more damaging than false negatives (assume “positive” means the person has a disease, “negative” means they don’t).\n\n\nIn spam classification, false positives are more damaging than false negatives (assume “positive” means the email is spam, “negative” means they it’s not).\n\n\nIf method A gets a higher accuracy than method B, that means its precision is also higher.\n\n\nIf method A gets a higher accuracy than method B, that means its recall is also higher."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#counter-examples",
+    "href": "lectures/lecture-04.html#counter-examples",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Counter examples",
+    "text": "Counter examples\nMethod A - higher accuracy but lower precision\n\n\n\nNegative\nPositive\n\n\n\n\n90\n5\n\n\n5\n0\n\n\n\nMethod B - lower accuracy but higher precision\n\n\n\nNegative\nPositive\n\n\n\n\n80\n15\n\n\n0\n5"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#takeaway",
+    "href": "lectures/lecture-04.html#takeaway",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Takeaway",
+    "text": "Takeaway\n\nAccuracy summarizes overall correctness but hides class-specific behaviour.\n\nYou can have high accuracy but poor precision or recall,\nespecially in imbalanced datasets.\n\nAlways check multiple metrics before deciding which model is better."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#predicting-with-logistic-regression",
+    "href": "lectures/lecture-04.html#predicting-with-logistic-regression",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Predicting with logistic regression",
+    "text": "Predicting with logistic regression\n\n\n\n\n\nMost classification models don’t directly predict labels. They predict scores or probabilities.\nTo get a label (e.g., “fraud” or “non fraud”), we choose a threshold (often 0.5). If the threshold changes, predictions change, and so do the errors.\nWhat happens to precision and recall if we change the probability threshold?\nPlay with classification thresholds\n\n\n\n\nDecreasing the threshold:\n\nIncreases the number of positive predictions\nIdentify more examples as “fraud” examples\nMore false positives, more true positives.\nRecall would either stay the same or go up and precision is likely to go down (precision may increase if all the new examples after decreasing the threshold are TPs).\n\nIncreasing the threshold:\n\nDecreases the number of positive predictions\nRecall would go down or stay the same but precision is likely to go up (precision may go down if TP decrease but FP do not decrease).\n\nKey question: How do we decide on the best threshold? It depends on the problem and trade-offs between false positives and false negatives."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#pr-curve",
+    "href": "lectures/lecture-04.html#pr-curve",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "PR curve",
+    "text": "PR curve\n\nCalculate precision and recall (TPR) at every possible threshold and graph them.\nTop left \\(\\rightarrow\\) Very high threshold (strict model = high precision)\nBottom right \\(\\rightarrow\\) Very low threshold (linient model = high recall)\n\n\n\n\n\n\n\n\n\n\n\n\nWe can look at all possible thresholds and plot the corresponding precision and recall!\nAs we lower the threshold, the classifier predicts more positives:\n\nRecall increases because we capture more true positives.\nPrecision usually decreases because some of the additional positives are false positives.\n\nAs we raise the threshold, the classifier predicts fewer positives:\n\nPrecision increases because only the most confident predictions are positive.\nRecall decreases because we miss more true positives.\n\nThe curve shows the trade-offs between precision and recall across all thresholds.\nIdeal performance: top-right corner (high precision and high recall).\nUse cases like fraud detection often require focusing on areas of the curve that favor one metric over the other (e.g., high recall for safety-critical tasks)."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#pr-curve-different-thresholds",
+    "href": "lectures/lecture-04.html#pr-curve-different-thresholds",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "PR curve different thresholds",
+    "text": "PR curve different thresholds\n\nWhich of the red dots are reasonable trade offs?"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#average-precision-ap-score",
+    "href": "lectures/lecture-04.html#average-precision-ap-score",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Average Precision (AP) Score",
+    "text": "Average Precision (AP) Score\n\n\n\nAP score summarizes the PR curve by calculating the area under the curve\nIt measures the ranking ability of a model; how well it assigns higher probabilities to positive examples than to negative ones, regardless of the specific threshold."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#clicker-exercise-9.2",
+    "href": "lectures/lecture-04.html#clicker-exercise-9.2",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Clicker Exercise 9.2",
+    "text": "Clicker Exercise 9.2\nChoose the appropriate evaluation metric for the following scenarios:\nScenario 1: Balance between precision and recall for a threshold.\nScenario 2: Assess performance across all thresholds.\n\n\nF1 for 1, AP for 2\n\n\nAP for 1, F1 Score for 2\n\n\nAP for both\n\n\nF1 for both\n\n\n\n\nF1 score is for a given threshold and measures the quality of predict.\nAP score is a summary across thresholds and measures the quality of predict_proba."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#clicker-exercise-9.3",
+    "href": "lectures/lecture-04.html#clicker-exercise-9.3",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Clicker Exercise 9.3",
+    "text": "Clicker Exercise 9.3\nSelect all of the following statements which are TRUE.\n\n\nIf we increase the classification threshold, both true and false positives are likely to decrease.\n\n\nIf we increase the classification threshold, both true and false negatives are likely to decrease.\n\n\nLowering the classification threshold generally increases the model’s recall.\n\n\n\nRaising the classification threshold can improve the precision of the model if it effectively reduces the number of false positives without significantly affecting true positives."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#roc-curve",
+    "href": "lectures/lecture-04.html#roc-curve",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "ROC Curve",
+    "text": "ROC Curve\n\nCompute the True Positive Rate (TPR) and False Positive Rate (FPR) at every possible threshold, and plot TPR vs FPR.\n\nHow well does the model separate positive and negative classes in terms of predicted probability?\nA good choice when the dataset is reasonably balanced or not extremely imbalanced (e.g., fraud detection, disease diagnosis)."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#roc-curve-example",
+    "href": "lectures/lecture-04.html#roc-curve-example",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "ROC Curve example",
+    "text": "ROC Curve example\n\nBottom-left \\(\\rightarrow\\) very high threshold (almost everything predicted negative: low recall, low FPR).\n\nTop-right \\(\\rightarrow\\) very low threshold (almost everything predicted positive: high recall, high FPR)."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#auc",
+    "href": "lectures/lecture-04.html#auc",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "AUC",
+    "text": "AUC\n\nThe area under the ROC curve (AUC) represents the probability that the model, if given a randomly chosen positive and negative example, will rank the positive higher than the negative."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#roc-auc-questions",
+    "href": "lectures/lecture-04.html#roc-auc-questions",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "ROC AUC questions",
+    "text": "ROC AUC questions\nConsider the points A, B, and C in the following diagram, each representing a threshold. Which threshold would you pick in each scenario?\n\n\n\n\n\n\nIf false positives (false alarms) are highly costly\n\n\nIf false positives are cheap and false negatives (missed true positives) highly costly\n\n\nIf the costs are roughly equivalent\n\n\n\nSource"
+  },
+  {
+    "objectID": "lectures/lecture-04.html#group-work-class-demo-live-coding",
+    "href": "lectures/lecture-04.html#group-work-class-demo-live-coding",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "Group Work: Class Demo & Live Coding",
+    "text": "Group Work: Class Demo & Live Coding\nFor this demo, each student should click this link to create a new repo in their accounts, then clone that repo locally to follow along with the demo from today."
+  },
+  {
+    "objectID": "lectures/lecture-04.html#what-did-we-learn",
+    "href": "lectures/lecture-04.html#what-did-we-learn",
+    "title": "Lecture 4: Classification Metrics",
+    "section": "What did we learn?",
+    "text": "What did we learn?\n\nWhy accuracy is not always a good metric?\nConfusion matrix\nPrecision, recall, & f1-score\nPrecision-recall curves & average precision\nReceiver Operator Characteristic (ROC) curves & AUC"
+  },
+  {
+    "objectID": "slides.html",
+    "href": "slides.html",
+    "title": "Overview",
+    "section": "",
+    "text": "Title\n\n\n\nDescription\n\n\n\n\n\n\n\n\nLecture 4: Classification Metrics\n\n\nconfusion metrics, precision, recall, f1-score, PR curves, AP score, ROC curve, ROC AUC, class imbalance\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "Welcome to CSCI345! Here, you’ll find slides for CSCI 345.\n\nClass times 🕘 8:00 AM to 9:50 AM, Tuesday and Thursday\nWhere? 📍 Paine 212 Building"
+  }
+]
