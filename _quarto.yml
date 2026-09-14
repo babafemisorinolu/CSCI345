@@ -4,6 +4,7 @@ project:
 
 website: 
   title: "CSCI 345 Slides"
+  site-url: https://csci345.gbslab.me
   page-navigation: true
   navbar:
     title: "CSCI 345"
