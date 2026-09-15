@@ -1,6 +1,6 @@
 ---
-title: "Lecture 4: Classification Metrics" 
-author: "Babafemi Sorinolu (Slides adapted from Varada Kolhatkar)"
+title: "Lecture 4 - 1: Classification Metrics" 
+author: "Babafemi Sorinolu"
 description: "Metrics for classification"
 description-short: "confusion metrics, precision, recall, f1-score, PR curves, AP score, ROC curve, ROC AUC, class imbalance" 
 format:
@@ -9,7 +9,7 @@ format:
     slide-number: true
     smaller: true
     center: true
-    logo: ../img/UBC-CS-logo.png
+    logo: ../img/houghton_logo.webp
     theme: [night, ../slides.scss]
     resources:
       - ../data/
@@ -345,7 +345,45 @@ $$
 - (C) $\hat p=0.75$
 - (D) $\hat p=0.99$
 
+---
+
+## Clicker Exercise 1
+
+**Which prediction has the smallest absolute loss?**
+
+The observed class is:
+
+$$
+y=1
+$$
+
+- (A) $\hat p=0.05$
+- (B) $\hat p=0.25$
+- (C) $\hat p=0.75$
+- (D) $\hat p=0.99$
+
 **Answer: D**
+
+---
+
+## Activity: Think–Pair–Share
+
+An individual **does not** have diabetes:
+
+$$
+y=0
+$$
+
+The model predicts:
+
+$$
+\hat p=0.65
+$$
+
+What is the absolute loss?
+
+
+**Question:** Is this a good prediction?
 
 ---
 
@@ -374,6 +412,108 @@ L_{\text{abs}}
 $$
 
 **Question:** Is this a good prediction?
+
+---
+
+## Activity: How Bad Is the Prediction?
+
+A model is predicting whether a patient has diabetes.
+
+The actual outcome is:
+
+$$
+y=0
+$$
+
+Three models make the following predictions:
+
+| Model | Prediction $\hat p$ | Absolute Loss |
+|:---|---:|---:|
+| A | 0.10 | ? |
+| B | 0.40 | ? |
+| C | 0.80 | ? |
+
+---
+
+## Think
+
+1. Calculate the absolute loss for each model:
+
+$$
+L_{\text{abs}}=|y-\hat p|
+$$
+
+2. Rank the three models from **best prediction to worst prediction**.
+
+3. Model B predicts a probability of $0.40$. What does that actually mean in this context?
+
+---
+
+## Pair
+
+Compare your answers with a partner.
+
+- Which model has the smallest loss?
+- How much better is Model A than Model C?
+- Does a smaller absolute loss always mean a prediction is closer to the **actual outcome**?
+
+---
+
+## Share
+
+Discuss:
+
+> **If the actual outcome is $y=0$, should a model that predicts $0.51$ be considered a "good" prediction simply because it is relatively close to 0.5? Why or why not?**
+
+---
+
+## Reveal
+
+$$
+L_A=|0-0.10|=0.10
+$$
+
+$$
+L_B=|0-0.40|=0.40
+$$
+
+$$
+L_C=|0-0.80|=0.80
+$$
+
+So the ranking is:
+
+$$
+\boxed{A>B>C}
+$$
+
+The key idea is that **absolute loss measures how far the prediction is from the actual value**.
+
+The smaller the loss, the closer the prediction is to what actually happened.
+
+---
+
+## Extension Question
+
+Now suppose the actual outcome changes:
+
+$$
+y=1
+$$
+
+but the three models make the **same predictions**.
+
+> **Which model is now best? What does this tell you about why loss must always be calculated using both $y$ and $\hat p$?**
+
+---
+
+## Key Takeaway
+
+**Absolute loss tells us how far a prediction is from the observed outcome.**
+
+But interpreting whether a prediction is *good* may require more context than the loss alone.
+
+The reference point matters.
 
 ---
 
@@ -552,14 +692,103 @@ $$
 y=1
 $$
 
-Which prediction produces the **largest** log loss?
+Two models predict:
 
-- (A) $\hat p=0.99$
-- (B) $\hat p=0.80$
-- (C) $\hat p=0.50$
-- (D) $\hat p=0.01$
+- Model A: $\hat p=0.10$
+- Model B: $\hat p=0.40$
 
-**Answer: D**
+Which model has the **larger log loss**?
+
+- **(A)** Model A
+- **(B)** Model B
+- **(C)** They are equal
+- **(D)** Not enough information
+
+---
+
+## Think About It
+
+Recall the log loss:
+
+$$
+L_{\log}
+=
+-\left[
+y\log(\hat p)
++
+(1-y)\log(1-\hat p)
+\right]
+$$
+
+Here:
+
+$$
+y=1
+$$
+
+What does the loss simplify to?
+
+---
+
+## Simplify
+
+When $y=1$:
+
+$$
+L_{\log}
+=
+-\log(\hat p)
+$$
+
+So we only need to compare:
+
+$$
+-\log(0.10)
+\quad\text{and}\quad
+-\log(0.40)
+$$
+
+Which prediction should receive the **larger penalty**?
+
+---
+
+## Reveal
+
+$$
+L_A=-\log(0.10)\approx2.30
+$$
+
+$$
+L_B=-\log(0.40)\approx0.92
+$$
+
+Therefore:
+
+$$
+\boxed{L_A>L_B}
+$$
+
+**Answer: (A) Model A**
+
+---
+
+## Why?
+
+Model A assigns only **10% probability** to the outcome that actually occurred.
+
+Model B assigns **40% probability**.
+
+So Model A is **more confidently wrong**.
+
+> **Log loss strongly penalizes confident wrong predictions.**
+
+The key idea:
+
+$$
+\boxed{\text{More confident + wrong}
+\;\Longrightarrow\;
+\text{larger log loss}}
+$$
 
 ---
 
@@ -746,6 +975,20 @@ The true class is class 3.
 
 What is the cross-entropy loss?
 
+---
+
+## Clicker Exercise 3
+
+A three-class classifier predicts:
+
+$$
+[0.70,\;0.20,\;0.10]
+$$
+
+The true class is class 3.
+
+What is the cross-entropy loss?
+
 $$
 -\log(0.10)
 \approx2.303
@@ -755,8 +998,6 @@ Is this:
 
 - (A) Small
 - (B) Large
-
-**Answer: B**
 
 ---
 
@@ -771,6 +1012,93 @@ For example:
 **Support Vector Classifiers**
 
 Instead, they can return a **signed distance from a decision boundary**.
+
+---
+
+# Hinge Loss
+
+Hinge loss is commonly used for **binary classification**, especially with **support vector machines (SVMs)**.
+
+Instead of asking only whether the prediction is correct, hinge loss also considers **how confidently the model makes the correct prediction**.
+
+For labels:
+
+$$
+y\in\{-1,+1\}
+$$
+
+and model score:
+
+$$
+f(x)
+$$
+
+the hinge loss is:
+
+$$
+L_{\text{hinge}}
+=
+\max(0,\;1-yf(x))
+$$
+
+---
+
+# Example
+
+ Suppose the true class is:
+
+ $$
+y=+1
+$$
+
+ The model produces:
+
+ $$
+f(x)=0.5
+$$
+
+ Calculate the hinge loss:
+
+ $$
+L_{\text{hinge}}
+=
+\max(0,\;1-(+1)(0.5))
+$$
+
+ $$
+=
+\max(0,\;0.5)
+=
+0.5
+$$
+
+ **Question:** What would happen to the loss if the model's score increased to $2$?
+
+---
+
+# The Key Idea
+
+ For a correct prediction with **enough confidence**:
+
+ $$
+yf(x)\geq 1
+$$
+
+ the hinge loss is:
+
+ $$
+\boxed{0}
+$$
+
+ For a prediction that is **wrong or not confident enough**:
+
+ $$
+yf(x)<1
+$$
+
+ the model receives a positive loss.
+
+ > **Hinge loss encourages the model to be correct with a margin, not merely correct.**
 
 ---
 
@@ -1206,3 +1534,7 @@ For this demo, each student should [click this link](https://github.com/new?temp
 - Precision, recall, & f1-score
 - Precision-recall curves & average precision
 - Receiver Operator Characteristic (ROC) curves & AUC
+
+## 
+
+Slides adapted from Firas Moosvi

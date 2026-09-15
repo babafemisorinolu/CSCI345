@@ -1,6 +1,6 @@
 ---
-title: "Lecture 10: Regression Metrics" 
-author: "Babafemi Sorinolu (Slides adapted from Varada Kolhatkar)"
+title: "Lecture 4 - 2: Regression Metrics" 
+author: "Babafemi Sorinolu"
 description: "Metrics for Regression"
 description-short: "Regression metrics" 
 format:
@@ -9,7 +9,7 @@ format:
     slide-number: true
     smaller: true
     center: true
-    logo: ../img/UBC-CS-logo.png
+    logo: ../img/houghton_logo2.webp
     theme: [night, ../slides.scss]
     resources:
       - ../data/
@@ -303,12 +303,12 @@ print("Huber Regression MSE:",
 - What's the difference between the average precision (AP) score and F1-score? 
 - Which model would you pick? 
 
-![](img/PR-curve-which-model.png)
+![](../img/PR-curve-which-model.png)
 
 ## ROC of a baseline model
 :::: {.columns}
 :::{.column width="50%"}
-![](img/roc-baseline.png) 
+![](../img/roc-baseline.png) 
 :::
 :::{.column width="50%"}
 **AUC–ROC** measures the probability that a randomly chosen **positive example** receives a **higher score** than a randomly chosen **negative example**.  
@@ -324,7 +324,7 @@ print("Huber Regression MSE:",
 
 :::: {.columns}
 :::{.column width="60%"}
-![](img/ROC-curve-which-model.png)
+![](../img/ROC-curve-which-model.png)
 :::
 :::{.column width="40%"}
 - Which model would you pick? 
@@ -471,3 +471,7 @@ For this demo, each student should [click this link](https://github.com/new?temp
 - **When you want to discourage large error:** MSE is common
 - **For fair comparison:** r2 provides a normalized score similar to accuracy in classification.  
 - **For imbalanced scales:** MAPE helps when proportional error matters more than absolute error.
+
+## 
+
+Slides adapted from Firas Moosvi
