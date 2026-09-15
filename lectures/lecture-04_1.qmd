@@ -1311,12 +1311,6 @@ $$
 
 ![](../img/calculate_Sen_Spe.png)
 
-## Break!
-
-Let's take a break!
-
-![](../img/eva-coffee.png){fig-align="center"}
-
 ## Clicker Exercise 9.1
 
 **Select all of the following statements which are TRUE.**
