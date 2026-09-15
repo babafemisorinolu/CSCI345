@@ -903,13 +903,6 @@
     "text": "Activity 2: Calculate Precision, Recall, Specificity\n\nRecall (aka Sensitivity in biomedical literature)\n\nTP/(TP+FN)\n\nPrecision\n\nTP/(TP+FP)\n\nSpecificity\n\nTN/(TN+FP)"
   },
   {
-    "objectID": "lectures/lecture-04_1.html#break",
-    "href": "lectures/lecture-04_1.html#break",
-    "title": "Lecture 4 - 1: Classification Metrics",
-    "section": "Break!",
-    "text": "Break!\nLet’s take a break!"
-  },
-  {
     "objectID": "lectures/lecture-04_1.html#clicker-exercise-9.1",
     "href": "lectures/lecture-04_1.html#clicker-exercise-9.1",
     "title": "Lecture 4 - 1: Classification Metrics",
@@ -999,13 +992,6 @@
     "title": "Lecture 4 - 1: Classification Metrics",
     "section": "ROC AUC questions",
     "text": "ROC AUC questions\nConsider the points A, B, and C in the following diagram, each representing a threshold. Which threshold would you pick in each scenario?\n\n\n\n\n\n\nIf false positives (false alarms) are highly costly\n\n\nIf false positives are cheap and false negatives (missed true positives) highly costly\n\n\nIf the costs are roughly equivalent\n\n\n\nSource"
-  },
-  {
-    "objectID": "lectures/lecture-04_1.html#group-work-class-demo-live-coding",
-    "href": "lectures/lecture-04_1.html#group-work-class-demo-live-coding",
-    "title": "Lecture 4 - 1: Classification Metrics",
-    "section": "Group Work: Class Demo & Live Coding",
-    "text": "Group Work: Class Demo & Live Coding\nFor this demo, each student should click this link to create a new repo in their accounts, then clone that repo locally to follow along with the demo from today."
   },
   {
     "objectID": "lectures/lecture-04_1.html#what-did-we-learn",
