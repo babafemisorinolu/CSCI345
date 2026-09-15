@@ -1523,11 +1523,6 @@ Consider the points A, B, and C in the following diagram, each representing a th
 [Source](https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc)
 
 
-## Group Work: Class Demo & Live Coding
-
-For this demo, each student should [click this link](https://github.com/new?template_name=lecture09_demo&template_owner=ubc-cpsc330) to create a new repo in their accounts, then clone that repo locally to follow along with the demo from today.
-
-
 ## What did we learn? 
 - Why accuracy is not always a good metric?
 - Confusion matrix
