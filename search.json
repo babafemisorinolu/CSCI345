@@ -140,18 +140,18 @@
     "text": "Questions for you\nSelect all of the following statements which are TRUE.\n\n\nA decision boundary plot can help us identify possible overfitting in a classifier.\n\n\nAn ROC curve shows true positive rate versus false positive rate across different thresholds.\n\n\nAn AUC of 0.5 indicates a perfect classifier.\n\n\nA good prediction error plot should show residuals randomly scattered around zero.\n\n\nA curved pattern in a prediction error plot may indicate that a model is missing a nonlinear relationship.\n\n\nA partial dependence plot shows the causal effect of a feature on the target."
   },
   {
-    "objectID": "lectures/lecture-04_3.html#iclicker-exercise-10.x",
-    "href": "lectures/lecture-04_3.html#iclicker-exercise-10.x",
+    "objectID": "lectures/lecture-04_3.html#iclicker-exercise-1",
+    "href": "lectures/lecture-04_3.html#iclicker-exercise-1",
     "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "iClicker Exercise 10.x",
-    "text": "iClicker Exercise 10.x\nWhich statements about ROC curves are TRUE?\n\n\nA perfect classifier has an AUC of 1.0.\n\n\nA random classifier has an AUC of approximately 0.5.\n\n\nIncreasing the classification threshold generally decreases both TPR and FPR.\n\n\nAUC automatically identifies the optimal classification threshold.\n\n\nThe ROC curve can be used to examine classifier performance across different thresholds."
+    "section": "iClicker Exercise 1",
+    "text": "iClicker Exercise 1\nWhich statements about ROC curves are TRUE?\n\n\nA perfect classifier has an AUC of 1.0.\n\n\nA random classifier has an AUC of approximately 0.5.\n\n\nIncreasing the classification threshold generally decreases both TPR and FPR.\n\n\nAUC automatically identifies the optimal classification threshold.\n\n\nThe ROC curve can be used to examine classifier performance across different thresholds."
   },
   {
-    "objectID": "lectures/lecture-04_3.html#iclicker-exercise-10.x-1",
-    "href": "lectures/lecture-04_3.html#iclicker-exercise-10.x-1",
+    "objectID": "lectures/lecture-04_3.html#iclicker-exercise-2",
+    "href": "lectures/lecture-04_3.html#iclicker-exercise-2",
     "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "iClicker Exercise 10.x",
-    "text": "iClicker Exercise 10.x\nWhich statements about regression plots are TRUE?\n\n\nResiduals are calculated as observed minus predicted values.\n\n\nA random scatter of residuals around zero is generally desirable.\n\n\nA funnel-shaped residual plot can indicate changing error variance.\n\n\nA systematic curve in the residuals can indicate a missing nonlinear relationship.\n\n\nA partial dependence plot directly proves that a feature causes changes in the target."
+    "section": "iClicker Exercise 2",
+    "text": "iClicker Exercise 2\nWhich statements about regression plots are TRUE?\n\n\nResiduals are calculated as observed minus predicted values.\n\n\nA random scatter of residuals around zero is generally desirable.\n\n\nA funnel-shaped residual plot can indicate changing error variance.\n\n\nA systematic curve in the residuals can indicate a missing nonlinear relationship.\n\n\nA partial dependence plot directly proves that a feature causes changes in the target."
   },
   {
     "objectID": "lectures/lecture-04_3.html#group-work-evaluate-a-fitted-model",
@@ -294,6 +294,13 @@
     "text": "Which loss function would you choose?\n\n\n\nScenario\nPreferred Loss\n\n\n\n\nOutliers are common and should have limited influence.\n\n\n\nLarge errors are especially costly.\n\n\n\nYou want a smooth loss that is robust to outliers.\n\n\n\nYou want to predict the 90th percentile of a target."
   },
   {
+    "objectID": "lectures/lecture-04_2.html#which-loss-function-would-you-choose-1",
+    "href": "lectures/lecture-04_2.html#which-loss-function-would-you-choose-1",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Which loss function would you choose?",
+    "text": "Which loss function would you choose?\n\n\n\n\n\n\n\nScenario\nPreferred Loss\n\n\n\n\nOutliers are common and should have limited influence.\nAbsolute Loss (MAE)\n\n\nLarge errors are especially costly.\nSquared Loss (MSE)\n\n\nYou want a smooth loss that is robust to outliers.\nHuber Loss\n\n\nYou want to predict the 90th percentile of a target.\nQuantile Loss (τ = 0.90)"
+  },
+  {
     "objectID": "lectures/lecture-04_2.html#key-takeaways",
     "href": "lectures/lecture-04_2.html#key-takeaways",
     "title": "Lecture 4 - 2: Regression Metrics",
@@ -378,11 +385,11 @@
     "text": "Applying log transformation to the targets\n\nSuitable when the target has a wide range and spans several orders of magnitude\n\nExample: counts data such as social media likes or price data\n\nHelps manage skewed data, making patterns more apparent and regression models more effective.\nTransformedTargetRegressor\n\nWraps a regression model and applies a transformation to the target values."
   },
   {
-    "objectID": "lectures/lecture-04_2.html#iclicker-exercise-10.1",
-    "href": "lectures/lecture-04_2.html#iclicker-exercise-10.1",
+    "objectID": "lectures/lecture-04_2.html#iclicker-exercise-1",
+    "href": "lectures/lecture-04_2.html#iclicker-exercise-1",
     "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "iClicker Exercise 10.1",
-    "text": "iClicker Exercise 10.1\nSelect all of the following statements which are TRUE.\n\n\nPrice per square foot would be a good feature to add in our X.\n\n\nThe alpha hyperparameter of Ridge has similar interpretation of C hyperparameter of LogisticRegression; higher alpha means more complex model.\n\n\nIn Ridge, smaller alpha means bigger coefficients whereas bigger alpha means smaller coefficients."
+    "section": "iClicker Exercise 1",
+    "text": "iClicker Exercise 1\nSelect all of the following statements which are TRUE.\n\n\nPrice per square foot would be a good feature to add in our X.\n\n\nThe alpha hyperparameter of Ridge has similar interpretation of C hyperparameter of LogisticRegression; higher alpha means more complex model.\n\n\nIn Ridge, smaller alpha means bigger coefficients whereas bigger alpha means smaller coefficients."
   },
   {
     "objectID": "lectures/lecture-04_2.html#group-work-class-demo-live-coding",
@@ -399,11 +406,11 @@
     "text": "Which metric fits the scenario?\n\n\n\n\n\n\n\n\nScenario\nWhat matters most?\nBest metric(s)?\n\n\n\n\nPredicting house prices ranging from $60K–$800K.\nA $30K error is huge for a $60K house but small for a $500K house.\n\n\n\nPredicting exam scores (0–100).\nYou want an interpretable measure of average error in points.\n\n\n\nPredicting energy consumption in a large industrial system.\nLarge errors are very costly and should be penalized heavily.\n\n\n\nPredicting insurance claim amounts.\nYou want to compare how well different models explain the variation in claims."
   },
   {
-    "objectID": "lectures/lecture-04_2.html#iclicker-exercise-10.2",
-    "href": "lectures/lecture-04_2.html#iclicker-exercise-10.2",
+    "objectID": "lectures/lecture-04_2.html#iclicker-exercise-2",
+    "href": "lectures/lecture-04_2.html#iclicker-exercise-2",
     "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "iClicker Exercise 10.2",
-    "text": "iClicker Exercise 10.2\nSelect all of the following statements which are TRUE.\n\n\nWe can use still use precision and recall for regression problems but now we have other metrics we can use as well.\n\n\nIn sklearn for regression problems, using r2_score() and .score() (with default values) will produce the same results.\n\n\nRMSE is always going to be non-negative.\n\n\nMSE does not directly provide the information about whether the model is underpredicting or overpredicting.\n\n\nWe can pass multiple scoring metrics to GridSearchCV or RandomizedSearchCV for regression as well as classification problems."
+    "section": "iClicker Exercise 2",
+    "text": "iClicker Exercise 2\nSelect all of the following statements which are TRUE.\n\n\nWe can use still use precision and recall for regression problems but now we have other metrics we can use as well.\n\n\nIn sklearn for regression problems, using r2_score() and .score() (with default values) will produce the same results.\n\n\nRMSE is always going to be non-negative.\n\n\nMSE does not directly provide the information about whether the model is underpredicting or overpredicting.\n\n\nWe can pass multiple scoring metrics to GridSearchCV or RandomizedSearchCV for regression as well as classification problems."
   },
   {
     "objectID": "lectures/lecture-04_2.html#which-metric-fits-the-scenario-1",
@@ -903,11 +910,11 @@
     "text": "Activity 2: Calculate Precision, Recall, Specificity\n\nRecall (aka Sensitivity in biomedical literature)\n\nTP/(TP+FN)\n\nPrecision\n\nTP/(TP+FP)\n\nSpecificity\n\nTN/(TN+FP)"
   },
   {
-    "objectID": "lectures/lecture-04_1.html#clicker-exercise-9.1",
-    "href": "lectures/lecture-04_1.html#clicker-exercise-9.1",
+    "objectID": "lectures/lecture-04_1.html#clicker-exercise-4",
+    "href": "lectures/lecture-04_1.html#clicker-exercise-4",
     "title": "Lecture 4 - 1: Classification Metrics",
-    "section": "Clicker Exercise 9.1",
-    "text": "Clicker Exercise 9.1\nSelect all of the following statements which are TRUE.\n\n\nIn medical diagnosis, false positives are more damaging than false negatives (assume “positive” means the person has a disease, “negative” means they don’t).\n\n\nIn spam classification, false positives are more damaging than false negatives (assume “positive” means the email is spam, “negative” means they it’s not).\n\n\nIf method A gets a higher accuracy than method B, that means its precision is also higher.\n\n\nIf method A gets a higher accuracy than method B, that means its recall is also higher."
+    "section": "Clicker Exercise 4",
+    "text": "Clicker Exercise 4\nSelect all of the following statements which are TRUE.\n\n\nIn medical diagnosis, false positives are more damaging than false negatives (assume “positive” means the person has a disease, “negative” means they don’t).\n\n\nIn spam classification, false positives are more damaging than false negatives (assume “positive” means the email is spam, “negative” means they it’s not).\n\n\nIf method A gets a higher accuracy than method B, that means its precision is also higher.\n\n\nIf method A gets a higher accuracy than method B, that means its recall is also higher."
   },
   {
     "objectID": "lectures/lecture-04_1.html#counter-examples",
@@ -952,18 +959,18 @@
     "text": "Average Precision (AP) Score\n\n\n\nAP score summarizes the PR curve by calculating the area under the curve\nIt measures the ranking ability of a model; how well it assigns higher probabilities to positive examples than to negative ones, regardless of the specific threshold."
   },
   {
-    "objectID": "lectures/lecture-04_1.html#clicker-exercise-9.2",
-    "href": "lectures/lecture-04_1.html#clicker-exercise-9.2",
+    "objectID": "lectures/lecture-04_1.html#clicker-exercise-5",
+    "href": "lectures/lecture-04_1.html#clicker-exercise-5",
     "title": "Lecture 4 - 1: Classification Metrics",
-    "section": "Clicker Exercise 9.2",
-    "text": "Clicker Exercise 9.2\nChoose the appropriate evaluation metric for the following scenarios:\nScenario 1: Balance between precision and recall for a threshold.\nScenario 2: Assess performance across all thresholds.\n\n\nF1 for 1, AP for 2\n\n\nAP for 1, F1 Score for 2\n\n\nAP for both\n\n\nF1 for both\n\n\n\n\nF1 score is for a given threshold and measures the quality of predict.\nAP score is a summary across thresholds and measures the quality of predict_proba."
+    "section": "Clicker Exercise 5",
+    "text": "Clicker Exercise 5\nChoose the appropriate evaluation metric for the following scenarios:\nScenario 1: Balance between precision and recall for a threshold.\nScenario 2: Assess performance across all thresholds.\n\n\nF1 for 1, AP for 2\n\n\nAP for 1, F1 Score for 2\n\n\nAP for both\n\n\nF1 for both\n\n\n\n\nF1 score is for a given threshold and measures the quality of predict.\nAP score is a summary across thresholds and measures the quality of predict_proba."
   },
   {
-    "objectID": "lectures/lecture-04_1.html#clicker-exercise-9.3",
-    "href": "lectures/lecture-04_1.html#clicker-exercise-9.3",
+    "objectID": "lectures/lecture-04_1.html#clicker-exercise-6",
+    "href": "lectures/lecture-04_1.html#clicker-exercise-6",
     "title": "Lecture 4 - 1: Classification Metrics",
-    "section": "Clicker Exercise 9.3",
-    "text": "Clicker Exercise 9.3\nSelect all of the following statements which are TRUE.\n\n\nIf we increase the classification threshold, both true and false positives are likely to decrease.\n\n\nIf we increase the classification threshold, both true and false negatives are likely to decrease.\n\n\nLowering the classification threshold generally increases the model’s recall.\n\n\n\nRaising the classification threshold can improve the precision of the model if it effectively reduces the number of false positives without significantly affecting true positives."
+    "section": "Clicker Exercise 6",
+    "text": "Clicker Exercise 6\nSelect all of the following statements which are TRUE.\n\n\nIf we increase the classification threshold, both true and false positives are likely to decrease.\n\n\nIf we increase the classification threshold, both true and false negatives are likely to decrease.\n\n\nLowering the classification threshold generally increases the model’s recall.\n\n\n\nRaising the classification threshold can improve the precision of the model if it effectively reduces the number of false positives without significantly affecting true positives."
   },
   {
     "objectID": "lectures/lecture-04_1.html#roc-curve",
