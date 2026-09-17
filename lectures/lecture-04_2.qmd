@@ -268,6 +268,16 @@ print("Huber Regression MSE:",
 | You want a smooth loss that is robust to outliers. | |
 | You want to predict the 90th percentile of a target. | |
 
+## Which loss function would you choose? {.smaller}
+
+| Scenario | Preferred Loss |
+|-----------|----------------|
+| Outliers are common and should have limited influence. | Absolute Loss (MAE) |
+| Large errors are especially costly. | 	Squared Loss (MSE) |
+| You want a smooth loss that is robust to outliers. | Huber Loss |
+| You want to predict the 90th percentile of a target. | 	Quantile Loss (τ = 0.90) |
+
+
 ## Key Takeaways
 
 - A **loss function** tells us how costly a prediction error is.
@@ -423,7 +433,7 @@ plt.show()
 - `TransformedTargetRegressor`
   - Wraps a regression model and applies a transformation to the target values.
 
-## iClicker Exercise 10.1
+## iClicker Exercise 1
 
 **Select all of the following statements which are TRUE.**
 
@@ -446,7 +456,7 @@ For this demo, each student should [click this link](https://github.com/new?temp
 | Predicting **energy consumption** in a large industrial system. | Large errors are very costly and should be penalized heavily. |  |
 | Predicting **insurance claim amounts**. | You want to compare how well different models explain the variation in claims. |  |
 
-## iClicker Exercise 10.2
+## iClicker Exercise 2
 
 **Select all of the following statements which are TRUE.**
 

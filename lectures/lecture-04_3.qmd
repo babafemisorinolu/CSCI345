@@ -473,7 +473,7 @@ PartialDependenceDisplay.from_estimator(
 - (F) A partial dependence plot shows the causal effect of a feature on the target.
 
 
-## iClicker Exercise 10.x {.smaller}
+## iClicker Exercise 1 {.smaller}
 
 **Which statements about ROC curves are TRUE?**
 
@@ -484,7 +484,7 @@ PartialDependenceDisplay.from_estimator(
 - (E) The ROC curve can be used to examine classifier performance across different thresholds.
 
 
-## iClicker Exercise 10.x {.smaller}
+## iClicker Exercise 2 {.smaller}
 
 **Which statements about regression plots are TRUE?**
 

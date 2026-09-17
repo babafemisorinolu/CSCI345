@@ -1311,7 +1311,7 @@ $$
 
 ![](../img/calculate_Sen_Spe.png)
 
-## Clicker Exercise 9.1
+## Clicker Exercise 4
 
 **Select all of the following statements which are TRUE.**
 
@@ -1449,7 +1449,7 @@ PrecisionRecallDisplay.from_estimator(
 :::
 ::::
 
-## Clicker Exercise 9.2
+## Clicker Exercise 5
 
 Choose the appropriate evaluation metric for the following scenarios: 
 
@@ -1470,7 +1470,7 @@ Choose the appropriate evaluation metric for the following scenarios:
 - AP score is a summary across thresholds and measures the quality of `predict_proba`.
 :::
 
-## Clicker Exercise 9.3
+## Clicker Exercise 6
 
 **Select all of the following statements which are TRUE.**
 
