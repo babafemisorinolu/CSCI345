@@ -427,6 +427,13 @@
     "text": "Slides adapted from Firas Moosvi"
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "Welcome to CSCI345! Here, you’ll find slides for CSCI 345.\n\nClass times 🕘 8:00 AM to 9:50 AM, Tuesday and Thursday\nWhere? 📍 Paine 212 Building"
+  },
+  {
     "objectID": "slides.html",
     "href": "slides.html",
     "title": "Overview",
@@ -434,11 +441,25 @@
     "text": "Title\n\n\n\nDescription\n\n\n\n\n\n\n\n\nLecture 4 - 1: Classification Metrics\n\n\nconfusion metrics, precision, recall, f1-score, PR curves, AP score, ROC curve, ROC AUC, class imbalance\n\n\n\n\n\n\nLecture 4 - 2: Regression Metrics\n\n\nRegression metrics\n\n\n\n\n\n\nLecture 4 - 3: Evaluating Models with Plots\n\n\nEvaluating models with plots\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Welcome",
+    "objectID": "SETUP.html",
+    "href": "SETUP.html",
+    "title": "CSCI 345 slides",
     "section": "",
-    "text": "Welcome to CSCI345! Here, you’ll find slides for CSCI 345.\n\nClass times 🕘 8:00 AM to 9:50 AM, Tuesday and Thursday\nWhere? 📍 Paine 212 Building"
+    "text": "Lecture slides and course pages for CSCI 345, built with Quarto and published through GitHub Pages.\n\n\n\n\nCreate an empty GitHub repository, then clone it and add the project files. The repository should include:\n\n_quarto.yml\n.github/workflows/publish.yml\nyour .qmd pages and any image or data files they use\nrequirements.txt when pages execute Python code\n\nThe workflow publishes the rendered site to a gh-pages branch. Keep your editable Quarto source files on main.\n\n\n\nInstall Quarto and Python 3.12. Then create a virtual environment and install the Python packages:\npython3.12 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npython -m pip install -r requirements.txt\nOn Windows, activate the environment with:\n.venv\\Scripts\\Activate.ps1\n\n\n\nUse the preview server while editing:\nquarto preview\nBefore the first deployment, verify that the full site renders:\nquarto render\nThis project uses Quarto’s freeze: auto setting. Rendering creates a _freeze/ directory containing saved Python outputs. Commit that directory so GitHub Actions does not need to rerun every notebook cell or download external data on each push.\n\n\n\nRun the following command once from the repository root:\nquarto publish gh-pages\nFollow the prompts. This creates the gh-pages branch and Quarto’s _publish.yml configuration file. Commit _publish.yml to main:\ngit add _publish.yml _freeze\ngit commit -m \"Configure Quarto publishing\"\ngit push origin main\n\n\n\nIn the GitHub repository, open Settings → Pages and select:\n\nSource: Deploy from a branch\nBranch: gh-pages\nFolder: /(root)\n\nAfter saving, GitHub will serve the generated site from the gh-pages branch.\n\n\n\nTo use a custom domain, add the domain in Settings → Pages, configure its DNS record with your domain provider, and place the domain name in a CNAME file at the repository root. For a subdomain, the DNS CNAME normally points to &lt;your-github-username&gt;.github.io.\n\n\n\n\nAfter the initial setup, only work on main:\ngit add .\ngit commit -m \"Update lecture slides\"\ngit push origin main\nThe Quarto Publish GitHub Action renders the project and updates gh-pages automatically. Do not edit gh-pages directly.\nIf a deployment fails, open the Actions tab in GitHub and inspect the failed Quarto Publish run."
+  },
+  {
+    "objectID": "SETUP.html#set-up-a-new-repository",
+    "href": "SETUP.html#set-up-a-new-repository",
+    "title": "CSCI 345 slides",
+    "section": "",
+    "text": "Create an empty GitHub repository, then clone it and add the project files. The repository should include:\n\n_quarto.yml\n.github/workflows/publish.yml\nyour .qmd pages and any image or data files they use\nrequirements.txt when pages execute Python code\n\nThe workflow publishes the rendered site to a gh-pages branch. Keep your editable Quarto source files on main.\n\n\n\nInstall Quarto and Python 3.12. Then create a virtual environment and install the Python packages:\npython3.12 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npython -m pip install -r requirements.txt\nOn Windows, activate the environment with:\n.venv\\Scripts\\Activate.ps1\n\n\n\nUse the preview server while editing:\nquarto preview\nBefore the first deployment, verify that the full site renders:\nquarto render\nThis project uses Quarto’s freeze: auto setting. Rendering creates a _freeze/ directory containing saved Python outputs. Commit that directory so GitHub Actions does not need to rerun every notebook cell or download external data on each push.\n\n\n\nRun the following command once from the repository root:\nquarto publish gh-pages\nFollow the prompts. This creates the gh-pages branch and Quarto’s _publish.yml configuration file. Commit _publish.yml to main:\ngit add _publish.yml _freeze\ngit commit -m \"Configure Quarto publishing\"\ngit push origin main\n\n\n\nIn the GitHub repository, open Settings → Pages and select:\n\nSource: Deploy from a branch\nBranch: gh-pages\nFolder: /(root)\n\nAfter saving, GitHub will serve the generated site from the gh-pages branch.\n\n\n\nTo use a custom domain, add the domain in Settings → Pages, configure its DNS record with your domain provider, and place the domain name in a CNAME file at the repository root. For a subdomain, the DNS CNAME normally points to &lt;your-github-username&gt;.github.io."
+  },
+  {
+    "objectID": "SETUP.html#publishing-updates",
+    "href": "SETUP.html#publishing-updates",
+    "title": "CSCI 345 slides",
+    "section": "",
+    "text": "After the initial setup, only work on main:\ngit add .\ngit commit -m \"Update lecture slides\"\ngit push origin main\nThe Quarto Publish GitHub Action renders the project and updates gh-pages automatically. Do not edit gh-pages directly.\nIf a deployment fails, open the Actions tab in GitHub and inspect the failed Quarto Publish run."
   },
   {
     "objectID": "lectures/lecture-04_1.html#learning-objectives",

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Overview – CSCI 345 Slides</title>
+<title>setup – CSCI 345 Slides</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -36,8 +71,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -75,65 +108,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-schedule .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-description-short',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-schedule'] = new List('listing-schedule', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -160,7 +135,7 @@ window.Quarto = {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./slides.html" aria-current="page"> 
+    <a class="nav-link" href="./slides.html"> 
 <span class="menu-text">Slides</span></a>
   </li>  
 </ul>
@@ -176,82 +151,83 @@ window.Quarto = {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Overview</h1>
-</div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
 
+<section id="csci-345-slides" class="level1">
+<h1>CSCI 345 slides</h1>
+<p>Lecture slides and course pages for CSCI 345, built with <a href="https://quarto.org/">Quarto</a> and published through GitHub Pages.</p>
+<section id="set-up-a-new-repository" class="level2">
+<h2 class="anchored" data-anchor-id="set-up-a-new-repository">Set up a new repository</h2>
+<section id="create-the-repository" class="level3">
+<h3 class="anchored" data-anchor-id="create-the-repository">1. Create the repository</h3>
+<p>Create an empty GitHub repository, then clone it and add the project files. The repository should include:</p>
+<ul>
+<li><code>_quarto.yml</code></li>
+<li><code>.github/workflows/publish.yml</code></li>
+<li>your <code>.qmd</code> pages and any image or data files they use</li>
+<li><code>requirements.txt</code> when pages execute Python code</li>
+</ul>
+<p>The workflow publishes the rendered site to a <code>gh-pages</code> branch. Keep your editable Quarto source files on <code>main</code>.</p>
+</section>
+<section id="install-local-prerequisites" class="level3">
+<h3 class="anchored" data-anchor-id="install-local-prerequisites">2. Install local prerequisites</h3>
+<p>Install <a href="https://quarto.org/docs/get-started/">Quarto</a> and Python 3.12. Then create a virtual environment and install the Python packages:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.12</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>On Windows, activate the environment with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">venv</span>\Scripts\Activate<span class="op">.</span><span class="fu">ps1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="preview-and-render-locally" class="level3">
+<h3 class="anchored" data-anchor-id="preview-and-render-locally">3. Preview and render locally</h3>
+<p>Use the preview server while editing:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> preview</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Before the first deployment, verify that the full site renders:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This project uses Quarto’s <code>freeze: auto</code> setting. Rendering creates a <code>_freeze/</code> directory containing saved Python outputs. Commit that directory so GitHub Actions does not need to rerun every notebook cell or download external data on each push.</p>
+</section>
+<section id="initialize-github-pages-publishing" class="level3">
+<h3 class="anchored" data-anchor-id="initialize-github-pages-publishing">4. Initialize GitHub Pages publishing</h3>
+<p>Run the following command once from the repository root:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> publish gh-pages</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Follow the prompts. This creates the <code>gh-pages</code> branch and Quarto’s <code>_publish.yml</code> configuration file. Commit <code>_publish.yml</code> to <code>main</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add _publish.yml _freeze</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Configure Quarto publishing"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin main</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="configure-github-pages" class="level3">
+<h3 class="anchored" data-anchor-id="configure-github-pages">5. Configure GitHub Pages</h3>
+<p>In the GitHub repository, open <strong>Settings → Pages</strong> and select:</p>
+<ul>
+<li><strong>Source:</strong> Deploy from a branch</li>
+<li><strong>Branch:</strong> <code>gh-pages</code></li>
+<li><strong>Folder:</strong> <code>/(root)</code></li>
+</ul>
+<p>After saving, GitHub will serve the generated site from the <code>gh-pages</code> branch.</p>
+</section>
+<section id="optional-use-a-custom-domain" class="level3">
+<h3 class="anchored" data-anchor-id="optional-use-a-custom-domain">Optional: use a custom domain</h3>
+<p>To use a custom domain, add the domain in <strong>Settings → Pages</strong>, configure its DNS record with your domain provider, and place the domain name in a <code>CNAME</code> file at the repository root. For a subdomain, the DNS CNAME normally points to <code>&lt;your-github-username&gt;.github.io</code>.</p>
+</section>
+</section>
+<section id="publishing-updates" class="level2">
+<h2 class="anchored" data-anchor-id="publishing-updates">Publishing updates</h2>
+<p>After the initial setup, only work on <code>main</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Update lecture slides"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin main</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <strong>Quarto Publish</strong> GitHub Action renders the project and updates <code>gh-pages</code> automatically. Do not edit <code>gh-pages</code> directly.</p>
+<p>If a deployment fails, open the <strong>Actions</strong> tab in GitHub and inspect the failed <strong>Quarto Publish</strong> run.</p>
 
 
-<div class="quarto-listing quarto-listing-container-table" id="listing-schedule">
-<table class="quarto-listing-table table">
-<thead>
-<tr>
+</section>
+</section>
 
-<th>
-Title
-</th>
-
-<th>
-Description
-</th>
-
-</tr>
-</thead>
-<tbody class="list">
-
-<tr data-index="0" data-listing-file-modified-sort="1789691436769" data-listing-reading-time-sort="17" data-listing-word-count-sort="3391" data-listing-title-sort="Lecture 4 - 1: Classification Metrics" data-listing-filename-sort="lecture-04_1.qmd">
-<td>
-<a href="./lectures/lecture-04_1.html" class="title listing-title">Lecture 4 - 1: Classification Metrics</a>
-</td>
-<td>
-<span class="listing-description-short">confusion metrics, precision, recall, f1-score, PR curves, AP score, ROC curve, ROC AUC, class imbalance</span>
-</td>
-
-</tr>
-
-<tr data-index="1" data-listing-file-modified-sort="1789691436770" data-listing-reading-time-sort="12" data-listing-word-count-sort="2223" data-listing-title-sort="Lecture 4 - 2: Regression Metrics" data-listing-filename-sort="lecture-04_2.qmd">
-<td>
-<a href="./lectures/lecture-04_2.html" class="title listing-title">Lecture 4 - 2: Regression Metrics</a>
-</td>
-<td>
-<span class="listing-description-short">Regression metrics</span>
-</td>
-
-</tr>
-
-<tr data-index="2" data-listing-file-modified-sort="1789691436770" data-listing-reading-time-sort="9" data-listing-word-count-sort="1710" data-listing-title-sort="Lecture 4 - 3: Evaluating Models with Plots" data-listing-filename-sort="lecture-04_3.qmd">
-<td>
-<a href="./lectures/lecture-04_3.html" class="title listing-title">Lecture 4 - 3: Evaluating Models with Plots</a>
-</td>
-<td>
-<span class="listing-description-short">Evaluating models with plots</span>
-</td>
-
-</tr>
-
-</tbody>
-</table>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
