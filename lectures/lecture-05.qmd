@@ -353,6 +353,7 @@ param_grid = {
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline, make_pipeline
+from sklearn.feature_extraction.text import CountVectorizer
 
 pipe_svm = make_pipeline(CountVectorizer(), SVC())
 

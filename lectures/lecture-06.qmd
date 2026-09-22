@@ -1,0 +1,471 @@
+---
+title: "Lecture 6: Model Improvement"
+subtitle: "Data Quality, Pre-processing, Transformations, and Imputation"
+author: "Babafemi Sorinolu"
+description: "Model Improvement"
+description-short: "Pre-processing, Transformations, and pipelines."
+format:
+revealjs:
+embed-resources: true
+slide-number: true
+smaller: true
+center: true
+logo: ../img/houghton_logo.webp
+theme: dracula
+resources:
+- ../data/
+- ../img/
+
+---
+
+# Why Pre-process Data?
+
+## Preprocessing motivation: example
+
+You’re trying to find a suitable date based on:
+
+* Age (closer to yours is better).
+* Number of Facebook Friends (closer to your social circle is ideal).
+
+---
+
+## Preprocessing motivation: example {.smaller}
+
+* You are 30 years old and have 250 Facebook friends.
+
+| Person | Age | #FB Friends | Euclidean Distance Calculation | Distance |
+| --- | --- | --- | --- | --- |
+| A | 25 | 400 | $\sqrt{5^2 + 150^2}$ | 150.08 |
+| B | 27 | 300 | $\sqrt{3^2 + 50^2}$ | 50.09 |
+| C | 30 | 500 | $\sqrt{0^2 + 250^2}$ | 250.00 |
+| D | 60 | 250 | $\sqrt{30^2 + 0^2}$ | 30.00 |
+
+Based on the distances, the two nearest neighbors (2-NN) are:
+
+* **Person D** (Distance: 30.00)
+* **Person B** (Distance: 50.09)
+
+**What's the problem here?**
+
+The scale of `#FB Friends` completely dominates `Age`. Person D is twice your age, yet appears "closer" than Person A or B!
+
+---
+
+## Preparing Data for Machine Learning
+
+ * Data quality is a measure of how well data is used to meet a specific need.
+ * Poor data quality leads to misleading results and inaccurate predictions. 
+ * Data pre-processing changes or transforms raw data that contains missing values, noise, and other inconsistencies into a format that improves the performance of different machine learning models. 
+
+
+## Why Data Must Be Pre-processed
+
+* **Algorithm Mechanics**: Distance-based algorithms (k-NN, SVM, K-Means) and gradient-based methods are sensitive to feature scales and magnitudes.
+* **Garbage In, Garbage Out**: Raw real-world data is dirty, incomplete, unformatted, and noisy.
+* **Model Efficiency & Accuracy**: Proper preprocessing improves convergence speed, numerical stability, and generalizability.
+* **Requirements of ML Frameworks**: Most algorithms cannot natively handle text labels or missing values (`NaN`).
+
+---
+
+# Data Quality & Missing Data
+
+## The Six Dimensions of Data Quality
+
+1. **Accuracy**: Is the data correct and reflective of reality?
+2. **Completeness**: Are there missing records, missing fields, or incomplete attributes?
+3. **Consistency**: Does the data conflict across different systems or tables?
+4. **Timeliness**: Is the information up-to-date for the current problem?
+5. **Validity**: Does the data follow defined business rules, types, and ranges?
+6. **Uniqueness**: Are there duplicated records or overlapping entities?
+
+---
+
+ Data Preprocessing Tasks
+
+## Data Preprocessing Tasks
+
+ Data preprocessing is important in machine learning because **data quality directly affects model performance and predictions**.
+
+ ::: {.callout-note}\
+ Many classification algorithms are **distance-based**, meaning that their results can be affected by the units and scales of the input features.
+
+ ### Common Preprocessing Tasks
+
+ - **Data Cleaning:** Addresses missing values, duplicate observations, and incorrectly formatted data.
+- **Data Integration:** Combines data from multiple sources into a unified dataset.
+- **Data Reduction:** Reduces the dimensionality or size of a dataset while retaining important information.
+- **Data Transformation:** Converts features into a format or scale suitable for a particular model or algorithm.\
+   :::
+
+## Types of Missing Data Mechanisms
+
+Understanding *why* data is missing dictates *how* to fix it.
+
+* **MCAR (Missing Completely at Random)**:
+* Missingness is independent of both observed and unobserved data.
+* *Example*: A sensor battery dies randomly.
+
+
+* **MAR (Missing at Random)**:
+* Missingness depends systematically on *observed* data, but not the missing value itself.
+* *Example*: Men are less likely to report depression scores, but within men, missingness is random.
+
+
+* **MNAR (Missing Not at Random)**:
+* Missingness depends directly on the *unobserved* value itself.
+* *Example*: High earners refuse to reveal their high income on surveys.
+
+
+
+---
+
+## Deletion Strategies: Listwise vs. Pairwise
+
+When dealing with missing values, simple deletion might be considered:
+
+### Listwise Deletion (Complete Case Analysis)
+
+* Drops the **entire row/record** if *any* attribute contains a missing value.
+* **Pros**: Simple, unbiased under MCAR.
+* **Cons**: Severe loss of sample size and potential bias under MAR/MNAR.
+
+### Pairwise Deletion
+
+* Keeps the row, dropping missing values only when analyzing specific **pairs of variables** (e.g., during correlation calculation).
+* **Pros**: Preserves more data points.
+* **Cons**: Leads to inconsistent sample sizes ($N$) across different calculations; covariance matrices can become non-positive definite.
+
+---
+
+# Feature Engineering & Transformations
+
+## The ML Workflow & Feature Removal
+
+### Where Feature Transformation Fits
+
+$$\text{Raw Data} \longrightarrow \text{Cleaning} \longrightarrow \mathbf{\text{Feature Transformation / Scaling}} \longrightarrow \text{Feature Selection} \longrightarrow \text{Model Training}$$
+
+### When is Feature Removal Necessary?
+
+1. **Zero / Near-Zero Variance**: A feature has the same value for almost all rows.
+2. **Extreme Multicollinearity**: Two or more features are perfectly or highly correlated.
+3. **Irrelevant Features**: Features with zero signal/predictive relationship with the target.
+4. **High Missingness**: Features with $\ge 50-70\%$ missing values where imputation introduces too much noise.
+
+---
+
+## Standardization vs. Normalization
+
+### Standardization ($Z$-Score Normalization)
+
+Rescales data to centered mean ($\mu=0$) and unit variance ($\sigma=1$).
+
+
+$$x' = \frac{x - \mu}{\sigma}$$
+
+* Best when features follow a Gaussian distribution or when using algorithms that assume zero-mean features (e.g., Ridge/Lasso, PCA).
+
+### Normalization (Min-Max Scaling)
+
+Rescales data into a fixed range, typically $[0, 1]$.
+
+
+$$x' = \frac{x - x_{\min}}{x_{\max} - x_{\min}}$$
+
+* Best when features have bounded ranges, non-Gaussian distributions, or sparse data. Sensitive to extreme outliers!
+
+---
+
+## Categorical Encoding Strategies
+
+| Encoding | How it Works | Pros | Cons |
+| --- | --- | --- | --- |
+| **Label / Ordinal** | Maps each category to an integer ($1, 2, 3...$) | Compact ($1$ column) | Implies artificial ordering if data is nominal |
+| **One-Hot** | Creates $K$ binary indicator columns | No artificial order imposed | Causes high dimensionality ($d \to \infty$) for high-cardinality features |
+| **Binary** | Converts integers to binary strings, then splits into binary columns | Compact representation ($O(\log_2 K)$ columns) | Reduces interpretability compared to One-Hot |
+
+---
+
+## Nonlinear Transformations & Binning
+
+### Nonlinear Transformations
+
+* **Log / Box-Cox / Yeo-Johnson**: Converts skewed distributions into normal distributions, stabilizing variance.
+* **Polynomial Features**: Captures non-linear interactions between variables ($x_1^2, x_1 x_2$).
+
+### Binning / Discretization
+
+Converts continuous variables into categorical intervals:
+
+* **Equal-Width Binning**: Divides the feature range into $k$ intervals of equal size ($\Delta = \frac{x_{\max} - x_{\min}}{k}$). *Sensitive to outliers.*
+* **Equal-Frequency Binning**: Divides data into $k$ intervals where each bin contains approximately the same number of samples (Quantiles).
+
+---
+
+## SciKit-Learn Feature Transformations
+
+```python
+import numpy as np
+from sklearn.preprocessing import (
+StandardScaler,
+MinMaxScaler,
+OneHotEncoder,
+OrdinalEncoder,
+FunctionTransformer,
+KBinsDiscretizer
+)
+
+# Scaling
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X_numeric)
+
+# Categorical Encoding
+
+ohe = OneHotEncoder(sparse_output=False, drop='first')
+X_ohe = ohe.fit_transform(X_categorical)
+
+# Binning (Equal Frequency)
+
+binner = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='quantile')
+X_binned = binner.fit_transform(X_numeric)
+
+# Custom Nonlinear Transformation
+
+log_transformer = FunctionTransformer(np.log1p)
+X_log = log_transformer.fit_transform(X_numeric)
+```
+
+---
+# Common transformations
+
+## Imputation: Fill the gaps! (🟩 🟧 🟦)
+Fill in missing data using a chosen strategy:
+
+- **Mean**: Replace missing values with the average of the available data.
+- **Median**: Use the middle value.
+- **Most Frequent**: Use the most common value (mode).
+- **KNN Imputation**: Fill based on similar neighbors.
+
+### Example:
+Imputation is like filling in your average or median or most frequent grade for an assessment you missed. 
+
+```python
+from sklearn.impute import SimpleImputer
+imputer = SimpleImputer(strategy='mean')
+X_imputed = imputer.fit_transform(X)
+```
+
+### Example:
+Scaling is like adjusting the number of everyone’s Facebook friends so that both the number of friends and their age are on a comparable scale. This way, one feature doesn't dominate the other when making comparisons.
+
+```python
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+```
+
+## One-Hot encoding: 🍎  → 1️⃣ 0️⃣ 0️⃣
+
+Convert categorical features into binary columns.
+
+- Creates new binary columns for each category.
+- Useful for handling categorical data in machine learning models.
+
+### Example:
+Turn "Apple, Banana, Orange" into binary columns:
+
+| Fruit   | 🍎 | 🍌 | 🍊 |
+|---------|-------|--------|--------|
+| Apple 🍎  |   1   |   0    |   0    |
+| Banana 🍌 |   0   |   1    |   0    |
+| Orange 🍊 |   0   |   0    |   1    |
+
+```python
+from sklearn.preprocessing import OneHotEncoder
+encoder = OneHotEncoder()
+X_encoded = encoder.fit_transform(X)
+```
+
+
+## Ordinal encoding: Ranking matters! (⭐️⭐️⭐️ → 3️⃣)
+Convert categories into integer values that have a meaningful order.
+
+- Assign integers based on order or rank.
+- Useful when there is an inherent ranking in the data.
+
+### Example:
+Turn "Poor, Average, Good" into 1, 2, 3:
+
+| Rating   | Ordinal |
+|----------|---------|
+| Poor     |    1    |
+| Average  |    2    |
+| Good     |    3    |
+
+```python
+from sklearn.preprocessing import OrdinalEncoder
+encoder = OrdinalEncoder()
+X_ordinal = encoder.fit_transform(X)
+```
+
+
+
+
+# Data Imputation Strategies
+
+## Univariate vs. Multivariate Imputation
+
+* **Univariate Imputation**:
+* Predicts missing values using summary statistics calculated **only** from that single feature.
+* *Methods*: Mean, Median, Mode substitution.
+* *Pros*: Fast, scalable, simple.
+* *Cons*: Ignores correlations with other attributes; underestimates variance.
+
+
+## Multivariate Imputation
+* Uses the **entire set** of observed features to estimate missing values.
+* *Methods*: k-Nearest Neighbors (k-NN), MICE (IterativeImputer).
+* *Pros*: Preserves inter-feature relationships and dataset structure.
+* *Cons*: Computationally expensive; complex.
+
+---
+
+## Imputation Techniques Deep Dive
+
+### Mean / Median / Mode Imputation (Univariate)
+
+* Replaces `NaN`s in feature $j$ with $\text{mean}(X_j)$, $\text{median}(X_j)$, or $\text{mode}(X_j)$.
+
+### k-Nearest Neighbors (k-NN) Imputation
+
+* Finds the $k$ most similar rows (based on Euclidean distance across non-missing attributes).
+* Fills missing values with the weighted or unweighted average of those $k$ neighbors.
+
+### Multivariate Imputation by Chained Equations (MICE)
+
+1. Fills missing values with initial placeholder estimates (e.g., mean).
+2. Sets feature $X_j$ back to `NaN`.
+3. Trains a regression model predicting $X_j$ using all other features.
+4. Predicts missing $X_j$. Repeats iteratively across all features until convergence.
+
+---
+
+## Implementing Imputation in SciKit-Learn
+
+```python
+import numpy as np
+from sklearn.impute import SimpleImputer, KNNImputer
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer
+
+# 1. Univariate Mean Imputation
+
+simple_imp = SimpleImputer(strategy='mean')
+X_simple = simple_imp.fit_transform(X)
+
+# 2. k-NN Imputation
+
+knn_imp = KNNImputer(n_neighbors=5, weights='uniform')
+X_knn = knn_imp.fit_transform(X)
+
+# 3. MICE (Multivariate) Imputation
+
+mice_imp = IterativeImputer(max_iter=10, random_state=42)
+X_mice = mice_imp.fit_transform(X)
+```
+
+---
+
+
+# Transformers, Estimators & Pipelines
+
+## SciKit-Learn Transformers vs Estimators
+
+### Transformers
+
+* Used for preprocessing and feature engineering.
+* Implement `fit()` and `transform()`.
+* `fit(X)`: Computes statistical parameters (e.g., $\mu, \sigma$, categories).
+* `transform(X)`: Applies parameters to transform $X$.
+
+
+* *Examples*: `StandardScaler`, `SimpleImputer`, `OneHotEncoder`.
+
+### Estimators
+
+* Used for learning patterns and making predictions.
+* Implement `fit()` and `predict()`.
+* `fit(X, y)`: Learns weights/parameters from data.
+* `predict(X)`: Generates predictions on unseen data.
+
+
+* *Examples*: `DecisionTreeClassifier`, `SVC`, `KNeighborsClassifier`.
+
+---
+
+## The Golden Rule of Feature Transformations
+
+> **NEVER transform the entire dataset at once!**
+
+* Performing transformations across the full dataset causes **Data Leakage**.
+* Data leakage occurs when info from the validation/test set is inadvertently used to train the transformer (e.g., scaling using test set mean).
+* **Rule**:
+1. Split data into `Train` and `Test`.
+2. `fit_transform()` transformers **only** on `Train`.
+3. `transform()` `Test` using the fitted parameters.
+
+
+
+```python
+
+# CORRECT APPROACH
+
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+```
+
+---
+
+## SciKit-Learn Pipelines
+
+* Encapsulates preprocessing steps and estimators into a single execution unit.
+* Prevents data leakage during cross-validation.
+* Makes code clean, reproducible, and easily deployable.
+
+```python
+from sklearn.pipeline import make_pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+
+# Define Pipeline
+
+pipeline = make_pipeline(
+SimpleImputer(strategy='median'),
+StandardScaler(),
+KNeighborsClassifier(n_neighbors=5)
+)
+
+# Train and Evaluate seamlessly
+
+pipeline.fit(X_train, y_train)
+accuracy = pipeline.score(X_test, y_test)
+```
+
+---
+
+# Summary & Next Steps
+
+## Key Takeaways
+
+* Preprocessing eliminates feature scale dominant bias and fixes quality issues.
+* Missing data mechanisms (MCAR, MAR, MNAR) guide whether deletion or imputation is best.
+* Scalers and Encoders must fit your variable types and algorithms.
+* Multivariate imputation (k-NN, MICE) maintains dataset correlation structures better than univariate statistics.
+* Use `Pipeline` objects to enforce the Golden Rule and stop data leakage!
+
+# See you next time!
