@@ -217,7 +217,7 @@ $$
 
 ## ROC curves in `scikit-learn` {.smaller}
 
-+++python
+```python
 from sklearn.metrics import RocCurveDisplay
 
 RocCurveDisplay.from_estimator(
@@ -225,13 +225,13 @@ RocCurveDisplay.from_estimator(
     X_test,
     y_test
 )
-+++
+```
 
 - `from_estimator()` uses the fitted model to generate predictions.
 - The ROC curve is created using the model's prediction scores.
 - We can also calculate the AUC directly:
 
-+++python
+```python
 from sklearn.metrics import roc_auc_score
 
 y_score = model.predict_proba(X_test)[:, 1]
@@ -239,7 +239,7 @@ y_score = model.predict_proba(X_test)[:, 1]
 auc = roc_auc_score(y_test, y_score)
 
 print("AUC:", auc)
-+++
+```
 
 
 ## Prediction error plots
@@ -318,7 +318,7 @@ $$
 
 ## Creating a prediction error plot {.smaller}
 
-+++python
+```python
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 
@@ -335,7 +335,7 @@ plt.axhline(0, color="black", linestyle="--")
 plt.xlabel("Predicted values")
 plt.ylabel("Residuals")
 plt.show()
-+++
+```
 
 - `y_pred` contains the model's predictions.
 - `residuals` measures how far each prediction is from the observed value.
@@ -411,7 +411,7 @@ $$
 
 ## Partial dependence in `scikit-learn` {.smaller}
 
-+++python
+```python
 from sklearn.inspection import PartialDependenceDisplay
 
 PartialDependenceDisplay.from_estimator(
@@ -421,20 +421,20 @@ PartialDependenceDisplay.from_estimator(
 )
 
 plt.show()
-+++
+```
 
 - `model` must already be fitted.
 - `X` contains the input features.
 - `features=[0]` requests the PDP for the first feature.
 - We can request multiple features:
 
-+++python
+```python
 PartialDependenceDisplay.from_estimator(
     model,
     X,
     features=[0, 1, 2]
 )
-+++
+```
 
 
 ## Classification vs. regression plots {.smaller}

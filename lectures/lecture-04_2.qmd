@@ -408,6 +408,17 @@ plt.show()
   - Increases false positives, which might lower precision.
 :::
 
+## Comparing Linear Regression and Huber Regression {.smaller}
+
+```python
+from sklearn.linear_model import LogisticRegression
+
+model = LogisticRegression(class_weight="balanced")
+
+model.fit(X_train, y_train)
+
+```
+
 ## Ridge and RidgeCV
 - **Ridge Regression**: `alpha` hyperparameter controls model complexity.
 - **RidgeCV**: Ridge regression with built-in cross-validation to find the optimal `alpha`.
@@ -433,15 +444,6 @@ plt.show()
 - `TransformedTargetRegressor`
   - Wraps a regression model and applies a transformation to the target values.
 
-## iClicker Exercise 1
-
-**Select all of the following statements which are TRUE.**
-
-- (A) Price per square foot would be a good feature to add in our `X`. 
-- (B) The `alpha` hyperparameter of `Ridge` has similar interpretation of `C` hyperparameter of `LogisticRegression`; higher `alpha` means more complex model. 
-- (C) In `Ridge`, smaller alpha means bigger coefficients whereas bigger alpha means smaller coefficients.  
-
-
 ## Which metric fits the scenario? {.smaller}
 
 | Scenario | What matters most? | Best metric(s)? |
@@ -451,24 +453,21 @@ plt.show()
 | Predicting **energy consumption** in a large industrial system. | Large errors are very costly and should be penalized heavily. |  |
 | Predicting **insurance claim amounts**. | You want to compare how well different models explain the variation in claims. |  |
 
-## iClicker Exercise 2
-
-**Select all of the following statements which are TRUE.**
-
-- (A) We can use still use precision and recall for regression problems but now we have other metrics we can use as well.
-- (B) In `sklearn` for regression problems, using `r2_score()` and `.score()` (with default values) will produce the same results.
-- (C) RMSE is always going to be non-negative.
-- (D) MSE does not directly provide the information about whether the model is underpredicting or overpredicting.
-- (E) We can pass multiple scoring metrics to `GridSearchCV` or `RandomizedSearchCV` for regression as well as classification problems. 
-
 ## Which metric fits the scenario? {.smaller}
 
 | Scenario | What matters most? | Best metric(s)? |
 |-----------|-------------------|----------|
-| Predicting **house prices** ranging from \$60K–\$800K.  | A \$30K error is huge for a \$60K house but small for a \$500K house. |  |
-| Predicting **exam scores** (0–100).  | You want an interpretable measure of average error in **points**. |  |
-| Predicting **energy consumption** in a large industrial system. | Large errors are very costly and should be penalized heavily. |  |
-| Predicting **insurance claim amounts**. | You want to compare how well different models explain the variation in claims. |  |
+| Predicting **house prices** ranging from \$60K–\$800K.  | A \$30K error is huge for a \$60K house but small for a \$500K house. | MAPE (Mean Absolute Percentage Error)  |
+| Predicting **exam scores** (0–100).  | You want an interpretable measure of average error in **points**. | MAE (Mean Absolute Error)  |
+| Predicting **energy consumption** in a large industrial system. | Large errors are very costly and should be penalized heavily. | MSE (Mean Squared Error) or RMSE |
+| Predicting **insurance claim amounts**. | You want to compare how well different models explain the variation in claims. | R² (R-squared)  |
+
+## Rationale
+
+- **MAPE:**  Measures error relative to the actual value, so a $30K error on a $60K house counts much more than the same error on a $500K house.
+- **MAE:** Gives the average absolute error in the same units as the target—here, exam points.
+- **MSE/RMSE:**  Squares errors, giving disproportionately more weight to large errors. MSE penalizes them most directly; RMSE is easier to interpret because it is in the original units.
+- **R² (R-squared):** Measures the proportion of variation in the target explained by the model, making it useful for comparing how much variation in claim amounts the models account for.
 
 ## Which metric fits the scenario? 
 
