@@ -389,6 +389,8 @@ grid_search.best_params_
 * More efficient than grid search when dealing with large hyperparameter spaces.
 * Samples a given number of parameter settings from distributions.
 
+![](../img/randomsearch_bergstra.png)
+
 ---
 
 ## Random search example
@@ -551,10 +553,9 @@ Validation curves are useful for detecting overfitting:
   plt.grid(True)
   plt.show()
   ```
-
   ---
 
-  ## Summary of Best Practices
+## Summary of Best Practices
 
   1. **Keep the Test Set untouched** until all model selection and hyperparameter tuning is finished.
   2. **Use Stratified Splitting** whenever dealing with classification tasks.

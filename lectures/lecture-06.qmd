@@ -46,8 +46,6 @@ Based on the distances, the two nearest neighbors (2-NN) are:
 
 **What's the problem here?**
 
-The scale of `#FB Friends` completely dominates `Age`. Person D is twice your age, yet appears "closer" than Person A or B!
-
 ---
 
 ## Preparing Data for Machine Learning
@@ -79,8 +77,6 @@ The scale of `#FB Friends` completely dominates `Age`. Person D is twice your ag
 
 ---
 
- Data Preprocessing Tasks
-
 ## Data Preprocessing Tasks
 
  Data preprocessing is important in machine learning because **data quality directly affects model performance and predictions**.
@@ -88,7 +84,7 @@ The scale of `#FB Friends` completely dominates `Age`. Person D is twice your ag
 ::: {.callout-note}
  Many classification algorithms are **distance-based**, meaning that their results can be affected by the units and scales of the input features.
 
- ### Common Preprocessing Tasks
+### Common Preprocessing Tasks
 
  - **Data Cleaning:** Addresses missing values, duplicate observations, and incorrectly formatted data.
 - **Data Integration:** Combines data from multiple sources into a unified dataset.
@@ -104,10 +100,9 @@ Understanding *why* data is missing dictates *how* to fix it.
 * Missingness is independent of both observed and unobserved data.
 * *Example*: A sensor battery dies randomly.
 
-
 * **MAR (Missing at Random)**:
-* Missingness depends systematically on *observed* data, but not the missing value itself.
-* *Example*: Men are less likely to report depression scores, but within men, missingness is random.
+* Missingness depends systematically on *observed* data, but not on the missing value itself.
+* *Example*: Older patients are less likely to report their income, but among patients of the same age, whether income is missing does not depend on their actual income.
 
 
 * **MNAR (Missing Not at Random)**:
@@ -118,17 +113,19 @@ Understanding *why* data is missing dictates *how* to fix it.
 
 ---
 
-## Deletion Strategies: Listwise vs. Pairwise
+# Deletion Strategies: Listwise vs. Pairwise
+
+## Listwise Deletion (Complete Case Analysis)
 
 When dealing with missing values, simple deletion might be considered:
-
-### Listwise Deletion (Complete Case Analysis)
 
 * Drops the **entire row/record** if *any* attribute contains a missing value.
 * **Pros**: Simple, unbiased under MCAR.
 * **Cons**: Severe loss of sample size and potential bias under MAR/MNAR.
 
-### Pairwise Deletion
+---
+
+## Pairwise Deletion
 
 * Keeps the row, dropping missing values only when analyzing specific **pairs of variables** (e.g., during correlation calculation).
 * **Pros**: Preserves more data points.
@@ -142,9 +139,19 @@ When dealing with missing values, simple deletion might be considered:
 
 ### Where Feature Transformation Fits
 
-$$\text{Raw Data} \longrightarrow \text{Cleaning} \longrightarrow \mathbf{\text{Feature Transformation / Scaling}} \longrightarrow \text{Feature Selection} \longrightarrow \text{Model Training}$$
+$$
+\begin{aligned}
+\text{Raw Data}
+&\longrightarrow \text{Cleaning}
+\longrightarrow \mathbf{\text{Feature Transformation / Scaling}} \\
+&\longrightarrow \text{Feature Selection}
+\longrightarrow \text{Model Training}
+\end{aligned}
+$$
 
-### When is Feature Removal Necessary?
+---
+
+## When is Feature Removal Necessary?
 
 1. **Zero / Near-Zero Variance**: A feature has the same value for almost all rows.
 2. **Extreme Multicollinearity**: Two or more features are perfectly or highly correlated.
@@ -155,7 +162,7 @@ $$\text{Raw Data} \longrightarrow \text{Cleaning} \longrightarrow \mathbf{\text{
 
 ## Standardization vs. Normalization
 
-### Standardization ($Z$-Score Normalization)
+## Standardization ($Z$-Score Normalization)
 
 Rescales data to centered mean ($\mu=0$) and unit variance ($\sigma=1$).
 
@@ -164,7 +171,8 @@ $$x' = \frac{x - \mu}{\sigma}$$
 
 * Best when features follow a Gaussian distribution or when using algorithms that assume zero-mean features (e.g., Ridge/Lasso, PCA).
 
-### Normalization (Min-Max Scaling)
+
+## Normalization (Min-Max Scaling)
 
 Rescales data into a fixed range, typically $[0, 1]$.
 
@@ -415,7 +423,9 @@ X_mice = mice_imp.fit_transform(X)
 2. `fit_transform()` transformers **only** on `Train`.
 3. `transform()` `Test` using the fitted parameters.
 
+---
 
+## Code: 
 
 ```python
 
