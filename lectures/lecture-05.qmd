@@ -31,23 +31,18 @@ Today we explore **Model Validation**—the core framework for evaluating, selec
 
 ## How Do We Know If a Model Works?
 
-We separate the data so that we can answer **three different questions**:
+We split the data into separate sets so that we can answer **three different questions**:
 
-### 1. Train — *Can the model learn?*
+- **Train — _Can the model learn?_**  
+  Use the training data to estimate the model's parameters.
 
-Use training data to estimate the model's parameters.
+- **Validate — _Which model should we use?_**  
+  Use the validation data to compare models, select among alternatives, and tune hyperparameters.
 
-### 2. Validate — *Which model should we use?*
-
-Use validation data to compare models and tune hyperparameters.
-
-### 3. Test — *How well does the final model generalize?*
-
-Use **unseen test data** to get an unbiased estimate of performance.
+- **Test — _How well does the final model generalize?_**  
+  Use **unseen test data** to obtain an unbiased estimate of the final model's performance.
 
 **Train → Choose → Evaluate**
-
-> **Key principle:** Never use the test data to make modeling decisions.
 
 ---
 
@@ -76,7 +71,6 @@ To properly train and evaluate models, we divide dataset $\mathcal{D}$ into thre
 
 ## Stratified Splits
 
-### What is Stratified Splitting?
 A sampling method that ensures each fold or split contains approximately the same percentage of samples of each target class as the complete dataset.
 
 ### When to Use?
@@ -116,8 +110,6 @@ print(f"Train: {X_train.shape[0]} | Val: {X_val.shape[0]} | Test: {X_test.shape[
 
 ## K-Fold Cross-Validation
 
-### Definition
-
 Split the training dataset into $K$ equal-sized subsets (folds).
 
 1. Train the model on $K-1$ folds.
@@ -132,8 +124,6 @@ $$\text{CV Score} = \frac{1}{K} \sum_{i=1}^{K} \text{Score}_i$$
 ---
 
 ## Leave-One-Out Cross-Validation (LOO-CV)
-
-### Definition
 
 An extreme case of $K$-Fold CV where $K = N$ ($N$ = total number of samples).
 
@@ -214,7 +204,7 @@ Identify the model architecture that generalizes best to unseen data.
 
 ---
 
-## Model Selection: What Makes a Good Model?
+## What Makes a Good Model?
 
 When comparing candidate models, consider:
 
@@ -472,7 +462,7 @@ Imagine that you participate in pizza baking competition.
 :::: {columns}
 ::: {.column width="50%"}
 
-![](img/margherita-pizza.jpeg)
+![](../img/margherita-pizza.jpeg)
 :::
 
 ::: {.column width="50%"}
@@ -488,13 +478,13 @@ Imagine that you participate in pizza baking competition.
 - Your friends loved your pineapple pizza. 
 - You fine-tune your recipe for the same group of friends, perfecting it for their tastes.
 
-<img src="img/pineapple-pizza.png" width="60%" alt="Pineapple Pizza">
+<img src="../img/pineapple-pizza.png" width="60%" alt="Pineapple Pizza">
 :::
 
 ::: {.column width="50%"}
 - On the competition day, you confidently present your perfected pineapple pizza.  
 - Judges are not impressed: *“This doesn’t appeal to a broad audience.”*  
-![](img/judge_judy.jpg)
+![](../img/judge_judy.jpg)
 
 :::
 ::::
@@ -513,7 +503,7 @@ This is similar to reusing the same validation set again and again to perfect th
 
 - Why do we need separate validation and test datasets? 
 
-![](img/optimization-bias.png)
+![](../img/optimization-bias.png)
 
 ## Mitigating optimization bias
 
@@ -531,9 +521,9 @@ A **Validation Curve** plots training and validation scores against a single hyp
 Validation curves are useful for detecting overfitting: 
  - Hyperparameters that are overfitted will have high training scores and low validation scores. 
  - Optimal hyperparameters will perform well on the training sets and the validation sets.
-![](img/val_curve_plot.png)
+![](../img/val_curve_plot.png)
 
-  ## Code: Plotting a Validation Curve
+## Code: Plotting a Validation Curve
 
   ```python
   #| eval: false
