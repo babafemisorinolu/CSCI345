@@ -60,7 +60,7 @@
     "href": "lectures/lecture-04_3.html#roc-curves-in-scikit-learn",
     "title": "Lecture 4 - 3: Evaluating Models with Plots",
     "section": "ROC curves in scikit-learn",
-    "text": "ROC curves in scikit-learn\n+++python from sklearn.metrics import RocCurveDisplay\nRocCurveDisplay.from_estimator( model, X_test, y_test ) +++\n\nfrom_estimator() uses the fitted model to generate predictions.\nThe ROC curve is created using the model’s prediction scores.\nWe can also calculate the AUC directly:\n\n+++python from sklearn.metrics import roc_auc_score\ny_score = model.predict_proba(X_test)[:, 1]\nauc = roc_auc_score(y_test, y_score)\nprint(“AUC:”, auc) +++"
+    "text": "ROC curves in scikit-learn\nfrom sklearn.metrics import RocCurveDisplay\n\nRocCurveDisplay.from_estimator(\n    model,\n    X_test,\n    y_test\n)\n\nfrom_estimator() uses the fitted model to generate predictions.\nThe ROC curve is created using the model’s prediction scores.\nWe can also calculate the AUC directly:\n\nfrom sklearn.metrics import roc_auc_score\n\ny_score = model.predict_proba(X_test)[:, 1]\n\nauc = roc_auc_score(y_test, y_score)\n\nprint(\"AUC:\", auc)"
   },
   {
     "objectID": "lectures/lecture-04_3.html#prediction-error-plots",
@@ -88,7 +88,7 @@
     "href": "lectures/lecture-04_3.html#creating-a-prediction-error-plot",
     "title": "Lecture 4 - 3: Evaluating Models with Plots",
     "section": "Creating a prediction error plot",
-    "text": "Creating a prediction error plot\n+++python from sklearn.linear_model import LinearRegression import matplotlib.pyplot as plt\nmodel = LinearRegression() model.fit(X, y)\ny_pred = model.predict(X)\nresiduals = y - y_pred\nplt.scatter(y_pred, residuals) plt.axhline(0, color=“black”, linestyle=“–”)\nplt.xlabel(“Predicted values”) plt.ylabel(“Residuals”) plt.show() +++\n\ny_pred contains the model’s predictions.\nresiduals measures how far each prediction is from the observed value.\nWe look for patterns, not just the average size of the errors."
+    "text": "Creating a prediction error plot\nfrom sklearn.linear_model import LinearRegression\nimport matplotlib.pyplot as plt\n\nmodel = LinearRegression()\nmodel.fit(X, y)\n\ny_pred = model.predict(X)\n\nresiduals = y - y_pred\n\nplt.scatter(y_pred, residuals)\nplt.axhline(0, color=\"black\", linestyle=\"--\")\n\nplt.xlabel(\"Predicted values\")\nplt.ylabel(\"Residuals\")\nplt.show()\n\ny_pred contains the model’s predictions.\nresiduals measures how far each prediction is from the observed value.\nWe look for patterns, not just the average size of the errors."
   },
   {
     "objectID": "lectures/lecture-04_3.html#partial-dependence-plots",
@@ -116,7 +116,7 @@
     "href": "lectures/lecture-04_3.html#partial-dependence-in-scikit-learn",
     "title": "Lecture 4 - 3: Evaluating Models with Plots",
     "section": "Partial dependence in scikit-learn",
-    "text": "Partial dependence in scikit-learn\n+++python from sklearn.inspection import PartialDependenceDisplay\nPartialDependenceDisplay.from_estimator( model, X, features=[0] )\nplt.show() +++\n\nmodel must already be fitted.\nX contains the input features.\nfeatures=[0] requests the PDP for the first feature.\nWe can request multiple features:\n\n+++python PartialDependenceDisplay.from_estimator( model, X, features=[0, 1, 2] ) +++"
+    "text": "Partial dependence in scikit-learn\nfrom sklearn.inspection import PartialDependenceDisplay\n\nPartialDependenceDisplay.from_estimator(\n    model,\n    X,\n    features=[0]\n)\n\nplt.show()\n\nmodel must already be fitted.\nX contains the input features.\nfeatures=[0] requests the PDP for the first feature.\nWe can request multiple features:\n\nPartialDependenceDisplay.from_estimator(\n    model,\n    X,\n    features=[0, 1, 2]\n)"
   },
   {
     "objectID": "lectures/lecture-04_3.html#classification-vs.-regression-plots",
@@ -357,6 +357,13 @@
     "text": "Handling imbalance by chaning class weights\n\nWe can specify class_weight=“balanced” to give more importance to rare examples during training.\n\n\n\n\n\n\n\n\n\n\n\n\nThis sets the weights so that the classes are “equal”.\nWe have reduced false negatives but we have many more false positives now …\n\nDecreases false negatives, which improves recall.\nIncreases false positives, which might lower precision."
   },
   {
+    "objectID": "lectures/lecture-04_2.html#comparing-linear-regression-and-huber-regression-1",
+    "href": "lectures/lecture-04_2.html#comparing-linear-regression-and-huber-regression-1",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Comparing Linear Regression and Huber Regression",
+    "text": "Comparing Linear Regression and Huber Regression\nfrom sklearn.linear_model import LogisticRegression\n\nmodel = LogisticRegression(class_weight=\"balanced\")\n\nmodel.fit(X_train, y_train)"
+  },
+  {
     "objectID": "lectures/lecture-04_2.html#ridge-and-ridgecv",
     "href": "lectures/lecture-04_2.html#ridge-and-ridgecv",
     "title": "Lecture 4 - 2: Regression Metrics",
@@ -385,13 +392,6 @@
     "text": "Applying log transformation to the targets\n\nSuitable when the target has a wide range and spans several orders of magnitude\n\nExample: counts data such as social media likes or price data\n\nHelps manage skewed data, making patterns more apparent and regression models more effective.\nTransformedTargetRegressor\n\nWraps a regression model and applies a transformation to the target values."
   },
   {
-    "objectID": "lectures/lecture-04_2.html#iclicker-exercise-1",
-    "href": "lectures/lecture-04_2.html#iclicker-exercise-1",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "iClicker Exercise 1",
-    "text": "iClicker Exercise 1\nSelect all of the following statements which are TRUE.\n\n\nPrice per square foot would be a good feature to add in our X.\n\n\nThe alpha hyperparameter of Ridge has similar interpretation of C hyperparameter of LogisticRegression; higher alpha means more complex model.\n\n\nIn Ridge, smaller alpha means bigger coefficients whereas bigger alpha means smaller coefficients."
-  },
-  {
     "objectID": "lectures/lecture-04_2.html#which-metric-fits-the-scenario",
     "href": "lectures/lecture-04_2.html#which-metric-fits-the-scenario",
     "title": "Lecture 4 - 2: Regression Metrics",
@@ -399,18 +399,18 @@
     "text": "Which metric fits the scenario?\n\n\n\n\n\n\n\n\nScenario\nWhat matters most?\nBest metric(s)?\n\n\n\n\nPredicting house prices ranging from $60K–$800K.\nA $30K error is huge for a $60K house but small for a $500K house.\n\n\n\nPredicting exam scores (0–100).\nYou want an interpretable measure of average error in points.\n\n\n\nPredicting energy consumption in a large industrial system.\nLarge errors are very costly and should be penalized heavily.\n\n\n\nPredicting insurance claim amounts.\nYou want to compare how well different models explain the variation in claims."
   },
   {
-    "objectID": "lectures/lecture-04_2.html#iclicker-exercise-2",
-    "href": "lectures/lecture-04_2.html#iclicker-exercise-2",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "iClicker Exercise 2",
-    "text": "iClicker Exercise 2\nSelect all of the following statements which are TRUE.\n\n\nWe can use still use precision and recall for regression problems but now we have other metrics we can use as well.\n\n\nIn sklearn for regression problems, using r2_score() and .score() (with default values) will produce the same results.\n\n\nRMSE is always going to be non-negative.\n\n\nMSE does not directly provide the information about whether the model is underpredicting or overpredicting.\n\n\nWe can pass multiple scoring metrics to GridSearchCV or RandomizedSearchCV for regression as well as classification problems."
-  },
-  {
     "objectID": "lectures/lecture-04_2.html#which-metric-fits-the-scenario-1",
     "href": "lectures/lecture-04_2.html#which-metric-fits-the-scenario-1",
     "title": "Lecture 4 - 2: Regression Metrics",
     "section": "Which metric fits the scenario?",
-    "text": "Which metric fits the scenario?\n\n\n\n\n\n\n\n\nScenario\nWhat matters most?\nBest metric(s)?\n\n\n\n\nPredicting house prices ranging from $60K–$800K.\nA $30K error is huge for a $60K house but small for a $500K house.\n\n\n\nPredicting exam scores (0–100).\nYou want an interpretable measure of average error in points.\n\n\n\nPredicting energy consumption in a large industrial system.\nLarge errors are very costly and should be penalized heavily.\n\n\n\nPredicting insurance claim amounts.\nYou want to compare how well different models explain the variation in claims."
+    "text": "Which metric fits the scenario?\n\n\n\n\n\n\n\n\nScenario\nWhat matters most?\nBest metric(s)?\n\n\n\n\nPredicting house prices ranging from $60K–$800K.\nA $30K error is huge for a $60K house but small for a $500K house.\nMAPE (Mean Absolute Percentage Error)\n\n\nPredicting exam scores (0–100).\nYou want an interpretable measure of average error in points.\nMAE (Mean Absolute Error)\n\n\nPredicting energy consumption in a large industrial system.\nLarge errors are very costly and should be penalized heavily.\nMSE (Mean Squared Error) or RMSE\n\n\nPredicting insurance claim amounts.\nYou want to compare how well different models explain the variation in claims.\nR² (R-squared)"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#rationale",
+    "href": "lectures/lecture-04_2.html#rationale",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Rationale",
+    "text": "Rationale\n\nMAPE: Measures error relative to the actual value, so a $30K error on a $60K house counts much more than the same error on a $500K house.\nMAE: Gives the average absolute error in the same units as the target—here, exam points.\nMSE/RMSE: Squares errors, giving disproportionately more weight to large errors. MSE penalizes them most directly; RMSE is easier to interpret because it is in the original units.\nR² (R-squared): Measures the proportion of variation in the target explained by the model, making it useful for comparing how much variation in claim amounts the models account for."
   },
   {
     "objectID": "lectures/lecture-04_2.html#which-metric-fits-the-scenario-2",
