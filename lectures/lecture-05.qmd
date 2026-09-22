@@ -91,6 +91,7 @@ A sampling method that ensures each fold or split contains approximately the sam
 In `scikit-learn`, we can perform a 3-way split by calling `train_test_split` twice:
 
 ```python
+
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_iris
 
@@ -349,7 +350,7 @@ param_grid = {
 ## Grid search example
 
 ```{python}
-#| echo: true
+#| eval: false
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline, make_pipeline
@@ -385,6 +386,8 @@ grid_search.best_score_
 The best configuration can be accessed with:
 
 ```python
+#| eval: false
+
 grid_search.best_params_
 
 ```
@@ -402,6 +405,7 @@ grid_search.best_params_
 
 ```{python}
 #| echo: true
+#| eval: false
 
 from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import randint
@@ -430,6 +434,8 @@ random_search.best_score_
 ## Code: Implementing Model Tuning in Scikit-Learn
 
 ```python
+#| eval: false
+
 from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 
@@ -530,6 +536,8 @@ Validation curves are useful for detecting overfitting:
   ## Code: Plotting a Validation Curve
 
   ```python
+  #| eval: false
+
   import numpy as np
   import matplotlib.pyplot as plt
   from sklearn.model_selection import validation_curve
