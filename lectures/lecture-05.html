@@ -1195,21 +1195,40 @@ Babafemi Sorinolu
 </ul></li>
 </ul>
 </section>
+<section id="code-leave-one-out-cv-in-scikit-learn" class="slide level2 center">
+<h2>Code: Leave-One-Out CV in Scikit-Learn</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-label="1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> LeaveOneOut, cross_val_score</span>
+<span id="cb2-2"><a aria-label="2"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb2-3"><a aria-label="3"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_iris</span>
+<span id="cb2-4"><a aria-label="4"></a></span>
+<span id="cb2-5"><a aria-label="5"></a><span class="co"># Load dataset</span></span>
+<span id="cb2-6"><a aria-label="6"></a>X, y <span class="op">=</span> load_iris(return_X_y<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-7"><a aria-label="7"></a></span>
+<span id="cb2-8"><a aria-label="8"></a><span class="co"># Initialize LeaveOneOut iterator</span></span>
+<span id="cb2-9"><a aria-label="9"></a>loo <span class="op">=</span> LeaveOneOut()</span>
+<span id="cb2-10"><a aria-label="10"></a>model <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb2-11"><a aria-label="11"></a></span>
+<span id="cb2-12"><a aria-label="12"></a><span class="co"># Evaluate using LOO (fits 150 times for Iris dataset)</span></span>
+<span id="cb2-13"><a aria-label="13"></a>scores <span class="op">=</span> cross_val_score(model, X, y, cv<span class="op">=</span>loo, scoring<span class="op">=</span><span class="st">&#39;accuracy&#39;</span>)</span>
+<span id="cb2-14"><a aria-label="14"></a></span>
+<span id="cb2-15"><a aria-label="15"></a><span class="bu">print</span>(<span class="ss">f&quot;Number of fits (N): </span><span class="sc">{</span><span class="bu">len</span>(scores)<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb2-16"><a aria-label="16"></a><span class="bu">print</span>(<span class="ss">f&quot;LOO-CV Mean Accuracy: </span><span class="sc">{</span>scores<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
 <section id="code-implementing-cross-validation-in-scikit-learn" class="slide level2 center">
 <h2>Code: Implementing Cross-Validation in Scikit-Learn</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-label="1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score, KFold, StratifiedKFold</span>
-<span id="cb2-2"><a aria-label="2"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
-<span id="cb2-3"><a aria-label="3"></a></span>
-<span id="cb2-4"><a aria-label="4"></a>model <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb2-5"><a aria-label="5"></a></span>
-<span id="cb2-6"><a aria-label="6"></a><span class="co"># Standard 5-Fold CV</span></span>
-<span id="cb2-7"><a aria-label="7"></a>scores <span class="op">=</span> cross_val_score(model, X, y, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&#39;accuracy&#39;</span>)</span>
-<span id="cb2-8"><a aria-label="8"></a><span class="bu">print</span>(<span class="ss">f&quot;5-Fold CV Accuracy: </span><span class="sc">{</span>scores<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss"> (+/- </span><span class="sc">{</span>scores<span class="sc">.</span>std()<span class="sc">:.4f}</span><span class="ss">)&quot;</span>)</span>
-<span id="cb2-9"><a aria-label="9"></a></span>
-<span id="cb2-10"><a aria-label="10"></a><span class="co"># Custom Stratified K-Fold</span></span>
-<span id="cb2-11"><a aria-label="11"></a>skf <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb2-12"><a aria-label="12"></a>skf_scores <span class="op">=</span> cross_val_score(model, X, y, cv<span class="op">=</span>skf, scoring<span class="op">=</span><span class="st">&#39;accuracy&#39;</span>)</span>
-<span id="cb2-13"><a aria-label="13"></a><span class="bu">print</span>(<span class="ss">f&quot;Stratified 5-Fold Accuracy: </span><span class="sc">{</span>skf_scores<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-label="1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score, KFold, StratifiedKFold</span>
+<span id="cb3-2"><a aria-label="2"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb3-3"><a aria-label="3"></a></span>
+<span id="cb3-4"><a aria-label="4"></a>model <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb3-5"><a aria-label="5"></a></span>
+<span id="cb3-6"><a aria-label="6"></a><span class="co"># Standard 5-Fold CV</span></span>
+<span id="cb3-7"><a aria-label="7"></a>scores <span class="op">=</span> cross_val_score(model, X, y, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&#39;accuracy&#39;</span>)</span>
+<span id="cb3-8"><a aria-label="8"></a><span class="bu">print</span>(<span class="ss">f&quot;5-Fold CV Accuracy: </span><span class="sc">{</span>scores<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss"> (+/- </span><span class="sc">{</span>scores<span class="sc">.</span>std()<span class="sc">:.4f}</span><span class="ss">)&quot;</span>)</span>
+<span id="cb3-9"><a aria-label="9"></a></span>
+<span id="cb3-10"><a aria-label="10"></a><span class="co"># Custom Stratified K-Fold</span></span>
+<span id="cb3-11"><a aria-label="11"></a>skf <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb3-12"><a aria-label="12"></a>skf_scores <span class="op">=</span> cross_val_score(model, X, y, cv<span class="op">=</span>skf, scoring<span class="op">=</span><span class="st">&#39;accuracy&#39;</span>)</span>
+<span id="cb3-13"><a aria-label="13"></a><span class="bu">print</span>(<span class="ss">f&quot;Stratified 5-Fold Accuracy: </span><span class="sc">{</span>skf_scores<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="what-is-model-selection" class="slide level2 center">
 <h2>What is Model Selection?</h2>
@@ -1241,21 +1260,21 @@ Babafemi Sorinolu
 </section>
 <section id="code-implementing-model-selection-with-cv" class="slide level2 center">
 <h2>Code: Implementing Model Selection with CV</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-label="1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb3-2"><a aria-label="2"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
-<span id="cb3-3"><a aria-label="3"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
-<span id="cb3-4"><a aria-label="4"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
-<span id="cb3-5"><a aria-label="5"></a></span>
-<span id="cb3-6"><a aria-label="6"></a>models <span class="op">=</span> {</span>
-<span id="cb3-7"><a aria-label="7"></a>    <span class="st">&quot;Logistic Regression&quot;</span>: LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>),</span>
-<span id="cb3-8"><a aria-label="8"></a>    <span class="st">&quot;Support Vector Machine&quot;</span>: SVC(),</span>
-<span id="cb3-9"><a aria-label="9"></a>    <span class="st">&quot;Random Forest&quot;</span>: RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb3-10"><a aria-label="10"></a>}</span>
-<span id="cb3-11"><a aria-label="11"></a></span>
-<span id="cb3-12"><a aria-label="12"></a><span class="co"># Evaluate candidates on training portion</span></span>
-<span id="cb3-13"><a aria-label="13"></a><span class="cf">for</span> name, clf <span class="kw">in</span> models.items():</span>
-<span id="cb3-14"><a aria-label="14"></a>    cv_scores <span class="op">=</span> cross_val_score(clf, X_train_val, y_train_val, cv<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb3-15"><a aria-label="15"></a>    <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: Mean CV Accuracy = </span><span class="sc">{</span>cv_scores<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss"> (std: </span><span class="sc">{</span>cv_scores<span class="sc">.</span>std()<span class="sc">:.4f}</span><span class="ss">)&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a aria-label="1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb4-2"><a aria-label="2"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
+<span id="cb4-3"><a aria-label="3"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb4-4"><a aria-label="4"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_score</span>
+<span id="cb4-5"><a aria-label="5"></a></span>
+<span id="cb4-6"><a aria-label="6"></a>models <span class="op">=</span> {</span>
+<span id="cb4-7"><a aria-label="7"></a>    <span class="st">&quot;Logistic Regression&quot;</span>: LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>),</span>
+<span id="cb4-8"><a aria-label="8"></a>    <span class="st">&quot;Support Vector Machine&quot;</span>: SVC(),</span>
+<span id="cb4-9"><a aria-label="9"></a>    <span class="st">&quot;Random Forest&quot;</span>: RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb4-10"><a aria-label="10"></a>}</span>
+<span id="cb4-11"><a aria-label="11"></a></span>
+<span id="cb4-12"><a aria-label="12"></a><span class="co"># Evaluate candidates on training portion</span></span>
+<span id="cb4-13"><a aria-label="13"></a><span class="cf">for</span> name, clf <span class="kw">in</span> models.items():</span>
+<span id="cb4-14"><a aria-label="14"></a>    cv_scores <span class="op">=</span> cross_val_score(clf, X_train_val, y_train_val, cv<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb4-15"><a aria-label="15"></a>    <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">: Mean CV Accuracy = </span><span class="sc">{</span>cv_scores<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss"> (std: </span><span class="sc">{</span>cv_scores<span class="sc">.</span>std()<span class="sc">:.4f}</span><span class="ss">)&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="hyperparameter-vs.-parameter-model-tuning" class="slide level2 center">
 <h2>Hyperparameter vs. Parameter &amp; Model Tuning</h2>
@@ -1284,28 +1303,28 @@ param_grid = {
 </section>
 <section id="code-implementing-model-tuning-in-scikit-learn" class="slide level2 center">
 <h2>Code: Implementing Model Tuning in Scikit-Learn</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-label="1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
-<span id="cb5-2"><a aria-label="2"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
-<span id="cb5-3"><a aria-label="3"></a></span>
-<span id="cb5-4"><a aria-label="4"></a><span class="co"># Define candidate model and search space</span></span>
-<span id="cb5-5"><a aria-label="5"></a>rf <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb5-6"><a aria-label="6"></a>param_grid <span class="op">=</span> {</span>
-<span id="cb5-7"><a aria-label="7"></a>    <span class="st">&#39;n_estimators&#39;</span>: [<span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">100</span>],</span>
-<span id="cb5-8"><a aria-label="8"></a>    <span class="st">&#39;max_depth&#39;</span>: [<span class="dv">3</span>, <span class="dv">5</span>, <span class="va">None</span>],</span>
-<span id="cb5-9"><a aria-label="9"></a>    <span class="st">&#39;min_samples_split&#39;</span>: [<span class="dv">2</span>, <span class="dv">5</span>]</span>
-<span id="cb5-10"><a aria-label="10"></a>}</span>
-<span id="cb5-11"><a aria-label="11"></a></span>
-<span id="cb5-12"><a aria-label="12"></a><span class="co"># Set up Grid Search with 5-Fold CV</span></span>
-<span id="cb5-13"><a aria-label="13"></a>grid_search <span class="op">=</span> GridSearchCV(estimator<span class="op">=</span>rf, param_grid<span class="op">=</span>param_grid, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&#39;accuracy&#39;</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb5-14"><a aria-label="14"></a>grid_search.fit(X_train_val, y_train_val)</span>
-<span id="cb5-15"><a aria-label="15"></a></span>
-<span id="cb5-16"><a aria-label="16"></a><span class="bu">print</span>(<span class="st">&quot;Best Parameters:&quot;</span>, grid_search.best_params_)</span>
-<span id="cb5-17"><a aria-label="17"></a><span class="bu">print</span>(<span class="ss">f&quot;Best CV Accuracy: </span><span class="sc">{</span>grid_search<span class="sc">.</span>best_score_<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
-<span id="cb5-18"><a aria-label="18"></a></span>
-<span id="cb5-19"><a aria-label="19"></a><span class="co"># Evaluate optimal model on holdout test set</span></span>
-<span id="cb5-20"><a aria-label="20"></a>best_model <span class="op">=</span> grid_search.best_estimator_</span>
-<span id="cb5-21"><a aria-label="21"></a>test_accuracy <span class="op">=</span> best_model.score(X_test, y_test)</span>
-<span id="cb5-22"><a aria-label="22"></a><span class="bu">print</span>(<span class="ss">f&quot;Final Holdout Test Accuracy: </span><span class="sc">{</span>test_accuracy<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-label="1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
+<span id="cb6-2"><a aria-label="2"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb6-3"><a aria-label="3"></a></span>
+<span id="cb6-4"><a aria-label="4"></a><span class="co"># Define candidate model and search space</span></span>
+<span id="cb6-5"><a aria-label="5"></a>rf <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb6-6"><a aria-label="6"></a>param_grid <span class="op">=</span> {</span>
+<span id="cb6-7"><a aria-label="7"></a>    <span class="st">&#39;n_estimators&#39;</span>: [<span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">100</span>],</span>
+<span id="cb6-8"><a aria-label="8"></a>    <span class="st">&#39;max_depth&#39;</span>: [<span class="dv">3</span>, <span class="dv">5</span>, <span class="va">None</span>],</span>
+<span id="cb6-9"><a aria-label="9"></a>    <span class="st">&#39;min_samples_split&#39;</span>: [<span class="dv">2</span>, <span class="dv">5</span>]</span>
+<span id="cb6-10"><a aria-label="10"></a>}</span>
+<span id="cb6-11"><a aria-label="11"></a></span>
+<span id="cb6-12"><a aria-label="12"></a><span class="co"># Set up Grid Search with 5-Fold CV</span></span>
+<span id="cb6-13"><a aria-label="13"></a>grid_search <span class="op">=</span> GridSearchCV(estimator<span class="op">=</span>rf, param_grid<span class="op">=</span>param_grid, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&#39;accuracy&#39;</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb6-14"><a aria-label="14"></a>grid_search.fit(X_train_val, y_train_val)</span>
+<span id="cb6-15"><a aria-label="15"></a></span>
+<span id="cb6-16"><a aria-label="16"></a><span class="bu">print</span>(<span class="st">&quot;Best Parameters:&quot;</span>, grid_search.best_params_)</span>
+<span id="cb6-17"><a aria-label="17"></a><span class="bu">print</span>(<span class="ss">f&quot;Best CV Accuracy: </span><span class="sc">{</span>grid_search<span class="sc">.</span>best_score_<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb6-18"><a aria-label="18"></a></span>
+<span id="cb6-19"><a aria-label="19"></a><span class="co"># Evaluate optimal model on holdout test set</span></span>
+<span id="cb6-20"><a aria-label="20"></a>best_model <span class="op">=</span> grid_search.best_estimator_</span>
+<span id="cb6-21"><a aria-label="21"></a>test_accuracy <span class="op">=</span> best_model.score(X_test, y_test)</span>
+<span id="cb6-22"><a aria-label="22"></a><span class="bu">print</span>(<span class="ss">f&quot;Final Holdout Test Accuracy: </span><span class="sc">{</span>test_accuracy<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="interpreting-validation-curves" class="slide level2 center">
 <h2>Interpreting Validation Curves</h2>
@@ -1331,28 +1350,28 @@ Low Score +---------------------------------------&gt; Hyperparameter Value
 </section>
 <section id="code-plotting-a-validation-curve" class="slide level2 center">
 <h2>Code: Plotting a Validation Curve</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-label="1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb7-2"><a aria-label="2"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb7-3"><a aria-label="3"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> validation_curve</span>
-<span id="cb7-4"><a aria-label="4"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
-<span id="cb7-5"><a aria-label="5"></a></span>
-<span id="cb7-6"><a aria-label="6"></a>param_range <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">11</span>)</span>
-<span id="cb7-7"><a aria-label="7"></a>train_scores, val_scores <span class="op">=</span> validation_curve(</span>
-<span id="cb7-8"><a aria-label="8"></a>    DecisionTreeClassifier(random_state<span class="op">=</span><span class="dv">42</span>), X_train_val, y_train_val,</span>
-<span id="cb7-9"><a aria-label="9"></a>    param_name<span class="op">=</span><span class="st">&quot;max_depth&quot;</span>, param_range<span class="op">=</span>param_range, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&quot;accuracy&quot;</span></span>
-<span id="cb7-10"><a aria-label="10"></a>)</span>
-<span id="cb7-11"><a aria-label="11"></a></span>
-<span id="cb7-12"><a aria-label="12"></a>train_mean, val_mean <span class="op">=</span> np.mean(train_scores, axis<span class="op">=</span><span class="dv">1</span>), np.mean(val_scores, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb7-13"><a aria-label="13"></a></span>
-<span id="cb7-14"><a aria-label="14"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
-<span id="cb7-15"><a aria-label="15"></a>plt.plot(param_range, train_mean, label<span class="op">=</span><span class="st">&quot;Training Score&quot;</span>, color<span class="op">=</span><span class="st">&quot;blue&quot;</span>, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>)</span>
-<span id="cb7-16"><a aria-label="16"></a>plt.plot(param_range, val_mean, label<span class="op">=</span><span class="st">&quot;Validation Score&quot;</span>, color<span class="op">=</span><span class="st">&quot;red&quot;</span>, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>)</span>
-<span id="cb7-17"><a aria-label="17"></a>plt.xlabel(<span class="st">&quot;Max Depth&quot;</span>)</span>
-<span id="cb7-18"><a aria-label="18"></a>plt.ylabel(<span class="st">&quot;Accuracy&quot;</span>)</span>
-<span id="cb7-19"><a aria-label="19"></a>plt.title(<span class="st">&quot;Validation Curve for Decision Tree&quot;</span>)</span>
-<span id="cb7-20"><a aria-label="20"></a>plt.legend(loc<span class="op">=</span><span class="st">&quot;best&quot;</span>)</span>
-<span id="cb7-21"><a aria-label="21"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb7-22"><a aria-label="22"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a aria-label="1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-2"><a aria-label="2"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-3"><a aria-label="3"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> validation_curve</span>
+<span id="cb8-4"><a aria-label="4"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
+<span id="cb8-5"><a aria-label="5"></a></span>
+<span id="cb8-6"><a aria-label="6"></a>param_range <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">11</span>)</span>
+<span id="cb8-7"><a aria-label="7"></a>train_scores, val_scores <span class="op">=</span> validation_curve(</span>
+<span id="cb8-8"><a aria-label="8"></a>    DecisionTreeClassifier(random_state<span class="op">=</span><span class="dv">42</span>), X_train_val, y_train_val,</span>
+<span id="cb8-9"><a aria-label="9"></a>    param_name<span class="op">=</span><span class="st">&quot;max_depth&quot;</span>, param_range<span class="op">=</span>param_range, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&quot;accuracy&quot;</span></span>
+<span id="cb8-10"><a aria-label="10"></a>)</span>
+<span id="cb8-11"><a aria-label="11"></a></span>
+<span id="cb8-12"><a aria-label="12"></a>train_mean, val_mean <span class="op">=</span> np.mean(train_scores, axis<span class="op">=</span><span class="dv">1</span>), np.mean(val_scores, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-13"><a aria-label="13"></a></span>
+<span id="cb8-14"><a aria-label="14"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb8-15"><a aria-label="15"></a>plt.plot(param_range, train_mean, label<span class="op">=</span><span class="st">&quot;Training Score&quot;</span>, color<span class="op">=</span><span class="st">&quot;blue&quot;</span>, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>)</span>
+<span id="cb8-16"><a aria-label="16"></a>plt.plot(param_range, val_mean, label<span class="op">=</span><span class="st">&quot;Validation Score&quot;</span>, color<span class="op">=</span><span class="st">&quot;red&quot;</span>, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>)</span>
+<span id="cb8-17"><a aria-label="17"></a>plt.xlabel(<span class="st">&quot;Max Depth&quot;</span>)</span>
+<span id="cb8-18"><a aria-label="18"></a>plt.ylabel(<span class="st">&quot;Accuracy&quot;</span>)</span>
+<span id="cb8-19"><a aria-label="19"></a>plt.title(<span class="st">&quot;Validation Curve for Decision Tree&quot;</span>)</span>
+<span id="cb8-20"><a aria-label="20"></a>plt.legend(loc<span class="op">=</span><span class="st">&quot;best&quot;</span>)</span>
+<span id="cb8-21"><a aria-label="21"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb8-22"><a aria-label="22"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="summary-of-best-practices" class="slide level2 center">
 <h2>Summary of Best Practices</h2>

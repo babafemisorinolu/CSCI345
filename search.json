@@ -511,6 +511,13 @@
     "text": "Leave-One-Out Cross-Validation (LOO-CV)\nDefinition\nAn extreme case of \\(K\\)-Fold CV where \\(K = N\\) (\\(N\\) = total number of samples).\n\nFor each iteration:\n\nTrain on \\(N-1\\) samples.\nTest on the single \\(1\\) remaining sample.\n\nAdvantages:\n\nUnbiased performance estimation (uses almost all data for training).\nFully deterministic (no randomness in splitting).\n\nDisadvantages:\n\nHigh computational cost (fits \\(N\\) separate models).\nHigh variance in evaluation error."
   },
   {
+    "objectID": "lectures/lecture-05.html#code-leave-one-out-cv-in-scikit-learn",
+    "href": "lectures/lecture-05.html#code-leave-one-out-cv-in-scikit-learn",
+    "title": "Lecture 5: Model Validation",
+    "section": "Code: Leave-One-Out CV in Scikit-Learn",
+    "text": "Code: Leave-One-Out CV in Scikit-Learn\nfrom sklearn.model_selection import LeaveOneOut, cross_val_score\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.datasets import load_iris\n\n# Load dataset\nX, y = load_iris(return_X_y=True)\n\n# Initialize LeaveOneOut iterator\nloo = LeaveOneOut()\nmodel = LogisticRegression(max_iter=1000)\n\n# Evaluate using LOO (fits 150 times for Iris dataset)\nscores = cross_val_score(model, X, y, cv=loo, scoring='accuracy')\n\nprint(f\"Number of fits (N): {len(scores)}\")\nprint(f\"LOO-CV Mean Accuracy: {scores.mean():.4f}\")"
+  },
+  {
     "objectID": "lectures/lecture-05.html#code-implementing-cross-validation-in-scikit-learn",
     "href": "lectures/lecture-05.html#code-implementing-cross-validation-in-scikit-learn",
     "title": "Lecture 5: Model Validation",
