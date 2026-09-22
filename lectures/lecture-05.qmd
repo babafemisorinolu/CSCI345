@@ -123,6 +123,29 @@ An extreme case of $K$-Fold CV where $K = N$ ($N$ = total number of samples).
 
 ---
 
+## Code: Leave-One-Out CV in Scikit-Learn
+
+```python
+from sklearn.model_selection import LeaveOneOut, cross_val_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.datasets import load_iris
+
+# Load dataset
+X, y = load_iris(return_X_y=True)
+
+# Initialize LeaveOneOut iterator
+loo = LeaveOneOut()
+model = LogisticRegression(max_iter=1000)
+
+# Evaluate using LOO (fits 150 times for Iris dataset)
+scores = cross_val_score(model, X, y, cv=loo, scoring='accuracy')
+
+print(f"Number of fits (N): {len(scores)}")
+print(f"LOO-CV Mean Accuracy: {scores.mean():.4f}")
+```
+
+---
+
 ## Code: Implementing Cross-Validation in Scikit-Learn
 
 ```python
