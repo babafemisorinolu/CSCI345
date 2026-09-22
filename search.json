@@ -427,20 +427,6 @@
     "text": "Slides adapted from Firas Moosvi"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Welcome",
-    "section": "",
-    "text": "Welcome to CSCI345! Here, you’ll find slides for CSCI 345.\n\nClass times 🕘 8:00 AM to 9:50 AM, Tuesday and Thursday\nWhere? 📍 Paine 212 Building"
-  },
-  {
-    "objectID": "slides.html",
-    "href": "slides.html",
-    "title": "Overview",
-    "section": "",
-    "text": "Title\n\n\n\nDescription\n\n\n\n\n\n\n\n\nLecture 4 - 1: Classification Metrics\n\n\nconfusion metrics, precision, recall, f1-score, PR curves, AP score, ROC curve, ROC AUC, class imbalance\n\n\n\n\n\n\nLecture 4 - 2: Regression Metrics\n\n\nRegression metrics\n\n\n\n\n\n\nLecture 4 - 3: Evaluating Models with Plots\n\n\nEvaluating models with plots\n\n\n\n\n\n\nNo matching items"
-  },
-  {
     "objectID": "SETUP.html",
     "href": "SETUP.html",
     "title": "CSCI 345 slides",
@@ -460,6 +446,146 @@
     "title": "CSCI 345 slides",
     "section": "",
     "text": "After the initial setup, only work on main:\ngit add .\ngit commit -m \"Update lecture slides\"\ngit push origin main\nThe Quarto Publish GitHub Action renders the project and updates gh-pages automatically. Do not edit gh-pages directly.\nIf a deployment fails, open the Actions tab in GitHub and inspect the failed Quarto Publish run."
+  },
+  {
+    "objectID": "slides.html",
+    "href": "slides.html",
+    "title": "Overview",
+    "section": "",
+    "text": "Title\n\n\n\nDescription\n\n\n\n\n\n\n\n\nLecture 4 - 1: Classification Metrics\n\n\nconfusion metrics, precision, recall, f1-score, PR curves, AP score, ROC curve, ROC AUC, class imbalance\n\n\n\n\n\n\nLecture 4 - 2: Regression Metrics\n\n\nRegression metrics\n\n\n\n\n\n\nLecture 4 - 3: Evaluating Models with Plots\n\n\nEvaluating models with plots\n\n\n\n\n\n\nLecture 5: Model Validation\n\n\nModel validation, cross-validation, and hyperparameter tuning in scikit-learn.\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "Welcome to CSCI345! Here, you’ll find slides for CSCI 345.\n\nClass times 🕘 8:00 AM to 9:50 AM, Tuesday and Thursday\nWhere? 📍 Paine 212 Building"
+  },
+  {
+    "objectID": "lectures/lecture-05.html#lecture-overview",
+    "href": "lectures/lecture-05.html#lecture-overview",
+    "title": "Lecture 5: Model Validation",
+    "section": "Lecture Overview",
+    "text": "Lecture Overview\nToday we explore Model Validation—the core framework for evaluating, selecting, and tuning machine learning models.\n\nData Splitting Strategy: Training, Validation, & Testing sets\nStratified Splitting: Handling class imbalance\nCross-Validation: \\(K\\)-Fold & Leave-One-Out (LOO)\nModel Selection: Impact of data splits & selection workflow\nHyperparameter Tuning: Grid Search & Model Optimization\nValidation Curves: Diagnosing Bias vs. Variance"
+  },
+  {
+    "objectID": "lectures/lecture-05.html#why-is-cross-validation-important",
+    "href": "lectures/lecture-05.html#why-is-cross-validation-important",
+    "title": "Lecture 5: Model Validation",
+    "section": "Why is Cross-Validation Important?",
+    "text": "Why is Cross-Validation Important?\n\nPreventing Overfitting: A model that memorizes training data will fail on new, unseen data.\nRealistic Performance Estimation: Evaluating on training data gives overly optimistic accuracy.\nData Efficiency: Single train/test splits can lead to high variance depending on which samples fall into which set.\nRobustness: Cross-validation tests performance across multiple subsets to ensure reliability."
+  },
+  {
+    "objectID": "lectures/lecture-05.html#data-splitting-train-validation-and-test-sets",
+    "href": "lectures/lecture-05.html#data-splitting-train-validation-and-test-sets",
+    "title": "Lecture 5: Model Validation",
+    "section": "Data Splitting: Train, Validation, and Test Sets",
+    "text": "Data Splitting: Train, Validation, and Test Sets\nTo properly train and evaluate models, we divide dataset \\(\\mathcal{D}\\) into three distinct sets:\n\n\n\n\n\n\n\n\nSet\nPurpose\nFraction (Typical)\n\n\n\n\nTraining Set\nFits the model parameters (weights/biases)\n~60% - 80%\n\n\nValidation Set\nEvaluates intermediate models & tunes hyperparameters\n~10% - 20%\n\n\nTesting Set\nFinal unbiased evaluation of generalization error\n~10% - 20%\n\n\n\n\nGolden Rule: Never use the Test Set for model selection or tuning! It must remain vault-locked until final evaluation."
+  },
+  {
+    "objectID": "lectures/lecture-05.html#stratified-splits",
+    "href": "lectures/lecture-05.html#stratified-splits",
+    "title": "Lecture 5: Model Validation",
+    "section": "Stratified Splits",
+    "text": "Stratified Splits\nWhat is Stratified Splitting?\nA sampling method that ensures each fold or split contains approximately the same percentage of samples of each target class as the complete dataset.\nWhen to Use?\n\nImbalanced Datasets: e.g., Fraud detection (99% normal, 1% fraud).\nSmall Datasets: Random splits might omit rare classes entirely from train or validation sets.\nClassification Tasks: Standard practice for single-label and multi-label classification."
+  },
+  {
+    "objectID": "lectures/lecture-05.html#code-creating-train-validation-and-test-sets",
+    "href": "lectures/lecture-05.html#code-creating-train-validation-and-test-sets",
+    "title": "Lecture 5: Model Validation",
+    "section": "Code: Creating Train, Validation, and Test Sets",
+    "text": "Code: Creating Train, Validation, and Test Sets\nIn scikit-learn, we can perform a 3-way split by calling train_test_split twice:\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.datasets import load_iris\n\n# Load dataset\nX, y = load_iris(return_X_y=True)\n\n# Step 1: Split into Train+Val (80%) and Test (20%)\nX_train_val, X_test, y_train_val, y_test = train_test_split(\n    X, y, test_size=0.20, random_state=42, stratify=y\n)\n\n# Step 2: Split Train+Val into Train (75% of 80% = 60%) and Validation (25% of 80% = 20%)\nX_train, X_val, y_train, y_val = train_test_split(\n    X_train_val, y_train_val, test_size=0.25, random_state=42, stratify=y_train_val\n)\n\nprint(f\"Train: {X_train.shape[0]} | Val: {X_val.shape[0]} | Test: {X_test.shape[0]}\")"
+  },
+  {
+    "objectID": "lectures/lecture-05.html#k-fold-cross-validation",
+    "href": "lectures/lecture-05.html#k-fold-cross-validation",
+    "title": "Lecture 5: Model Validation",
+    "section": "K-Fold Cross-Validation",
+    "text": "K-Fold Cross-Validation\nDefinition\nSplit the training dataset into \\(K\\) equal-sized subsets (folds).\n\nTrain the model on \\(K-1\\) folds.\nValidate the model on the remaining \\(1\\) fold.\nRepeat \\(K\\) times, using each fold as validation once.\nCompute the final performance metric as the average across all \\(K\\) trials:\n\n\\[\\text{CV Score} = \\frac{1}{K} \\sum_{i=1}^{K} \\text{Score}_i\\]\n\nCommon Values for \\(K\\): \\(K=5\\) or \\(K=10\\) (good trade-off between computational cost and bias/variance)."
+  },
+  {
+    "objectID": "lectures/lecture-05.html#leave-one-out-cross-validation-loo-cv",
+    "href": "lectures/lecture-05.html#leave-one-out-cross-validation-loo-cv",
+    "title": "Lecture 5: Model Validation",
+    "section": "Leave-One-Out Cross-Validation (LOO-CV)",
+    "text": "Leave-One-Out Cross-Validation (LOO-CV)\nDefinition\nAn extreme case of \\(K\\)-Fold CV where \\(K = N\\) (\\(N\\) = total number of samples).\n\nFor each iteration:\n\nTrain on \\(N-1\\) samples.\nTest on the single \\(1\\) remaining sample.\n\nAdvantages:\n\nUnbiased performance estimation (uses almost all data for training).\nFully deterministic (no randomness in splitting).\n\nDisadvantages:\n\nHigh computational cost (fits \\(N\\) separate models).\nHigh variance in evaluation error."
+  },
+  {
+    "objectID": "lectures/lecture-05.html#code-implementing-cross-validation-in-scikit-learn",
+    "href": "lectures/lecture-05.html#code-implementing-cross-validation-in-scikit-learn",
+    "title": "Lecture 5: Model Validation",
+    "section": "Code: Implementing Cross-Validation in Scikit-Learn",
+    "text": "Code: Implementing Cross-Validation in Scikit-Learn\nfrom sklearn.model_selection import cross_val_score, KFold, StratifiedKFold\nfrom sklearn.ensemble import RandomForestClassifier\n\nmodel = RandomForestClassifier(random_state=42)\n\n# Standard 5-Fold CV\nscores = cross_val_score(model, X, y, cv=5, scoring='accuracy')\nprint(f\"5-Fold CV Accuracy: {scores.mean():.4f} (+/- {scores.std():.4f})\")\n\n# Custom Stratified K-Fold\nskf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)\nskf_scores = cross_val_score(model, X, y, cv=skf, scoring='accuracy')\nprint(f\"Stratified 5-Fold Accuracy: {skf_scores.mean():.4f}\")"
+  },
+  {
+    "objectID": "lectures/lecture-05.html#what-is-model-selection",
+    "href": "lectures/lecture-05.html#what-is-model-selection",
+    "title": "Lecture 5: Model Validation",
+    "section": "What is Model Selection?",
+    "text": "What is Model Selection?\nDefinition\nModel Selection is the process of selecting the optimal machine learning algorithm (or architecture) among a set of candidate models for a given problem.\nExamples of candidate models: - Logistic Regression vs. Support Vector Machines vs. Decision Trees vs. Random Forests.\nGoal\nIdentify the model architecture that generalizes best to unseen data."
+  },
+  {
+    "objectID": "lectures/lecture-05.html#impact-of-splits-on-performance-parameter-estimates",
+    "href": "lectures/lecture-05.html#impact-of-splits-on-performance-parameter-estimates",
+    "title": "Lecture 5: Model Validation",
+    "section": "Impact of Splits on Performance & Parameter Estimates",
+    "text": "Impact of Splits on Performance & Parameter Estimates\nSingle train/test splits can lead to volatile conclusions:\n\nMetric Instability: A lucky or unlucky split can inflate or deflate accuracy by several percentage points.\nParameter Sensitivity: Model coefficients (or tree structures) vary wildly depending on which samples end up in the training set.\nCross-Validation Solution: Averaging metrics across \\(K\\) folds reduces estimate variance and provides a confidence interval (\\(\\text{mean} \\pm \\text{std}\\))."
+  },
+  {
+    "objectID": "lectures/lecture-05.html#steps-for-model-selection-with-cross-validation",
+    "href": "lectures/lecture-05.html#steps-for-model-selection-with-cross-validation",
+    "title": "Lecture 5: Model Validation",
+    "section": "Steps for Model Selection with Cross-Validation",
+    "text": "Steps for Model Selection with Cross-Validation\n\nSplit Data: Reserve a holdout Test Set (\\(10\\% - 20\\%\\)).\nDefine Candidate Models: List algorithm families to compare.\nEvaluate via CV: Perform \\(K\\)-Fold CV on the training set for each candidate.\nCompare Performance: Compute mean and standard deviation of validation metrics across folds.\nSelect Best Model: Choose the model family with the superior CV score.\nRefit & Test: Re-train selected model on the entire training set and evaluate on the holdout Test Set."
+  },
+  {
+    "objectID": "lectures/lecture-05.html#code-implementing-model-selection-with-cv",
+    "href": "lectures/lecture-05.html#code-implementing-model-selection-with-cv",
+    "title": "Lecture 5: Model Validation",
+    "section": "Code: Implementing Model Selection with CV",
+    "text": "Code: Implementing Model Selection with CV\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.svm import SVC\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.model_selection import cross_val_score\n\nmodels = {\n    \"Logistic Regression\": LogisticRegression(max_iter=1000),\n    \"Support Vector Machine\": SVC(),\n    \"Random Forest\": RandomForestClassifier(random_state=42)\n}\n\n# Evaluate candidates on training portion\nfor name, clf in models.items():\n    cv_scores = cross_val_score(clf, X_train_val, y_train_val, cv=5)\n    print(f\"{name}: Mean CV Accuracy = {cv_scores.mean():.4f} (std: {cv_scores.std():.4f})\")"
+  },
+  {
+    "objectID": "lectures/lecture-05.html#hyperparameter-vs.-parameter-model-tuning",
+    "href": "lectures/lecture-05.html#hyperparameter-vs.-parameter-model-tuning",
+    "title": "Lecture 5: Model Validation",
+    "section": "Hyperparameter vs. Parameter & Model Tuning",
+    "text": "Hyperparameter vs. Parameter & Model Tuning\nParameters vs. Hyperparameters\n\nParameters: Learned directly from data during training (e.g., weights \\(w\\), bias \\(b\\), split points in trees).\nHyperparameters: Configured before training to control learning behavior (e.g., learning rate \\(\\alpha\\), \\(C\\) in SVM, max_depth in Decision Trees).\n\nModel Tuning\nThe process of searching for the combination of hyperparameters that yields optimal model validation performance."
+  },
+  {
+    "objectID": "lectures/lecture-05.html#setting-a-tuning-grid-grid-search",
+    "href": "lectures/lecture-05.html#setting-a-tuning-grid-grid-search",
+    "title": "Lecture 5: Model Validation",
+    "section": "Setting a Tuning Grid & Grid Search",
+    "text": "Setting a Tuning Grid & Grid Search\nA Tuning Grid defines a discrete search space over hyperparameter values.\n\nparam_grid = {\n'n_estimators': [50, 100, 200],\n'max_depth': [3, 5, 10, None],\n'min_samples_split': [2, 5]\n}\n\n\nGridSearchCV: Evaluates all \\(3 \\times 4 \\times 2 = 24\\) combinations using \\(K\\)-Fold cross-validation.\nSelection: Picks the combination that yields the highest mean CV score."
+  },
+  {
+    "objectID": "lectures/lecture-05.html#code-implementing-model-tuning-in-scikit-learn",
+    "href": "lectures/lecture-05.html#code-implementing-model-tuning-in-scikit-learn",
+    "title": "Lecture 5: Model Validation",
+    "section": "Code: Implementing Model Tuning in Scikit-Learn",
+    "text": "Code: Implementing Model Tuning in Scikit-Learn\nfrom sklearn.model_selection import GridSearchCV\nfrom sklearn.ensemble import RandomForestClassifier\n\n# Define candidate model and search space\nrf = RandomForestClassifier(random_state=42)\nparam_grid = {\n    'n_estimators': [25, 50, 100],\n    'max_depth': [3, 5, None],\n    'min_samples_split': [2, 5]\n}\n\n# Set up Grid Search with 5-Fold CV\ngrid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=5, scoring='accuracy', n_jobs=-1)\ngrid_search.fit(X_train_val, y_train_val)\n\nprint(\"Best Parameters:\", grid_search.best_params_)\nprint(f\"Best CV Accuracy: {grid_search.best_score_:.4f}\")\n\n# Evaluate optimal model on holdout test set\nbest_model = grid_search.best_estimator_\ntest_accuracy = best_model.score(X_test, y_test)\nprint(f\"Final Holdout Test Accuracy: {test_accuracy:.4f}\")"
+  },
+  {
+    "objectID": "lectures/lecture-05.html#interpreting-validation-curves",
+    "href": "lectures/lecture-05.html#interpreting-validation-curves",
+    "title": "Lecture 5: Model Validation",
+    "section": "Interpreting Validation Curves",
+    "text": "Interpreting Validation Curves\nA Validation Curve plots training and validation scores against a single hyperparameter’s values.\n\nHigh Score ^                       ---------------- (Training Score)\n|                      /\n|         Optimal     /\n|         Point      /\n|           |       /\n|    .------*------.\n|   /               ------------------ (Validation Score)\n|  /                 \n\nLow Score +---------------------------------------&gt; Hyperparameter Value\n|&lt;--- Underfitting ---&gt;|&lt;--- Overfitting ---&gt;|\n\n\nUnderfitting (High Bias): Both training and validation scores are low.\nOptimal Region: Validation score reaches its maximum.\nOverfitting (High Variance): Training score continues rising toward 100%, but validation score degrades."
+  },
+  {
+    "objectID": "lectures/lecture-05.html#code-plotting-a-validation-curve",
+    "href": "lectures/lecture-05.html#code-plotting-a-validation-curve",
+    "title": "Lecture 5: Model Validation",
+    "section": "Code: Plotting a Validation Curve",
+    "text": "Code: Plotting a Validation Curve\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom sklearn.model_selection import validation_curve\nfrom sklearn.tree import DecisionTreeClassifier\n\nparam_range = np.arange(1, 11)\ntrain_scores, val_scores = validation_curve(\n    DecisionTreeClassifier(random_state=42), X_train_val, y_train_val,\n    param_name=\"max_depth\", param_range=param_range, cv=5, scoring=\"accuracy\"\n)\n\ntrain_mean, val_mean = np.mean(train_scores, axis=1), np.mean(val_scores, axis=1)\n\nplt.figure(figsize=(8, 4))\nplt.plot(param_range, train_mean, label=\"Training Score\", color=\"blue\", marker=\"o\")\nplt.plot(param_range, val_mean, label=\"Validation Score\", color=\"red\", marker=\"o\")\nplt.xlabel(\"Max Depth\")\nplt.ylabel(\"Accuracy\")\nplt.title(\"Validation Curve for Decision Tree\")\nplt.legend(loc=\"best\")\nplt.grid(True)\nplt.show()"
+  },
+  {
+    "objectID": "lectures/lecture-05.html#summary-of-best-practices",
+    "href": "lectures/lecture-05.html#summary-of-best-practices",
+    "title": "Lecture 5: Model Validation",
+    "section": "Summary of Best Practices",
+    "text": "Summary of Best Practices\n\nKeep the Test Set untouched until all model selection and hyperparameter tuning is finished.\nUse Stratified Splitting whenever dealing with classification tasks.\nLeverage Cross-Validation (\\(K=5\\) or \\(K=10\\)) for reliable performance assessment and model selection.\nTune Hyperparameters systematically with GridSearchCV or RandomizedSearchCV.\nDiagnose with Validation Curves to detect underfitting vs. overfitting before deploying models."
   },
   {
     "objectID": "lectures/lecture-04_1.html#learning-objectives",
