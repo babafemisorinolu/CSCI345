@@ -454,14 +454,75 @@ print(f"Final Holdout Test Accuracy: {test_accuracy:.4f}")
 
 ---
 
+# Optimization bias 
+
+## Pizza baking competition example
+
+Imagine that you participate in pizza baking competition. 
+
+:::: {columns}
+::: {.column width="50%"}
+
+![](img/margherita-pizza.jpeg)
+:::
+
+::: {.column width="50%"}
+- **Training phase**: Collecting recipes and practicing at home  
+- **Validation phase**: Inviting a group of friends for tasting and feedback  
+- **Test phase (competition day)**: Serving the judges  
+:::
+::::
+
+## Overfitting on the validation set
+:::: {columns}
+::: {.column width="50%"}
+- Your friends loved your pineapple pizza. 
+- You fine-tune your recipe for the same group of friends, perfecting it for their tastes.
+
+<img src="img/pineapple-pizza.png" width="60%" alt="Pineapple Pizza">
+:::
+
+::: {.column width="50%"}
+- On the competition day, you confidently present your perfected pineapple pizza.  
+- Judges are not impressed: *“This doesn’t appeal to a broad audience.”*  
+![](img/judge_judy.jpg)
+
+:::
+::::
+
+This is similar to reusing the same validation set again and again to perfect the model for it! 
+
+## Lesson: Overfitting on the validation set {.smaller}
+
+- You tailored your recipe too closely to your friends’ tastes.  
+- They were **not representative** of the broader audience (the judges).  
+- The pizza, while perfect for your validation group, failed to **generalize**.  
+- Over many iterations, the validation set no longer gives an **unbiased estimate** of performance.  
+- That's why we need a **separate test set** (like a group of tasters who never influenced your pizza).  
+
+## Optimization bias
+
+- Why do we need separate validation and test datasets? 
+
+![](img/optimization-bias.png)
+
+## Mitigating optimization bias
+
+  - Cross-validation
+  - Ensembles 
+  - Regularization and choosing a simpler model  
+
+
+---
+
 ## Interpreting Validation Curves
 
 A **Validation Curve** plots training and validation scores against a single hyperparameter's values.
 
-```
-High Score ^
-
-```
+Validation curves are useful for detecting overfitting: 
+ - Hyperparameters that are overfitted will have high training scores and low validation scores. 
+ - Optimal hyperparameters will perform well on the training sets and the validation sets.
+![](img/val_curve_plot.png)
 
   ## Code: Plotting a Validation Curve
 
