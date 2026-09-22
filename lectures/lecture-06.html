@@ -1140,7 +1140,6 @@ Babafemi Sorinolu
 <li><strong>Person B</strong> (Distance: 50.09)</li>
 </ul>
 <p><strong>What’s the problem here?</strong></p>
-<p>The scale of <code>#FB Friends</code> completely dominates <code>Age</code>. Person D is twice your age, yet appears “closer” than Person A or B!</p>
 </section>
 <section id="preparing-data-for-machine-learning" class="slide level2 center">
 <h2>Preparing Data for Machine Learning</h2>
@@ -1178,10 +1177,6 @@ Babafemi Sorinolu
 <li><strong>Uniqueness</strong>: Are there duplicated records or overlapping entities?</li>
 </ol>
 </section>
-<section class="slide level2 center">
-
-<p>Data Preprocessing Tasks</p>
-</section>
 <section id="data-preprocessing-tasks" class="slide level2 center">
 <h2>Data Preprocessing Tasks</h2>
 <p>Data preprocessing is important in machine learning because <strong>data quality directly affects model performance and predictions</strong>.</p>
@@ -1195,7 +1190,7 @@ Babafemi Sorinolu
 </div>
 <div class="callout-content">
 <p>Many classification algorithms are <strong>distance-based</strong>, meaning that their results can be affected by the units and scales of the input features.</p>
-<p>### Common Preprocessing Tasks</p>
+<h3 id="common-preprocessing-tasks">Common Preprocessing Tasks</h3>
 <ul>
 <li><strong>Data Cleaning:</strong> Addresses missing values, duplicate observations, and incorrectly formatted data.</li>
 <li><strong>Data Integration:</strong> Combines data from multiple sources into a unified dataset.</li>
@@ -1214,23 +1209,32 @@ Babafemi Sorinolu
 <li><p>Missingness is independent of both observed and unobserved data.</p></li>
 <li><p><em>Example</em>: A sensor battery dies randomly.</p></li>
 <li><p><strong>MAR (Missing at Random)</strong>:</p></li>
-<li><p>Missingness depends systematically on <em>observed</em> data, but not the missing value itself.</p></li>
-<li><p><em>Example</em>: Men are less likely to report depression scores, but within men, missingness is random.</p></li>
+<li><p>Missingness depends systematically on <em>observed</em> data, but not on the missing value itself.</p></li>
+<li><p><em>Example</em>: Older patients are less likely to report their income, but among patients of the same age, whether income is missing does not depend on their actual income.</p></li>
 <li><p><strong>MNAR (Missing Not at Random)</strong>:</p></li>
 <li><p>Missingness depends directly on the <em>unobserved</em> value itself.</p></li>
 <li><p><em>Example</em>: High earners refuse to reveal their high income on surveys.</p></li>
 </ul>
 </section>
-<section id="deletion-strategies-listwise-vs.-pairwise" class="slide level2 center">
-<h2>Deletion Strategies: Listwise vs. Pairwise</h2>
+<section class="slide level2 center">
+
+</section></section>
+<section>
+<section id="deletion-strategies-listwise-vs.-pairwise" class="title-slide slide level1 center">
+<h1>Deletion Strategies: Listwise vs. Pairwise</h1>
+
+</section>
+<section id="listwise-deletion-complete-case-analysis" class="slide level2 center">
+<h2>Listwise Deletion (Complete Case Analysis)</h2>
 <p>When dealing with missing values, simple deletion might be considered:</p>
-<h3 id="listwise-deletion-complete-case-analysis">Listwise Deletion (Complete Case Analysis)</h3>
 <ul>
 <li>Drops the <strong>entire row/record</strong> if <em>any</em> attribute contains a missing value.</li>
 <li><strong>Pros</strong>: Simple, unbiased under MCAR.</li>
 <li><strong>Cons</strong>: Severe loss of sample size and potential bias under MAR/MNAR.</li>
 </ul>
-<h3 id="pairwise-deletion">Pairwise Deletion</h3>
+</section>
+<section id="pairwise-deletion" class="slide level2 center">
+<h2>Pairwise Deletion</h2>
 <ul>
 <li>Keeps the row, dropping missing values only when analyzing specific <strong>pairs of variables</strong> (e.g., during correlation calculation).</li>
 <li><strong>Pros</strong>: Preserves more data points.</li>
@@ -1248,8 +1252,18 @@ Babafemi Sorinolu
 <section id="the-ml-workflow-feature-removal" class="slide level2 center">
 <h2>The ML Workflow &amp; Feature Removal</h2>
 <h3 id="where-feature-transformation-fits">Where Feature Transformation Fits</h3>
-<p><span class="math display">\[\text{Raw Data} \longrightarrow \text{Cleaning} \longrightarrow \mathbf{\text{Feature Transformation / Scaling}} \longrightarrow \text{Feature Selection} \longrightarrow \text{Model Training}\]</span></p>
-<h3 id="when-is-feature-removal-necessary">When is Feature Removal Necessary?</h3>
+<p><span class="math display">\[
+\begin{aligned}
+\text{Raw Data}
+&amp;\longrightarrow \text{Cleaning}
+\longrightarrow \mathbf{\text{Feature Transformation / Scaling}} \\
+&amp;\longrightarrow \text{Feature Selection}
+\longrightarrow \text{Model Training}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="when-is-feature-removal-necessary" class="slide level2 center">
+<h2>When is Feature Removal Necessary?</h2>
 <ol type="1">
 <li><strong>Zero / Near-Zero Variance</strong>: A feature has the same value for almost all rows.</li>
 <li><strong>Extreme Multicollinearity</strong>: Two or more features are perfectly or highly correlated.</li>
@@ -1259,13 +1273,17 @@ Babafemi Sorinolu
 </section>
 <section id="standardization-vs.-normalization" class="slide level2 center">
 <h2>Standardization vs. Normalization</h2>
-<h3 id="standardization-z-score-normalization">Standardization (<span class="math inline">\(Z\)</span>-Score Normalization)</h3>
+</section>
+<section id="standardization-z-score-normalization" class="slide level2 center">
+<h2>Standardization (<span class="math inline">\(Z\)</span>-Score Normalization)</h2>
 <p>Rescales data to centered mean (<span class="math inline">\(\mu=0\)</span>) and unit variance (<span class="math inline">\(\sigma=1\)</span>).</p>
 <p><span class="math display">\[x&#39; = \frac{x - \mu}{\sigma}\]</span></p>
 <ul>
 <li>Best when features follow a Gaussian distribution or when using algorithms that assume zero-mean features (e.g., Ridge/Lasso, PCA).</li>
 </ul>
-<h3 id="normalization-min-max-scaling">Normalization (Min-Max Scaling)</h3>
+</section>
+<section id="normalization-min-max-scaling" class="slide level2 center">
+<h2>Normalization (Min-Max Scaling)</h2>
 <p>Rescales data into a fixed range, typically <span class="math inline">\([0, 1]\)</span>.</p>
 <p><span class="math display">\[x&#39; = \frac{x - x_{\min}}{x_{\max} - x_{\min}}\]</span></p>
 <ul>
@@ -1570,6 +1588,9 @@ Babafemi Sorinolu
 <li><code>fit_transform()</code> transformers <strong>only</strong> on <code>Train</code>.</li>
 <li><code>transform()</code> <code>Test</code> using the fitted parameters.</li>
 </ol>
+</section>
+<section id="code" class="slide level2 center">
+<h2>Code:</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-label="1"></a></span>
 <span id="cb7-2"><a aria-label="2"></a><span class="co"># CORRECT APPROACH</span></span>
 <span id="cb7-3"><a aria-label="3"></a></span>
