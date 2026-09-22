@@ -5,17 +5,16 @@ author: "Babafemi Sorinolu"
 description: "Model Improvement"
 description-short: "Pre-processing, Transformations, and pipelines."
 format:
-revealjs:
-embed-resources: true
-slide-number: true
-smaller: true
-center: true
-logo: ../img/houghton_logo.webp
-theme: dracula
-resources:
-- ../data/
-- ../img/
-
+  revealjs:
+    embed-resources: true
+    slide-number: true
+    smaller: true
+    center: true
+    logo: ../img/houghton_logo.webp
+    theme: dracula
+    resources:
+      - ../data/
+      - ../img/
 ---
 
 # Why Pre-process Data?
@@ -86,7 +85,7 @@ The scale of `#FB Friends` completely dominates `Age`. Person D is twice your ag
 
  Data preprocessing is important in machine learning because **data quality directly affects model performance and predictions**.
 
- ::: {.callout-note}\
+::: {.callout-note}
  Many classification algorithms are **distance-based**, meaning that their results can be affected by the units and scales of the input features.
 
  ### Common Preprocessing Tasks
@@ -94,8 +93,8 @@ The scale of `#FB Friends` completely dominates `Age`. Person D is twice your ag
  - **Data Cleaning:** Addresses missing values, duplicate observations, and incorrectly formatted data.
 - **Data Integration:** Combines data from multiple sources into a unified dataset.
 - **Data Reduction:** Reduces the dimensionality or size of a dataset while retaining important information.
-- **Data Transformation:** Converts features into a format or scale suitable for a particular model or algorithm.\
-   :::
+- **Data Transformation:** Converts features into a format or scale suitable for a particular model or algorithm.
+:::
 
 ## Types of Missing Data Mechanisms
 
@@ -237,6 +236,7 @@ X_log = log_transformer.fit_transform(X_numeric)
 ```
 
 ---
+
 # Common transformations
 
 ## Imputation: Fill the gaps! (🟩 🟧 🟦)
