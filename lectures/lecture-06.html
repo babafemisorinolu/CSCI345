@@ -1249,8 +1249,6 @@ Babafemi Sorinolu
 <h1>Feature Engineering &amp; Transformations</h1>
 
 </section>
-<section id="the-ml-workflow-feature-removal" class="slide level2 center">
-<h2>The ML Workflow &amp; Feature Removal</h2>
 <h3 id="where-feature-transformation-fits">Where Feature Transformation Fits</h3>
 <p><span class="math display">\[
 \begin{aligned}
@@ -1261,7 +1259,6 @@ Babafemi Sorinolu
 \longrightarrow \text{Model Training}
 \end{aligned}
 \]</span></p>
-</section>
 <section id="when-is-feature-removal-necessary" class="slide level2 center">
 <h2>When is Feature Removal Necessary?</h2>
 <ol type="1">
@@ -1397,7 +1394,9 @@ Babafemi Sorinolu
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-label="1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> SimpleImputer</span>
 <span id="cb2-2"><a aria-label="2"></a>imputer <span class="op">=</span> SimpleImputer(strategy<span class="op">=</span><span class="st">&#39;mean&#39;</span>)</span>
 <span id="cb2-3"><a aria-label="3"></a>X_imputed <span class="op">=</span> imputer.fit_transform(X)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<h3 id="example-1">Example:</h3>
+</section>
+<section id="example-1" class="slide level2 center">
+<h2>Example:</h2>
 <p>Scaling is like adjusting the number of everyone’s Facebook friends so that both the number of friends and their age are on a comparable scale. This way, one feature doesn’t dominate the other when making comparisons.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a aria-label="1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
 <span id="cb3-2"><a aria-label="2"></a>scaler <span class="op">=</span> StandardScaler()</span>
@@ -1507,16 +1506,22 @@ Babafemi Sorinolu
 </section>
 <section id="imputation-techniques-deep-dive" class="slide level2 center">
 <h2>Imputation Techniques Deep Dive</h2>
-<h3 id="mean-median-mode-imputation-univariate">Mean / Median / Mode Imputation (Univariate)</h3>
+</section>
+<section id="mean-median-mode-imputation-univariate" class="slide level2 center">
+<h2>Mean / Median / Mode Imputation (Univariate)</h2>
 <ul>
 <li>Replaces <code>NaN</code>s in feature <span class="math inline">\(j\)</span> with <span class="math inline">\(\text{mean}(X_j)\)</span>, <span class="math inline">\(\text{median}(X_j)\)</span>, or <span class="math inline">\(\text{mode}(X_j)\)</span>.</li>
 </ul>
-<h3 id="k-nearest-neighbors-k-nn-imputation">k-Nearest Neighbors (k-NN) Imputation</h3>
+</section>
+<section id="k-nearest-neighbors-k-nn-imputation" class="slide level2 center">
+<h2>k-Nearest Neighbors (k-NN) Imputation</h2>
 <ul>
 <li>Finds the <span class="math inline">\(k\)</span> most similar rows (based on Euclidean distance across non-missing attributes).</li>
 <li>Fills missing values with the weighted or unweighted average of those <span class="math inline">\(k\)</span> neighbors.</li>
 </ul>
-<h3 id="multivariate-imputation-by-chained-equations-mice">Multivariate Imputation by Chained Equations (MICE)</h3>
+</section>
+<section id="multivariate-imputation-by-chained-equations-mice" class="slide level2 center">
+<h2>Multivariate Imputation by Chained Equations (MICE)</h2>
 <ol type="1">
 <li>Fills missing values with initial placeholder estimates (e.g., mean).</li>
 <li>Sets feature <span class="math inline">\(X_j\)</span> back to <code>NaN</code>.</li>
@@ -1556,7 +1561,9 @@ Babafemi Sorinolu
 </section>
 <section id="scikit-learn-transformers-vs-estimators" class="slide level2 center">
 <h2>SciKit-Learn Transformers vs Estimators</h2>
-<h3 id="transformers">Transformers</h3>
+</section>
+<section id="transformers" class="slide level2 center">
+<h2>Transformers</h2>
 <ul>
 <li><p>Used for preprocessing and feature engineering.</p></li>
 <li><p>Implement <code>fit()</code> and <code>transform()</code>.</p></li>
@@ -1564,7 +1571,9 @@ Babafemi Sorinolu
 <li><p><code>transform(X)</code>: Applies parameters to transform <span class="math inline">\(X\)</span>.</p></li>
 <li><p><em>Examples</em>: <code>StandardScaler</code>, <code>SimpleImputer</code>, <code>OneHotEncoder</code>.</p></li>
 </ul>
-<h3 id="estimators">Estimators</h3>
+</section>
+<section id="estimators" class="slide level2 center">
+<h2>Estimators</h2>
 <ul>
 <li><p>Used for learning patterns and making predictions.</p></li>
 <li><p>Implement <code>fit()</code> and <code>predict()</code>.</p></li>

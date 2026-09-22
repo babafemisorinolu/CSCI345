@@ -756,13 +756,6 @@
     "text": "Pairwise Deletion\n\nKeeps the row, dropping missing values only when analyzing specific pairs of variables (e.g., during correlation calculation).\nPros: Preserves more data points.\nCons: Leads to inconsistent sample sizes (\\(N\\)) across different calculations; covariance matrices can become non-positive definite."
   },
   {
-    "objectID": "lectures/lecture-06.html#the-ml-workflow-feature-removal",
-    "href": "lectures/lecture-06.html#the-ml-workflow-feature-removal",
-    "title": "Lecture 6: Model Improvement",
-    "section": "The ML Workflow & Feature Removal",
-    "text": "The ML Workflow & Feature Removal\nWhere Feature Transformation Fits\n\\[\n\\begin{aligned}\n\\text{Raw Data}\n&\\longrightarrow \\text{Cleaning}\n\\longrightarrow \\mathbf{\\text{Feature Transformation / Scaling}} \\\\\n&\\longrightarrow \\text{Feature Selection}\n\\longrightarrow \\text{Model Training}\n\\end{aligned}\n\\]"
-  },
-  {
     "objectID": "lectures/lecture-06.html#when-is-feature-removal-necessary",
     "href": "lectures/lecture-06.html#when-is-feature-removal-necessary",
     "title": "Lecture 6: Model Improvement",
@@ -816,7 +809,14 @@
     "href": "lectures/lecture-06.html#imputation-fill-the-gaps",
     "title": "Lecture 6: Model Improvement",
     "section": "Imputation: Fill the gaps! (🟩 🟧 🟦)",
-    "text": "Imputation: Fill the gaps! (🟩 🟧 🟦)\nFill in missing data using a chosen strategy:\n\nMean: Replace missing values with the average of the available data.\nMedian: Use the middle value.\nMost Frequent: Use the most common value (mode).\nKNN Imputation: Fill based on similar neighbors.\n\nExample:\nImputation is like filling in your average or median or most frequent grade for an assessment you missed.\nfrom sklearn.impute import SimpleImputer\nimputer = SimpleImputer(strategy='mean')\nX_imputed = imputer.fit_transform(X)\nExample:\nScaling is like adjusting the number of everyone’s Facebook friends so that both the number of friends and their age are on a comparable scale. This way, one feature doesn’t dominate the other when making comparisons.\nfrom sklearn.preprocessing import StandardScaler\nscaler = StandardScaler()\nX_scaled = scaler.fit_transform(X)"
+    "text": "Imputation: Fill the gaps! (🟩 🟧 🟦)\nFill in missing data using a chosen strategy:\n\nMean: Replace missing values with the average of the available data.\nMedian: Use the middle value.\nMost Frequent: Use the most common value (mode).\nKNN Imputation: Fill based on similar neighbors.\n\nExample:\nImputation is like filling in your average or median or most frequent grade for an assessment you missed.\nfrom sklearn.impute import SimpleImputer\nimputer = SimpleImputer(strategy='mean')\nX_imputed = imputer.fit_transform(X)"
+  },
+  {
+    "objectID": "lectures/lecture-06.html#example-1",
+    "href": "lectures/lecture-06.html#example-1",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Example:",
+    "text": "Example:\nScaling is like adjusting the number of everyone’s Facebook friends so that both the number of friends and their age are on a comparable scale. This way, one feature doesn’t dominate the other when making comparisons.\nfrom sklearn.preprocessing import StandardScaler\nscaler = StandardScaler()\nX_scaled = scaler.fit_transform(X)"
   },
   {
     "objectID": "lectures/lecture-06.html#one-hot-encoding-1-0-0",
@@ -851,7 +851,28 @@
     "href": "lectures/lecture-06.html#imputation-techniques-deep-dive",
     "title": "Lecture 6: Model Improvement",
     "section": "Imputation Techniques Deep Dive",
-    "text": "Imputation Techniques Deep Dive\nMean / Median / Mode Imputation (Univariate)\n\nReplaces NaNs in feature \\(j\\) with \\(\\text{mean}(X_j)\\), \\(\\text{median}(X_j)\\), or \\(\\text{mode}(X_j)\\).\n\nk-Nearest Neighbors (k-NN) Imputation\n\nFinds the \\(k\\) most similar rows (based on Euclidean distance across non-missing attributes).\nFills missing values with the weighted or unweighted average of those \\(k\\) neighbors.\n\nMultivariate Imputation by Chained Equations (MICE)\n\nFills missing values with initial placeholder estimates (e.g., mean).\nSets feature \\(X_j\\) back to NaN.\nTrains a regression model predicting \\(X_j\\) using all other features.\nPredicts missing \\(X_j\\). Repeats iteratively across all features until convergence."
+    "text": "Imputation Techniques Deep Dive"
+  },
+  {
+    "objectID": "lectures/lecture-06.html#mean-median-mode-imputation-univariate",
+    "href": "lectures/lecture-06.html#mean-median-mode-imputation-univariate",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Mean / Median / Mode Imputation (Univariate)",
+    "text": "Mean / Median / Mode Imputation (Univariate)\n\nReplaces NaNs in feature \\(j\\) with \\(\\text{mean}(X_j)\\), \\(\\text{median}(X_j)\\), or \\(\\text{mode}(X_j)\\)."
+  },
+  {
+    "objectID": "lectures/lecture-06.html#k-nearest-neighbors-k-nn-imputation",
+    "href": "lectures/lecture-06.html#k-nearest-neighbors-k-nn-imputation",
+    "title": "Lecture 6: Model Improvement",
+    "section": "k-Nearest Neighbors (k-NN) Imputation",
+    "text": "k-Nearest Neighbors (k-NN) Imputation\n\nFinds the \\(k\\) most similar rows (based on Euclidean distance across non-missing attributes).\nFills missing values with the weighted or unweighted average of those \\(k\\) neighbors."
+  },
+  {
+    "objectID": "lectures/lecture-06.html#multivariate-imputation-by-chained-equations-mice",
+    "href": "lectures/lecture-06.html#multivariate-imputation-by-chained-equations-mice",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Multivariate Imputation by Chained Equations (MICE)",
+    "text": "Multivariate Imputation by Chained Equations (MICE)\n\nFills missing values with initial placeholder estimates (e.g., mean).\nSets feature \\(X_j\\) back to NaN.\nTrains a regression model predicting \\(X_j\\) using all other features.\nPredicts missing \\(X_j\\). Repeats iteratively across all features until convergence."
   },
   {
     "objectID": "lectures/lecture-06.html#implementing-imputation-in-scikit-learn",
@@ -865,7 +886,21 @@
     "href": "lectures/lecture-06.html#scikit-learn-transformers-vs-estimators",
     "title": "Lecture 6: Model Improvement",
     "section": "SciKit-Learn Transformers vs Estimators",
-    "text": "SciKit-Learn Transformers vs Estimators\nTransformers\n\nUsed for preprocessing and feature engineering.\nImplement fit() and transform().\nfit(X): Computes statistical parameters (e.g., \\(\\mu, \\sigma\\), categories).\ntransform(X): Applies parameters to transform \\(X\\).\nExamples: StandardScaler, SimpleImputer, OneHotEncoder.\n\nEstimators\n\nUsed for learning patterns and making predictions.\nImplement fit() and predict().\nfit(X, y): Learns weights/parameters from data.\npredict(X): Generates predictions on unseen data.\nExamples: DecisionTreeClassifier, SVC, KNeighborsClassifier."
+    "text": "SciKit-Learn Transformers vs Estimators"
+  },
+  {
+    "objectID": "lectures/lecture-06.html#transformers",
+    "href": "lectures/lecture-06.html#transformers",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Transformers",
+    "text": "Transformers\n\nUsed for preprocessing and feature engineering.\nImplement fit() and transform().\nfit(X): Computes statistical parameters (e.g., \\(\\mu, \\sigma\\), categories).\ntransform(X): Applies parameters to transform \\(X\\).\nExamples: StandardScaler, SimpleImputer, OneHotEncoder."
+  },
+  {
+    "objectID": "lectures/lecture-06.html#estimators",
+    "href": "lectures/lecture-06.html#estimators",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Estimators",
+    "text": "Estimators\n\nUsed for learning patterns and making predictions.\nImplement fit() and predict().\nfit(X, y): Learns weights/parameters from data.\npredict(X): Generates predictions on unseen data.\nExamples: DecisionTreeClassifier, SVC, KNeighborsClassifier."
   },
   {
     "objectID": "lectures/lecture-06.html#the-golden-rule-of-feature-transformations",
