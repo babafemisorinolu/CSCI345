@@ -1,213 +1,226 @@
-  ---
-  title: "Lecture 5:  Model Validation" 
-  author: "Babafemi Sorinolu"
-  description: "Model Validation"
-  description-short: "Model validation, cross-validation, and hyperparameter tuning in scikit-learn."
-  format:
-    revealjs:
-      embed-resources: true
-      slide-number: true
-      smaller: true
-      center: true
-      logo: ../img/houghton_logo.webp
-      theme: dracula
-      resources:
-        - ../data/
-        - ../img/  
-  ---
+---
+title: "Lecture 5: Model Validation"
+author: "Babafemi Sorinolu"
+description: "Model Validation"
+description-short: "Model validation, cross-validation, and hyperparameter tuning in scikit-learn."
+format:
+  revealjs:
+    embed-resources: true
+    slide-number: true
+    smaller: true
+    center: true
+    logo: ../img/houghton_logo.webp
+    theme: dracula
+    resources:
+      - ../data/
+      - ../img/
+---
 
-  ## Lecture Overview
+## Lecture Overview
 
-  Today we explore **Model Validation**—the core framework for evaluating, selecting, and tuning machine learning models.
+Today we explore **Model Validation**—the core framework for evaluating, selecting, and tuning machine learning models.
 
-  1. **Data Splitting Strategy**: Training, Validation, & Testing sets
-  2. **Stratified Splitting**: Handling class imbalance
-  3. **Cross-Validation**: $K$-Fold & Leave-One-Out (LOO)
-  4. **Model Selection**: Impact of data splits & selection workflow
-  5. **Hyperparameter Tuning**: Grid Search & Model Optimization
-  6. **Validation Curves**: Diagnosing Bias vs. Variance
+1. **Data Splitting Strategy**: Training, Validation, & Testing sets
+2. **Stratified Splitting**: Handling class imbalance
+3. **Cross-Validation**: $K$-Fold & Leave-One-Out (LOO)
+4. **Model Selection**: Impact of data splits & selection workflow
+5. **Hyperparameter Tuning**: Grid Search & Model Optimization
+6. **Validation Curves**: Diagnosing Bias vs. Variance
 
-  ---
+---
 
-  ## How Do We Know If a Model Works?
+## How Do We Know If a Model Works?
 
-  We separate the data so that we can answer **three different questions**:
+We separate the data so that we can answer **three different questions**:
 
-  ### 1\. Train — _Can the model learn?_
+### 1. Train — *Can the model learn?*
 
-  Use training data to estimate the model's parameters.
+Use training data to estimate the model's parameters.
 
-  ### 2\. Validate — _Which model should we use?_
+### 2. Validate — *Which model should we use?*
 
-  Use validation data to compare models and tune hyperparameters.
+Use validation data to compare models and tune hyperparameters.
 
-  ### 3\. Test — _How well does the final model generalize?_
+### 3. Test — *How well does the final model generalize?*
 
-  Use **unseen test data** to get an unbiased estimate of performance.
+Use **unseen test data** to get an unbiased estimate of performance.
 
- **Train → Choose → Evaluate**
+**Train → Choose → Evaluate**
 
- > **Key principle:** Never use the test data to make modeling decisions.
+> **Key principle:** Never use the test data to make modeling decisions.
 
-  ---
-  
-  ## Why is Cross-Validation Important?
+---
 
-  - **Preventing Overfitting**: A model that memorizes training data will fail on new, unseen data.
-  - **Realistic Performance Estimation**: Evaluating on training data gives overly optimistic accuracy.
-  - **Data Efficiency**: Single train/test splits can lead to high variance depending on which samples fall into which set.
-  - **Robustness**: Cross-validation tests performance across multiple subsets to ensure reliability.
+## Why is Cross-Validation Important?
 
-  ---
+- **Preventing Overfitting**: A model that memorizes training data will fail on new, unseen data.
+- **Realistic Performance Estimation**: Evaluating on training data gives overly optimistic accuracy.
+- **Data Efficiency**: Single train/test splits can lead to high variance depending on which samples fall into which set.
+- **Robustness**: Cross-validation tests performance across multiple subsets to ensure reliability.
 
-  ## Data Splitting: Train, Validation, and Test Sets
+---
 
-  To properly train and evaluate models, we divide dataset $\mathcal{D}$ into three distinct sets:
+## Data Splitting: Train, Validation, and Test Sets
 
-  | Set | Purpose | Fraction (Typical) |
-  | :--- | :--- | :--- |
-  | **Training Set** | Fits the model parameters (weights/biases) | ~60% - 80% |
-  | **Validation Set** | Evaluates intermediate models & tunes hyperparameters | ~10% - 20% |
-  | **Testing Set** | Final unbiased evaluation of generalization error | ~10% - 20% |
+To properly train and evaluate models, we divide dataset $\mathcal{D}$ into three distinct sets:
 
-  > **Golden Rule**: Never use the **Test Set** for model selection or tuning! It must remain vault-locked until final evaluation.
+| Set | Purpose | Fraction (Typical) |
+| :--- | :--- | :--- |
+| **Training Set** | Fits the model parameters (weights/biases) | ~60% - 80% |
+| **Validation Set** | Evaluates intermediate models & tunes hyperparameters | ~10% - 20% |
+| **Testing Set** | Final unbiased evaluation of generalization error | ~10% - 20% |
 
-  ---
+> **Golden Rule**: Never use the **Test Set** for model selection or tuning! It must remain vault-locked until final evaluation.
 
-  ## Stratified Splits
+---
 
-  ### What is Stratified Splitting?
-  A sampling method that ensures each fold or split contains approximately the same percentage of samples of each target class as the complete dataset.
+## Stratified Splits
 
-  ### When to Use?
-  - **Imbalanced Datasets**: e.g., Fraud detection (99% normal, 1% fraud).
-  - **Small Datasets**: Random splits might omit rare classes entirely from train or validation sets.
-  - **Classification Tasks**: Standard practice for single-label and multi-label classification.
+### What is Stratified Splitting?
+A sampling method that ensures each fold or split contains approximately the same percentage of samples of each target class as the complete dataset.
 
-  ---
+### When to Use?
+- **Imbalanced Datasets**: e.g., Fraud detection (99% normal, 1% fraud).
+- **Small Datasets**: Random splits might omit rare classes entirely from train or validation sets.
+- **Classification Tasks**: Standard practice for single-label and multi-label classification.
 
-  ## Code: Creating Train, Validation, and Test Sets
+---
 
-  In `scikit-learn`, we can perform a 3-way split by calling `train_test_split` twice:
+## Code: Creating Train, Validation, and Test Sets
 
-  ```python
-  from sklearn.model_selection import train_test_split
-  from sklearn.datasets import load_iris
+In `scikit-learn`, we can perform a 3-way split by calling `train_test_split` twice:
 
-  # Load dataset
-  X, y = load_iris(return_X_y=True)
+```python
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_iris
 
-  # Step 1: Split into Train+Val (80%) and Test (20%)
-  X_train_val, X_test, y_train_val, y_test = train_test_split(
-      X, y, test_size=0.20, random_state=42, stratify=y
-  )
+# Load dataset
+X, y = load_iris(return_X_y=True)
 
-  # Step 2: Split Train+Val into Train (75% of 80% = 60%) and Validation (25% of 80% = 20%)
-  X_train, X_val, y_train, y_val = train_test_split(
-      X_train_val, y_train_val, test_size=0.25, random_state=42, stratify=y_train_val
-  )
+# Step 1: Split into Train+Val (80%) and Test (20%)
+X_train_val, X_test, y_train_val, y_test = train_test_split(
+    X, y, test_size=0.20, random_state=42, stratify=y
+)
 
-  print(f"Train: {X_train.shape[0]} | Val: {X_val.shape[0]} | Test: {X_test.shape[0]}")
-  ```
+# Step 2: Split Train+Val into Train (75% of 80% = 60%) and Validation (25% of 80% = 20%)
+X_train, X_val, y_train, y_val = train_test_split(
+    X_train_val, y_train_val, test_size=0.25, random_state=42, stratify=y_train_val
+)
 
-  ---
+print(f"Train: {X_train.shape[0]} | Val: {X_val.shape[0]} | Test: {X_test.shape[0]}")
 
-  ## K-Fold Cross-Validation
+```
 
-  ### Definition
-  Split the training dataset into $K$ equal-sized subsets (folds).
+---
 
-  1. Train the model on $K-1$ folds.
-  2. Validate the model on the remaining $1$ fold.
-  3. Repeat $K$ times, using each fold as validation once.
-  4. Compute the final performance metric as the average across all $K$ trials:
+## K-Fold Cross-Validation
 
-  $$\text{CV Score} = \frac{1}{K} \sum_{i=1}^{K} \text{Score}_i$$
+### Definition
 
-  - **Common Values for $K$**: $K=5$ or $K=10$ (good trade-off between computational cost and bias/variance).
+Split the training dataset into $K$ equal-sized subsets (folds).
 
-  ---
+1. Train the model on $K-1$ folds.
+2. Validate the model on the remaining $1$ fold.
+3. Repeat $K$ times, using each fold as validation once.
+4. Compute the final performance metric as the average across all $K$ trials:
 
-  ## Leave-One-Out Cross-Validation (LOO-CV)
+$$\text{CV Score} = \frac{1}{K} \sum_{i=1}^{K} \text{Score}_i$$
 
-  ### Definition
-  An extreme case of $K$-Fold CV where $K = N$ ($N$ = total number of samples).
+* **Common Values for $K$**: $K=5$ or $K=10$ (good trade-off between computational cost and bias/variance).
 
-  - For each iteration:
-    - Train on $N-1$ samples.
-    - Test on the single $1$ remaining sample.
-  - **Advantages**:
-    - Unbiased performance estimation (uses almost all data for training).
-    - Fully deterministic (no randomness in splitting).
-  - **Disadvantages**:
-    - High computational cost (fits $N$ separate models).
-    - High variance in evaluation error.
+---
 
-  ---
+## Leave-One-Out Cross-Validation (LOO-CV)
 
-  ## Code: Leave-One-Out CV in Scikit-Learn
+### Definition
 
-  ```python
-  from sklearn.model_selection import LeaveOneOut, cross_val_score
-  from sklearn.linear_model import LogisticRegression
-  from sklearn.datasets import load_iris
+An extreme case of $K$-Fold CV where $K = N$ ($N$ = total number of samples).
 
-  # Load dataset
-  X, y = load_iris(return_X_y=True)
+* For each iteration:
+* Train on $N-1$ samples.
+* Test on the single $1$ remaining sample.
 
-  # Initialize LeaveOneOut iterator
-  loo = LeaveOneOut()
-  model = LogisticRegression(max_iter=1000)
 
-  # Evaluate using LOO (fits 150 times for Iris dataset)
-  scores = cross_val_score(model, X, y, cv=loo, scoring='accuracy')
+* **Advantages**:
+* Unbiased performance estimation (uses almost all data for training).
+* Fully deterministic (no randomness in splitting).
 
-  print(f"Number of fits (N): {len(scores)}")
-  print(f"LOO-CV Mean Accuracy: {scores.mean():.4f}")
-  ```
 
-  ---
+* **Disadvantages**:
+* High computational cost (fits $N$ separate models).
+* High variance in evaluation error.
 
-  ## Code: Implementing Cross-Validation in Scikit-Learn
 
-  ```python
-  from sklearn.model_selection import cross_val_score, KFold, StratifiedKFold
-  from sklearn.ensemble import RandomForestClassifier
 
-  model = RandomForestClassifier(random_state=42)
+---
 
-  # Standard 5-Fold CV
-  scores = cross_val_score(model, X, y, cv=5, scoring='accuracy')
-  print(f"5-Fold CV Accuracy: {scores.mean():.4f} (+/- {scores.std():.4f})")
+## Code: Leave-One-Out CV in Scikit-Learn
 
-  # Custom Stratified K-Fold
-  skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-  skf_scores = cross_val_score(model, X, y, cv=skf, scoring='accuracy')
-  print(f"Stratified 5-Fold Accuracy: {skf_scores.mean():.4f}")
-  ```
+```python
+from sklearn.model_selection import LeaveOneOut, cross_val_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.datasets import load_iris
 
-  ---
+# Load dataset
+X, y = load_iris(return_X_y=True)
 
-  ## Model Selection
+# Initialize LeaveOneOut iterator
+loo = LeaveOneOut()
+model = LogisticRegression(max_iter=1000)
 
-  **Model Selection** is the process of selecting the optimal machine learning algorithm (or architecture) among a set of candidate models for a given problem.
+# Evaluate using LOO (fits 150 times for Iris dataset)
+scores = cross_val_score(model, X, y, cv=loo, scoring='accuracy')
 
-  Examples of candidate models:
-  - Logistic Regression vs. Support Vector Machines vs. Decision Trees vs. Random Forests.
+print(f"Number of fits (N): {len(scores)}")
+print(f"LOO-CV Mean Accuracy: {scores.mean():.4f}")
 
-  ### Goal
-  Identify the model architecture that generalizes best to unseen data.
+```
 
-  ---
+---
 
-  ## Model Selection: What Makes a Good Model?
+## Code: Implementing Cross-Validation in Scikit-Learn
+
+```python
+from sklearn.model_selection import cross_val_score, KFold, StratifiedKFold
+from sklearn.ensemble import RandomForestClassifier
+
+model = RandomForestClassifier(random_state=42)
+
+# Standard 5-Fold CV
+scores = cross_val_score(model, X, y, cv=5, scoring='accuracy')
+print(f"5-Fold CV Accuracy: {scores.mean():.4f} (+/- {scores.std():.4f})")
+
+# Custom Stratified K-Fold
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+skf_scores = cross_val_score(model, X, y, cv=skf, scoring='accuracy')
+print(f"Stratified 5-Fold Accuracy: {skf_scores.mean():.4f}")
+
+```
+
+---
+
+## Model Selection
+
+**Model Selection** is the process of selecting the optimal machine learning algorithm (or architecture) among a set of candidate models for a given problem.
+
+Examples of candidate models:
+
+* Logistic Regression vs. Support Vector Machines vs. Decision Trees vs. Random Forests.
+
+### Goal
+
+Identify the model architecture that generalizes best to unseen data.
+
+---
+
+## Model Selection: What Makes a Good Model?
 
 When comparing candidate models, consider:
 
-- **Strong performance** — high accuracy, low mean squared error, etc.
-- **Consistent performance** — similar results across cross-validation or different data splits.
-- **Reasonable assumptions** — model assumptions are appropriate and not seriously violated.
-- **Interpretability** — the model is understandable when interpretation is important.
+* **Strong performance** — high accuracy, low mean squared error, etc.
+* **Consistent performance** — similar results across cross-validation or different data splits.
+* **Reasonable assumptions** — model assumptions are appropriate and not seriously violated.
+* **Interpretability** — the model is understandable when interpretation is important.
 
 ### Key Idea
 
@@ -223,149 +236,232 @@ We want a model that **generalizes well** while balancing:
 
 A model's ability to generalize depends on two sources of error:
 
-- **Bias** — error from a model that is too simple to capture important patterns.
-- **Variance** — error from a model that is too sensitive to the particular training data.
+* **Bias** — error from a model that is too simple to capture important patterns.
+* **Variance** — error from a model that is too sensitive to the particular training data.
 
 ### The Tradeoff
 
-- **High bias** → model **underfits** the data.
-- **High variance** → model **overfits** the data.
-- **Low bias + low variance** → better potential to **generalize** to unseen data.
+* **High bias** → model **underfits** the data.
+* **High variance** → model **overfits** the data.
+* **Low bias + low variance** → better potential to **generalize** to unseen data.
 
 The goal is not to minimize training error alone.
 
-> **But to  Choose a model that captures meaningful patterns without fitting noise.**
+> **But to Choose a model that captures meaningful patterns without fitting noise.**
+
+---
+
+## Impact of Splits on Performance & Parameter Estimates
+
+Single train/test splits can lead to volatile conclusions:
+
+* **Metric Instability**: A lucky or unlucky split can inflate or deflate accuracy by several percentage points.
+* **Parameter Sensitivity**: Model coefficients (or tree structures) vary wildly depending on which samples end up in the training set.
+* **Cross-Validation Solution**: Averaging metrics across $K$ folds reduces estimate variance and provides a confidence interval ($\text{mean} \pm \text{std}$).
+
+---
+
+## Steps for Model Selection with Cross-Validation
+
+1. **Split Data**: Reserve a holdout Test Set ($10\% - 20\%$).
+2. **Define Candidate Models**: List algorithm families to compare.
+3. **Evaluate via CV**: Perform $K$-Fold CV on the training set for each candidate.
+4. **Compare Performance**: Compute mean and standard deviation of validation metrics across folds.
+5. **Select Best Model**: Choose the model family with the superior CV score.
+6. **Refit & Test**: Re-train selected model on the entire training set and evaluate on the holdout Test Set.
+
+---
+
+## Code: Implementing Model Selection with CV
+
+```python
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import cross_val_score
+
+models = {
+    "Logistic Regression": LogisticRegression(max_iter=1000),
+    "Support Vector Machine": SVC(),
+    "Random Forest": RandomForestClassifier(random_state=42)
+}
+
+# Evaluate candidates on training portion
+for name, clf in models.items():
+    cv_scores = cross_val_score(clf, X_train_val, y_train_val, cv=5)
+    print(f"{name}: Mean CV Accuracy = {cv_scores.mean():.4f} (std: {cv_scores.std():.4f})")
+
+```
+
+---
+
+## Hyperparameter vs. Parameter & Model Tuning
+
+### Parameters vs. Hyperparameters
+
+* **Parameters**: Learned directly from data during training (e.g., weights $w$, bias $b$, split points in trees).
+* **Hyperparameters**: Configured *before* training to control learning behavior (e.g., learning rate $\alpha$, $C$ in SVM, `max_depth` in Decision Trees).
+
+### Model Tuning
+
+The process of searching for the combination of hyperparameters that yields optimal model validation performance.
+
+---
+
+## `sklearn` methods
+
+* `sklearn` provides two main methods for hyperparameter optimization
+* Grid Search — systematically evaluates every combination in a predefined grid.
+* Random Search — randomly samples configurations from specified distributions.
 
 
-  ## Impact of Splits on Performance & Parameter Estimates
 
-  Single train/test splits can lead to volatile conclusions:
+The choice of search strategy depends largely on the size and structure of the hyperparameter space.
 
-  - **Metric Instability**: A lucky or unlucky split can inflate or deflate accuracy by several percentage points.
-  - **Parameter Sensitivity**: Model coefficients (or tree structures) vary wildly depending on which samples end up in the training set.
-  - **Cross-Validation Solution**: Averaging metrics across $K$ folds reduces estimate variance and provides a confidence interval ($\text{mean} \pm \text{std}$).
+---
 
-  ---
+## Setting a Tuning Grid & Grid Search
 
-  ## Steps for Model Selection with Cross-Validation
+A **Tuning Grid** defines a discrete search space over hyperparameter values.
 
-  1. **Split Data**: Reserve a holdout Test Set ($10\% - 20\%$).
-  2. **Define Candidate Models**: List algorithm families to compare.
-  3. **Evaluate via CV**: Perform $K$-Fold CV on the training set for each candidate.
-  4. **Compare Performance**: Compute mean and standard deviation of validation metrics across folds.
-  5. **Select Best Model**: Choose the model family with the superior CV score.
-  6. **Refit & Test**: Re-train selected model on the entire training set and evaluate on the holdout Test Set.
+```python
+param_grid = {
+    'n_estimators': [50, 100, 200],
+    'max_depth': [3, 5, 10, None],
+    'min_samples_split': [2, 5]
+}
 
-  ---
+```
 
-  ## Code: Implementing Model Selection with CV
+* **GridSearchCV**: Evaluates all $3 \times 4 \times 2 = 24$ combinations using $K$-Fold cross-validation.
+* **Selection**: Picks the combination that yields the highest mean CV score.
 
-  ```python
-  from sklearn.linear_model import LogisticRegression
-  from sklearn.svm import SVC
-  from sklearn.ensemble import RandomForestClassifier
-  from sklearn.model_selection import cross_val_score
+---
 
-  models = {
-      "Logistic Regression": LogisticRegression(max_iter=1000),
-      "Support Vector Machine": SVC(),
-      "Random Forest": RandomForestClassifier(random_state=42)
-  }
+## Grid Search
 
-  # Evaluate candidates on training portion
-  for name, clf in models.items():
-      cv_scores = cross_val_score(clf, X_train_val, y_train_val, cv=5)
-      print(f"{name}: Mean CV Accuracy = {cv_scores.mean():.4f} (std: {cv_scores.std():.4f})")
-  ```
+* Covers all possible combinations from the provided grid.
+* Can be parallelized easily.
+* Integrates cross-validation.
 
-  ---
+---
 
-  ## Hyperparameter vs. Parameter & Model Tuning
+## Grid search example
 
-  ### Parameters vs. Hyperparameters
-  - **Parameters**: Learned directly from data during training (e.g., weights $w$, bias $b$, split points in trees).
-  - **Hyperparameters**: Configured *before* training to control learning behavior (e.g., learning rate $\alpha$, $C$ in SVM, `max_depth` in Decision Trees).
+```{python}
+#| echo: true
 
-  ### Model Tuning
-  The process of searching for the combination of hyperparameters that yields optimal model validation performance.
+from sklearn.model_selection import GridSearchCV
 
-  ---
+pipe_svm = make_pipeline(CountVectorizer(), SVC())
 
-  ## Setting a Tuning Grid & Grid Search
+param_grid = {
+    "countvectorizer__max_features": [100, 200, 400],
+    "svc__gamma": [0.01, 0.1, 1.0],
+    "svc__C": [0.01, 0.1, 1.0],
+}
+grid_search = GridSearchCV(pipe_svm, 
+                           param_grid = param_grid, 
+                           n_jobs=-1, 
+                           return_train_score=True
+                          )
+grid_search.fit(X_train, y_train)
+grid_search.best_score_
 
-  A **Tuning Grid** defines a discrete search space over hyperparameter values.
+```
 
+---
 
-  ```
+## What Does GridSearchCV Do?
 
-  param_grid = {
-  'n_estimators': [50, 100, 200],
-  'max_depth': [3, 5, 10, None],
-  'min_samples_split': [2, 5]
-  }
+* Generates all hyperparameter combinations.
+* Trains and evaluates each combination using cross-validation.
+* Calculates the mean CV score for each configuration.
+* Identifies the configuration with the highest mean CV score.
 
-  ```
+The best configuration can be accessed with:
 
-  - **GridSearchCV**: Evaluates all $3 \times 4 \times 2 = 24$ combinations using $K$-Fold cross-validation.
-  - **Selection**: Picks the combination that yields the highest mean CV score.
+```python
+grid_search.best_params_
 
-  ---
+```
 
-  ## Code: Implementing Model Tuning in Scikit-Learn
+---
 
-  ```python
-  from sklearn.model_selection import GridSearchCV
-  from sklearn.ensemble import RandomForestClassifier
+## Random Search
 
-  # Define candidate model and search space
-  rf = RandomForestClassifier(random_state=42)
-  param_grid = {
-      'n_estimators': [25, 50, 100],
-      'max_depth': [3, 5, None],
-      'min_samples_split': [2, 5]
-  }
+* More efficient than grid search when dealing with large hyperparameter spaces.
+* Samples a given number of parameter settings from distributions.
 
-  # Set up Grid Search with 5-Fold CV
-  grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=5, scoring='accuracy', n_jobs=-1)
-  grid_search.fit(X_train_val, y_train_val)
+---
 
-  print("Best Parameters:", grid_search.best_params_)
-  print(f"Best CV Accuracy: {grid_search.best_score_:.4f}")
+## Random search example
 
-  # Evaluate optimal model on holdout test set
-  best_model = grid_search.best_estimator_
-  test_accuracy = best_model.score(X_test, y_test)
-  print(f"Final Holdout Test Accuracy: {test_accuracy:.4f}")
-  ```
+```{python}
+#| echo: true
 
-  ---
+from sklearn.model_selection import RandomizedSearchCV
+from scipy.stats import randint
 
-  ## Interpreting Validation Curves
+pipe_svc = make_pipeline(CountVectorizer(), SVC())
 
-  A **Validation Curve** plots training and validation scores against a single hyperparameter's values.
+param_dist = {
+    "countvectorizer__max_features": randint(100, 2000), 
+    "svc__C": uniform(0.1, 1e4),  # loguniform(1e-3, 1e3),
+    "svc__gamma": loguniform(1e-5, 1e3),
+}
+random_search = RandomizedSearchCV(pipe_svm,                                    
+                                  param_distributions = param_dist, 
+                                  n_iter=10, 
+                                  n_jobs=-1, 
+                                  return_train_score=True)
 
+# Carry out the search
+random_search.fit(X_train, y_train)
+random_search.best_score_
 
-  ```
+```
 
-  High Score ^                       ---------------- (Training Score)
-  |                      /
-  |         Optimal     /
-  |         Point      /
-  |           |       /
-  |    .------*------.
-  |   /               ------------------ (Validation Score)
-  |  /                 
+---
 
-  Low Score +---------------------------------------> Hyperparameter Value
-  |<--- Underfitting --->|<--- Overfitting --->|
+## Code: Implementing Model Tuning in Scikit-Learn
 
-  ```
+```python
+from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
 
-  - **Underfitting (High Bias)**: Both training and validation scores are low.
-  - **Optimal Region**: Validation score reaches its maximum.
-  - **Overfitting (High Variance)**: Training score continues rising toward 100%, but validation score degrades.
+# Define candidate model and search space
+rf = RandomForestClassifier(random_state=42)
+param_grid = {
+    'n_estimators': [25, 50, 100],
+    'max_depth': [3, 5, None],
+    'min_samples_split': [2, 5]
+}
 
-  ---
+# Set up Grid Search with 5-Fold CV
+grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=5, scoring='accuracy', n_jobs=-1)
+grid_search.fit(X_train_val, y_train_val)
+
+print("Best Parameters:", grid_search.best_params_)
+print(f"Best CV Accuracy: {grid_search.best_score_:.4f}")
+
+# Evaluate optimal model on holdout test set
+best_model = grid_search.best_estimator_
+test_accuracy = best_model.score(X_test, y_test)
+print(f"Final Holdout Test Accuracy: {test_accuracy:.4f}")
+
+```
+
+---
+
+## Interpreting Validation Curves
+
+A **Validation Curve** plots training and validation scores against a single hyperparameter's values.
+
+```
+High Score ^
+
+```
 
   ## Code: Plotting a Validation Curve
 
