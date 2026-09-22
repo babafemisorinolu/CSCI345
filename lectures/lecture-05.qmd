@@ -31,27 +31,26 @@
 
   ## How Do We Know If a Model Works?
 
- We separate the data so that we can answer **three different questions**:
+  We separate the data so that we can answer **three different questions**:
 
- ### 1\. Train — _Can the model learn?_
+  ### 1\. Train — _Can the model learn?_
 
- Use training data to estimate the model's parameters.
+  Use training data to estimate the model's parameters.
 
- ### 2\. Validate — _Which model should we use?_
+  ### 2\. Validate — _Which model should we use?_
 
- Use validation data to compare models and tune hyperparameters.
+  Use validation data to compare models and tune hyperparameters.
 
- ### 3\. Test — _How well does the final model generalize?_
+  ### 3\. Test — _How well does the final model generalize?_
 
- Use **unseen test data** to get an unbiased estimate of performance.
-
----
+  Use **unseen test data** to get an unbiased estimate of performance.
 
  **Train → Choose → Evaluate**
 
  > **Key principle:** Never use the test data to make modeling decisions.
 
- 
+  ---
+  
   ## Why is Cross-Validation Important?
 
   - **Preventing Overfitting**: A model that memorizes training data will fail on new, unseen data.
@@ -189,9 +188,8 @@
 
   ---
 
-  ## What is Model Selection?
+  ## Model Selection
 
-  ### Definition
   **Model Selection** is the process of selecting the optimal machine learning algorithm (or architecture) among a set of candidate models for a given problem.
 
   Examples of candidate models:
@@ -201,6 +199,43 @@
   Identify the model architecture that generalizes best to unseen data.
 
   ---
+
+  ## Model Selection: What Makes a Good Model?
+
+When comparing candidate models, consider:
+
+- **Strong performance** — high accuracy, low mean squared error, etc.
+- **Consistent performance** — similar results across cross-validation or different data splits.
+- **Reasonable assumptions** — model assumptions are appropriate and not seriously violated.
+- **Interpretability** — the model is understandable when interpretation is important.
+
+### Key Idea
+
+There is often **no single best model**.
+
+We want a model that **generalizes well** while balancing:
+
+**Performance + Consistency + Reasonable assumptions**
+
+---
+
+## Bias–Variance Tradeoff
+
+A model's ability to generalize depends on two sources of error:
+
+- **Bias** — error from a model that is too simple to capture important patterns.
+- **Variance** — error from a model that is too sensitive to the particular training data.
+
+### The Tradeoff
+
+- **High bias** → model **underfits** the data.
+- **High variance** → model **overfits** the data.
+- **Low bias + low variance** → better potential to **generalize** to unseen data.
+
+The goal is not to minimize training error alone.
+
+> **But to  Choose a model that captures meaningful patterns without fitting noise.**
+
 
   ## Impact of Splits on Performance & Parameter Estimates
 
