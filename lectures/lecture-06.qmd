@@ -135,8 +135,6 @@ When dealing with missing values, simple deletion might be considered:
 
 # Feature Engineering & Transformations
 
-## The ML Workflow & Feature Removal
-
 ### Where Feature Transformation Fits
 
 $$
@@ -264,7 +262,7 @@ imputer = SimpleImputer(strategy='mean')
 X_imputed = imputer.fit_transform(X)
 ```
 
-### Example:
+## Example:
 Scaling is like adjusting the number of everyone’s Facebook friends so that both the number of friends and their age are on a comparable scale. This way, one feature doesn't dominate the other when making comparisons.
 
 ```python
@@ -341,16 +339,16 @@ X_ordinal = encoder.fit_transform(X)
 
 ## Imputation Techniques Deep Dive
 
-### Mean / Median / Mode Imputation (Univariate)
+## Mean / Median / Mode Imputation (Univariate)
 
 * Replaces `NaN`s in feature $j$ with $\text{mean}(X_j)$, $\text{median}(X_j)$, or $\text{mode}(X_j)$.
 
-### k-Nearest Neighbors (k-NN) Imputation
+## k-Nearest Neighbors (k-NN) Imputation
 
 * Finds the $k$ most similar rows (based on Euclidean distance across non-missing attributes).
 * Fills missing values with the weighted or unweighted average of those $k$ neighbors.
 
-### Multivariate Imputation by Chained Equations (MICE)
+## Multivariate Imputation by Chained Equations (MICE)
 
 1. Fills missing values with initial placeholder estimates (e.g., mean).
 2. Sets feature $X_j$ back to `NaN`.
@@ -390,7 +388,7 @@ X_mice = mice_imp.fit_transform(X)
 
 ## SciKit-Learn Transformers vs Estimators
 
-### Transformers
+## Transformers
 
 * Used for preprocessing and feature engineering.
 * Implement `fit()` and `transform()`.
@@ -400,7 +398,7 @@ X_mice = mice_imp.fit_transform(X)
 
 * *Examples*: `StandardScaler`, `SimpleImputer`, `OneHotEncoder`.
 
-### Estimators
+## Estimators
 
 * Used for learning patterns and making predictions.
 * Implement `fit()` and `predict()`.
