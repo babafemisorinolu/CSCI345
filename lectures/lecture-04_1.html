@@ -2072,7 +2072,7 @@ yf(x)&lt;1
 </section>
 <section id="a-fraud-classification-example" class="slide level2 center">
 <h2>A fraud classification example</h2>
-<div id="d4bb97ef" class="cell" data-execution_count="2">
+<div id="624a82e2" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
 <pre><code>(139554, 29)</code></pre>
 </div>
@@ -2249,7 +2249,7 @@ text-align: right;
 <section id="dummyclassifier" class="slide level2 center">
 <h2><code>DummyClassifier</code></h2>
 <p>Let’s try a DummyClassifier, which makes predictions without learning any patterns.</p>
-<div id="2e2ae3c7" class="cell" data-execution_count="3">
+<div id="5b5f3d47" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a aria-label="1"></a>dummy <span class="op">=</span> DummyClassifier()</span>
 <span id="cb2-2"><a aria-label="2"></a>cross_val_score(dummy, X_train, y_train).mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
@@ -2263,7 +2263,7 @@ text-align: right;
 </section>
 <section id="problem-class-imbalance" class="slide level2 center">
 <h2>Problem: Class imbalance</h2>
-<div id="b0b5057b" class="cell" data-execution_count="4">
+<div id="c9463608" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a aria-label="1"></a>y_train.value_counts()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>Class
@@ -2282,7 +2282,7 @@ Name: count, dtype: int64</code></pre>
 <section id="dummyclassifier-confusion-matrix" class="slide level2 center">
 <h2><code>DummyClassifier</code>: Confusion matrix</h2>
 <p>Which types of errors would be most critical for the bank to address? Missing a fraud case or flagging a legitimate transaction as fraud?</p>
-<div id="c330d9ad" class="cell" data-execution_count="5">
+<div id="a3ad2202" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2295,7 +2295,7 @@ Name: count, dtype: int64</code></pre>
 <section id="logisticregression-confusion-matrix" class="slide level2 center">
 <h2><code>LogisticRegression</code>: Confusion matrix</h2>
 <p>Are we doing better with logistic regression?</p>
-<div id="1197d830" class="cell" data-execution_count="6">
+<div id="ad0881bc" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2624,7 +2624,7 @@ display:block!important;
 <li>Top left <span class="math inline">\(\rightarrow\)</span> Very high threshold (strict model = high precision)</li>
 <li>Bottom right <span class="math inline">\(\rightarrow\)</span> Very low threshold (linient model = high recall)</li>
 </ul>
-<div id="246999f7" class="cell" data-execution_count="7">
+<div id="3aa0acff" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2678,7 +2678,7 @@ display:block!important;
 <li>It measures the ranking ability of a model; how well it assigns higher probabilities to positive examples than to negative ones, regardless of the specific threshold.</li>
 </ul>
 </div><div class="column" style="width:40%;">
-<div id="cc1de5f1" class="cell" data-execution_count="8">
+<div id="da6c484b" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>

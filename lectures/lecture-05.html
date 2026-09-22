@@ -1079,6 +1079,20 @@ Babafemi Sorinolu
 <li><strong>Validation Curves</strong>: Diagnosing Bias vs. Variance</li>
 </ol>
 </section>
+<section id="how-do-we-know-if-a-model-works" class="slide level2 center">
+<h2>How Do We Know If a Model Works?</h2>
+<p>We separate the data so that we can answer <strong>three different questions</strong>:</p>
+<h3 id="train-can-the-model-learn">1. Train — <em>Can the model learn?</em></h3>
+<p>Use training data to estimate the model’s parameters.</p>
+<h3 id="validate-which-model-should-we-use">2. Validate — <em>Which model should we use?</em></h3>
+<p>Use validation data to compare models and tune hyperparameters.</p>
+<h3 id="test-how-well-does-the-final-model-generalize">3. Test — <em>How well does the final model generalize?</em></h3>
+<p>Use <strong>unseen test data</strong> to get an unbiased estimate of performance.</p>
+<p><strong>Train → Choose → Evaluate</strong></p>
+<blockquote>
+<p><strong>Key principle:</strong> Never use the test data to make modeling decisions.</p>
+</blockquote>
+</section>
 <section id="why-is-cross-validation-important" class="slide level2 center">
 <h2>Why is Cross-Validation Important?</h2>
 <ul>
@@ -1140,23 +1154,24 @@ Babafemi Sorinolu
 <section id="code-creating-train-validation-and-test-sets" class="slide level2 center">
 <h2>Code: Creating Train, Validation, and Test Sets</h2>
 <p>In <code>scikit-learn</code>, we can perform a 3-way split by calling <code>train_test_split</code> twice:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-label="1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb1-2"><a aria-label="2"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_iris</span>
-<span id="cb1-3"><a aria-label="3"></a></span>
-<span id="cb1-4"><a aria-label="4"></a><span class="co"># Load dataset</span></span>
-<span id="cb1-5"><a aria-label="5"></a>X, y <span class="op">=</span> load_iris(return_X_y<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-6"><a aria-label="6"></a></span>
-<span id="cb1-7"><a aria-label="7"></a><span class="co"># Step 1: Split into Train+Val (80%) and Test (20%)</span></span>
-<span id="cb1-8"><a aria-label="8"></a>X_train_val, X_test, y_train_val, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb1-9"><a aria-label="9"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.20</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
-<span id="cb1-10"><a aria-label="10"></a>)</span>
-<span id="cb1-11"><a aria-label="11"></a></span>
-<span id="cb1-12"><a aria-label="12"></a><span class="co"># Step 2: Split Train+Val into Train (75% of 80% = 60%) and Validation (25% of 80% = 20%)</span></span>
-<span id="cb1-13"><a aria-label="13"></a>X_train, X_val, y_train, y_val <span class="op">=</span> train_test_split(</span>
-<span id="cb1-14"><a aria-label="14"></a>    X_train_val, y_train_val, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y_train_val</span>
-<span id="cb1-15"><a aria-label="15"></a>)</span>
-<span id="cb1-16"><a aria-label="16"></a></span>
-<span id="cb1-17"><a aria-label="17"></a><span class="bu">print</span>(<span class="ss">f&quot;Train: </span><span class="sc">{</span>X_train<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> | Val: </span><span class="sc">{</span>X_val<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> | Test: </span><span class="sc">{</span>X_test<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a aria-label="1"></a></span>
+<span id="cb1-2"><a aria-label="2"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-3"><a aria-label="3"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_iris</span>
+<span id="cb1-4"><a aria-label="4"></a></span>
+<span id="cb1-5"><a aria-label="5"></a><span class="co"># Load dataset</span></span>
+<span id="cb1-6"><a aria-label="6"></a>X, y <span class="op">=</span> load_iris(return_X_y<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-7"><a aria-label="7"></a></span>
+<span id="cb1-8"><a aria-label="8"></a><span class="co"># Step 1: Split into Train+Val (80%) and Test (20%)</span></span>
+<span id="cb1-9"><a aria-label="9"></a>X_train_val, X_test, y_train_val, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb1-10"><a aria-label="10"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.20</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y</span>
+<span id="cb1-11"><a aria-label="11"></a>)</span>
+<span id="cb1-12"><a aria-label="12"></a></span>
+<span id="cb1-13"><a aria-label="13"></a><span class="co"># Step 2: Split Train+Val into Train (75% of 80% = 60%) and Validation (25% of 80% = 20%)</span></span>
+<span id="cb1-14"><a aria-label="14"></a>X_train, X_val, y_train, y_val <span class="op">=</span> train_test_split(</span>
+<span id="cb1-15"><a aria-label="15"></a>    X_train_val, y_train_val, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y_train_val</span>
+<span id="cb1-16"><a aria-label="16"></a>)</span>
+<span id="cb1-17"><a aria-label="17"></a></span>
+<span id="cb1-18"><a aria-label="18"></a><span class="bu">print</span>(<span class="ss">f&quot;Train: </span><span class="sc">{</span>X_train<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> | Val: </span><span class="sc">{</span>X_val<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> | Test: </span><span class="sc">{</span>X_test<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="k-fold-cross-validation" class="slide level2 center">
 <h2>K-Fold Cross-Validation</h2>
@@ -1178,21 +1193,15 @@ Babafemi Sorinolu
 <h3 id="definition-1">Definition</h3>
 <p>An extreme case of <span class="math inline">\(K\)</span>-Fold CV where <span class="math inline">\(K = N\)</span> (<span class="math inline">\(N\)</span> = total number of samples).</p>
 <ul>
-<li>For each iteration:
-<ul>
-<li>Train on <span class="math inline">\(N-1\)</span> samples.</li>
-<li>Test on the single <span class="math inline">\(1\)</span> remaining sample.</li>
-</ul></li>
-<li><strong>Advantages</strong>:
-<ul>
-<li>Unbiased performance estimation (uses almost all data for training).</li>
-<li>Fully deterministic (no randomness in splitting).</li>
-</ul></li>
-<li><strong>Disadvantages</strong>:
-<ul>
-<li>High computational cost (fits <span class="math inline">\(N\)</span> separate models).</li>
-<li>High variance in evaluation error.</li>
-</ul></li>
+<li><p>For each iteration:</p></li>
+<li><p>Train on <span class="math inline">\(N-1\)</span> samples.</p></li>
+<li><p>Test on the single <span class="math inline">\(1\)</span> remaining sample.</p></li>
+<li><p><strong>Advantages</strong>:</p></li>
+<li><p>Unbiased performance estimation (uses almost all data for training).</p></li>
+<li><p>Fully deterministic (no randomness in splitting).</p></li>
+<li><p><strong>Disadvantages</strong>:</p></li>
+<li><p>High computational cost (fits <span class="math inline">\(N\)</span> separate models).</p></li>
+<li><p>High variance in evaluation error.</p></li>
 </ul>
 </section>
 <section id="code-leave-one-out-cv-in-scikit-learn" class="slide level2 center">
@@ -1230,13 +1239,47 @@ Babafemi Sorinolu
 <span id="cb3-12"><a aria-label="12"></a>skf_scores <span class="op">=</span> cross_val_score(model, X, y, cv<span class="op">=</span>skf, scoring<span class="op">=</span><span class="st">&#39;accuracy&#39;</span>)</span>
 <span id="cb3-13"><a aria-label="13"></a><span class="bu">print</span>(<span class="ss">f&quot;Stratified 5-Fold Accuracy: </span><span class="sc">{</span>skf_scores<span class="sc">.</span>mean()<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="what-is-model-selection" class="slide level2 center">
-<h2>What is Model Selection?</h2>
-<h3 id="definition-2">Definition</h3>
+<section id="model-selection" class="slide level2 center">
+<h2>Model Selection</h2>
 <p><strong>Model Selection</strong> is the process of selecting the optimal machine learning algorithm (or architecture) among a set of candidate models for a given problem.</p>
-<p>Examples of candidate models: - Logistic Regression vs. Support Vector Machines vs. Decision Trees vs. Random Forests.</p>
+<p>Examples of candidate models:</p>
+<ul>
+<li>Logistic Regression vs. Support Vector Machines vs. Decision Trees vs. Random Forests.</li>
+</ul>
 <h3 id="goal">Goal</h3>
 <p>Identify the model architecture that generalizes best to unseen data.</p>
+</section>
+<section id="model-selection-what-makes-a-good-model" class="slide level2 center">
+<h2>Model Selection: What Makes a Good Model?</h2>
+<p>When comparing candidate models, consider:</p>
+<ul>
+<li><strong>Strong performance</strong> — high accuracy, low mean squared error, etc.</li>
+<li><strong>Consistent performance</strong> — similar results across cross-validation or different data splits.</li>
+<li><strong>Reasonable assumptions</strong> — model assumptions are appropriate and not seriously violated.</li>
+<li><strong>Interpretability</strong> — the model is understandable when interpretation is important.</li>
+</ul>
+<h3 id="key-idea">Key Idea</h3>
+<p>There is often <strong>no single best model</strong>.</p>
+<p>We want a model that <strong>generalizes well</strong> while balancing:</p>
+<p><strong>Performance + Consistency + Reasonable assumptions</strong></p>
+</section>
+<section id="biasvariance-tradeoff" class="slide level2 center">
+<h2>Bias–Variance Tradeoff</h2>
+<p>A model’s ability to generalize depends on two sources of error:</p>
+<ul>
+<li><strong>Bias</strong> — error from a model that is too simple to capture important patterns.</li>
+<li><strong>Variance</strong> — error from a model that is too sensitive to the particular training data.</li>
+</ul>
+<h3 id="the-tradeoff">The Tradeoff</h3>
+<ul>
+<li><strong>High bias</strong> → model <strong>underfits</strong> the data.</li>
+<li><strong>High variance</strong> → model <strong>overfits</strong> the data.</li>
+<li><strong>Low bias + low variance</strong> → better potential to <strong>generalize</strong> to unseen data.</li>
+</ul>
+<p>The goal is not to minimize training error alone.</p>
+<blockquote>
+<p><strong>But to Choose a model that captures meaningful patterns without fitting noise.</strong></p>
+</blockquote>
 </section>
 <section id="impact-of-splits-on-performance-parameter-estimates" class="slide level2 center">
 <h2>Impact of Splits on Performance &amp; Parameter Estimates</h2>
@@ -1286,95 +1329,216 @@ Babafemi Sorinolu
 <h3 id="model-tuning">Model Tuning</h3>
 <p>The process of searching for the combination of hyperparameters that yields optimal model validation performance.</p>
 </section>
+<section id="sklearn-methods" class="slide level2 center">
+<h2><code>sklearn</code> methods</h2>
+<ul>
+<li><code>sklearn</code> provides two main methods for hyperparameter optimization</li>
+<li>Grid Search — systematically evaluates every combination in a predefined grid.</li>
+<li>Random Search — randomly samples configurations from specified distributions.</li>
+</ul>
+<p>The choice of search strategy depends largely on the size and structure of the hyperparameter space.</p>
+</section>
 <section id="setting-a-tuning-grid-grid-search" class="slide level2 center">
 <h2>Setting a Tuning Grid &amp; Grid Search</h2>
 <p>A <strong>Tuning Grid</strong> defines a discrete search space over hyperparameter values.</p>
-<pre><code>
-param_grid = {
-&#39;n_estimators&#39;: [50, 100, 200],
-&#39;max_depth&#39;: [3, 5, 10, None],
-&#39;min_samples_split&#39;: [2, 5]
-}
-</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a aria-label="1"></a>param_grid <span class="op">=</span> {</span>
+<span id="cb5-2"><a aria-label="2"></a>    <span class="st">&#39;n_estimators&#39;</span>: [<span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>],</span>
+<span id="cb5-3"><a aria-label="3"></a>    <span class="st">&#39;max_depth&#39;</span>: [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="va">None</span>],</span>
+<span id="cb5-4"><a aria-label="4"></a>    <span class="st">&#39;min_samples_split&#39;</span>: [<span class="dv">2</span>, <span class="dv">5</span>]</span>
+<span id="cb5-5"><a aria-label="5"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><strong>GridSearchCV</strong>: Evaluates all <span class="math inline">\(3 \times 4 \times 2 = 24\)</span> combinations using <span class="math inline">\(K\)</span>-Fold cross-validation.</li>
 <li><strong>Selection</strong>: Picks the combination that yields the highest mean CV score.</li>
 </ul>
 </section>
+<section id="grid-search" class="slide level2 center">
+<h2>Grid Search</h2>
+<ul>
+<li>Covers all possible combinations from the provided grid.</li>
+<li>Can be parallelized easily.</li>
+<li>Integrates cross-validation.</li>
+</ul>
+</section>
+<section id="grid-search-example" class="slide level2 center">
+<h2>Grid search example</h2>
+</section>
+<section id="what-does-gridsearchcv-do" class="slide level2 center">
+<h2>What Does GridSearchCV Do?</h2>
+<ul>
+<li>Generates all hyperparameter combinations.</li>
+<li>Trains and evaluates each combination using cross-validation.</li>
+<li>Calculates the mean CV score for each configuration.</li>
+<li>Identifies the configuration with the highest mean CV score.</li>
+</ul>
+<p>The best configuration can be accessed with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-label="1"></a><span class="co">#| eval: false</span></span>
+<span id="cb6-2"><a aria-label="2"></a></span>
+<span id="cb6-3"><a aria-label="3"></a>grid_search.best_params_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="random-search" class="slide level2 center">
+<h2>Random Search</h2>
+<ul>
+<li>More efficient than grid search when dealing with large hyperparameter spaces.</li>
+<li>Samples a given number of parameter settings from distributions.</li>
+</ul>
+</section>
+<section id="random-search-example" class="slide level2 center">
+<h2>Random search example</h2>
+<div id="6fde2841" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a aria-label="1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> RandomizedSearchCV</span>
+<span id="cb7-2"><a aria-label="2"></a><span class="im">from</span> scipy.stats <span class="im">import</span> randint</span>
+<span id="cb7-3"><a aria-label="3"></a></span>
+<span id="cb7-4"><a aria-label="4"></a>pipe_svc <span class="op">=</span> make_pipeline(CountVectorizer(), SVC())</span>
+<span id="cb7-5"><a aria-label="5"></a></span>
+<span id="cb7-6"><a aria-label="6"></a>param_dist <span class="op">=</span> {</span>
+<span id="cb7-7"><a aria-label="7"></a>    <span class="st">&quot;countvectorizer__max_features&quot;</span>: randint(<span class="dv">100</span>, <span class="dv">2000</span>), </span>
+<span id="cb7-8"><a aria-label="8"></a>    <span class="st">&quot;svc__C&quot;</span>: uniform(<span class="fl">0.1</span>, <span class="fl">1e4</span>),  <span class="co"># loguniform(1e-3, 1e3),</span></span>
+<span id="cb7-9"><a aria-label="9"></a>    <span class="st">&quot;svc__gamma&quot;</span>: loguniform(<span class="fl">1e-5</span>, <span class="fl">1e3</span>),</span>
+<span id="cb7-10"><a aria-label="10"></a>}</span>
+<span id="cb7-11"><a aria-label="11"></a>random_search <span class="op">=</span> RandomizedSearchCV(pipe_svm,                                    </span>
+<span id="cb7-12"><a aria-label="12"></a>                                  param_distributions <span class="op">=</span> param_dist, </span>
+<span id="cb7-13"><a aria-label="13"></a>                                  n_iter<span class="op">=</span><span class="dv">10</span>, </span>
+<span id="cb7-14"><a aria-label="14"></a>                                  n_jobs<span class="op">=-</span><span class="dv">1</span>, </span>
+<span id="cb7-15"><a aria-label="15"></a>                                  return_train_score<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-16"><a aria-label="16"></a></span>
+<span id="cb7-17"><a aria-label="17"></a><span class="co"># Carry out the search</span></span>
+<span id="cb7-18"><a aria-label="18"></a>random_search.fit(X_train, y_train)</span>
+<span id="cb7-19"><a aria-label="19"></a>random_search.best_score_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
 <section id="code-implementing-model-tuning-in-scikit-learn" class="slide level2 center">
 <h2>Code: Implementing Model Tuning in Scikit-Learn</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a aria-label="1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
-<span id="cb6-2"><a aria-label="2"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
-<span id="cb6-3"><a aria-label="3"></a></span>
-<span id="cb6-4"><a aria-label="4"></a><span class="co"># Define candidate model and search space</span></span>
-<span id="cb6-5"><a aria-label="5"></a>rf <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb6-6"><a aria-label="6"></a>param_grid <span class="op">=</span> {</span>
-<span id="cb6-7"><a aria-label="7"></a>    <span class="st">&#39;n_estimators&#39;</span>: [<span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">100</span>],</span>
-<span id="cb6-8"><a aria-label="8"></a>    <span class="st">&#39;max_depth&#39;</span>: [<span class="dv">3</span>, <span class="dv">5</span>, <span class="va">None</span>],</span>
-<span id="cb6-9"><a aria-label="9"></a>    <span class="st">&#39;min_samples_split&#39;</span>: [<span class="dv">2</span>, <span class="dv">5</span>]</span>
-<span id="cb6-10"><a aria-label="10"></a>}</span>
-<span id="cb6-11"><a aria-label="11"></a></span>
-<span id="cb6-12"><a aria-label="12"></a><span class="co"># Set up Grid Search with 5-Fold CV</span></span>
-<span id="cb6-13"><a aria-label="13"></a>grid_search <span class="op">=</span> GridSearchCV(estimator<span class="op">=</span>rf, param_grid<span class="op">=</span>param_grid, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&#39;accuracy&#39;</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb6-14"><a aria-label="14"></a>grid_search.fit(X_train_val, y_train_val)</span>
-<span id="cb6-15"><a aria-label="15"></a></span>
-<span id="cb6-16"><a aria-label="16"></a><span class="bu">print</span>(<span class="st">&quot;Best Parameters:&quot;</span>, grid_search.best_params_)</span>
-<span id="cb6-17"><a aria-label="17"></a><span class="bu">print</span>(<span class="ss">f&quot;Best CV Accuracy: </span><span class="sc">{</span>grid_search<span class="sc">.</span>best_score_<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
-<span id="cb6-18"><a aria-label="18"></a></span>
-<span id="cb6-19"><a aria-label="19"></a><span class="co"># Evaluate optimal model on holdout test set</span></span>
-<span id="cb6-20"><a aria-label="20"></a>best_model <span class="op">=</span> grid_search.best_estimator_</span>
-<span id="cb6-21"><a aria-label="21"></a>test_accuracy <span class="op">=</span> best_model.score(X_test, y_test)</span>
-<span id="cb6-22"><a aria-label="22"></a><span class="bu">print</span>(<span class="ss">f&quot;Final Holdout Test Accuracy: </span><span class="sc">{</span>test_accuracy<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a aria-label="1"></a><span class="co">#| eval: false</span></span>
+<span id="cb8-2"><a aria-label="2"></a></span>
+<span id="cb8-3"><a aria-label="3"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
+<span id="cb8-4"><a aria-label="4"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb8-5"><a aria-label="5"></a></span>
+<span id="cb8-6"><a aria-label="6"></a><span class="co"># Define candidate model and search space</span></span>
+<span id="cb8-7"><a aria-label="7"></a>rf <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb8-8"><a aria-label="8"></a>param_grid <span class="op">=</span> {</span>
+<span id="cb8-9"><a aria-label="9"></a>    <span class="st">&#39;n_estimators&#39;</span>: [<span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">100</span>],</span>
+<span id="cb8-10"><a aria-label="10"></a>    <span class="st">&#39;max_depth&#39;</span>: [<span class="dv">3</span>, <span class="dv">5</span>, <span class="va">None</span>],</span>
+<span id="cb8-11"><a aria-label="11"></a>    <span class="st">&#39;min_samples_split&#39;</span>: [<span class="dv">2</span>, <span class="dv">5</span>]</span>
+<span id="cb8-12"><a aria-label="12"></a>}</span>
+<span id="cb8-13"><a aria-label="13"></a></span>
+<span id="cb8-14"><a aria-label="14"></a><span class="co"># Set up Grid Search with 5-Fold CV</span></span>
+<span id="cb8-15"><a aria-label="15"></a>grid_search <span class="op">=</span> GridSearchCV(estimator<span class="op">=</span>rf, param_grid<span class="op">=</span>param_grid, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&#39;accuracy&#39;</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb8-16"><a aria-label="16"></a>grid_search.fit(X_train_val, y_train_val)</span>
+<span id="cb8-17"><a aria-label="17"></a></span>
+<span id="cb8-18"><a aria-label="18"></a><span class="bu">print</span>(<span class="st">&quot;Best Parameters:&quot;</span>, grid_search.best_params_)</span>
+<span id="cb8-19"><a aria-label="19"></a><span class="bu">print</span>(<span class="ss">f&quot;Best CV Accuracy: </span><span class="sc">{</span>grid_search<span class="sc">.</span>best_score_<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span>
+<span id="cb8-20"><a aria-label="20"></a></span>
+<span id="cb8-21"><a aria-label="21"></a><span class="co"># Evaluate optimal model on holdout test set</span></span>
+<span id="cb8-22"><a aria-label="22"></a>best_model <span class="op">=</span> grid_search.best_estimator_</span>
+<span id="cb8-23"><a aria-label="23"></a>test_accuracy <span class="op">=</span> best_model.score(X_test, y_test)</span>
+<span id="cb8-24"><a aria-label="24"></a><span class="bu">print</span>(<span class="ss">f&quot;Final Holdout Test Accuracy: </span><span class="sc">{</span>test_accuracy<span class="sc">:.4f}</span><span class="ss">&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2 center">
+
+</section>
+<section>
+<section id="optimization-bias" class="title-slide slide level1 center">
+<h1>Optimization bias</h1>
+
+</section>
+<section id="pizza-baking-competition-example" class="slide level2 center">
+<h2>Pizza baking competition example</h2>
+<p>Imagine that you participate in pizza baking competition.</p>
+<div class="{columns}">
+<div class="column" style="width:50%;">
+<p><img role="img" data-src="img/margherita-pizza.jpeg"></p>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><strong>Training phase</strong>: Collecting recipes and practicing at home<br>
+</li>
+<li><strong>Validation phase</strong>: Inviting a group of friends for tasting and feedback<br>
+</li>
+<li><strong>Test phase (competition day)</strong>: Serving the judges<br>
+</li>
+</ul>
+</div></div>
+</section>
+<section id="overfitting-on-the-validation-set" class="slide level2 center">
+<h2>Overfitting on the validation set</h2>
+<div class="{columns}">
+<div class="column" style="width:50%;">
+<ul>
+<li>Your friends loved your pineapple pizza.</li>
+<li>You fine-tune your recipe for the same group of friends, perfecting it for their tastes.</li>
+</ul>
+<p><img role="img" aria-label="Pineapple Pizza" src="img/pineapple-pizza.png" width="60%" alt="Pineapple Pizza"></p>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>On the competition day, you confidently present your perfected pineapple pizza.<br>
+</li>
+<li>Judges are not impressed: <em>“This doesn’t appeal to a broad audience.”</em><br>
+<img role="img" data-src="img/judge_judy.jpg"></li>
+</ul>
+</div></div>
+<p>This is similar to reusing the same validation set again and again to perfect the model for it!</p>
+</section>
+<section id="lesson-overfitting-on-the-validation-set" class="slide level2 smaller center">
+<h2>Lesson: Overfitting on the validation set</h2>
+<ul>
+<li>You tailored your recipe too closely to your friends’ tastes.<br>
+</li>
+<li>They were <strong>not representative</strong> of the broader audience (the judges).<br>
+</li>
+<li>The pizza, while perfect for your validation group, failed to <strong>generalize</strong>.<br>
+</li>
+<li>Over many iterations, the validation set no longer gives an <strong>unbiased estimate</strong> of performance.<br>
+</li>
+<li>That’s why we need a <strong>separate test set</strong> (like a group of tasters who never influenced your pizza).</li>
+</ul>
+</section>
+<section id="optimization-bias-1" class="slide level2 center">
+<h2>Optimization bias</h2>
+<ul>
+<li>Why do we need separate validation and test datasets?</li>
+</ul>
+
+<img role="img" data-src="img/optimization-bias.png" class="r-stretch"></section>
+<section id="mitigating-optimization-bias" class="slide level2 center">
+<h2>Mitigating optimization bias</h2>
+<ul>
+<li>Cross-validation</li>
+<li>Ensembles</li>
+<li>Regularization and choosing a simpler model</li>
+</ul>
 </section>
 <section id="interpreting-validation-curves" class="slide level2 center">
 <h2>Interpreting Validation Curves</h2>
 <p>A <strong>Validation Curve</strong> plots training and validation scores against a single hyperparameter’s values.</p>
-<pre><code>
-High Score ^                       ---------------- (Training Score)
-|                      /
-|         Optimal     /
-|         Point      /
-|           |       /
-|    .------*------.
-|   /               ------------------ (Validation Score)
-|  /                 
+<p>Validation curves are useful for detecting overfitting: - Hyperparameters that are overfitted will have high training scores and low validation scores. - Optimal hyperparameters will perform well on the training sets and the validation sets. <img role="img" data-src="img/val_curve_plot.png"></p>
+<p>## Code: Plotting a Validation Curve</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a aria-label="1"></a><span class="co">#| eval: false</span></span>
+<span id="cb9-2"><a aria-label="2"></a></span>
+<span id="cb9-3"><a aria-label="3"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-4"><a aria-label="4"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb9-5"><a aria-label="5"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> validation_curve</span>
+<span id="cb9-6"><a aria-label="6"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
+<span id="cb9-7"><a aria-label="7"></a></span>
+<span id="cb9-8"><a aria-label="8"></a>param_range <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">11</span>)</span>
+<span id="cb9-9"><a aria-label="9"></a>train_scores, val_scores <span class="op">=</span> validation_curve(</span>
+<span id="cb9-10"><a aria-label="10"></a>    DecisionTreeClassifier(random_state<span class="op">=</span><span class="dv">42</span>), X_train_val, y_train_val,</span>
+<span id="cb9-11"><a aria-label="11"></a>    param_name<span class="op">=</span><span class="st">&quot;max_depth&quot;</span>, param_range<span class="op">=</span>param_range, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&quot;accuracy&quot;</span></span>
+<span id="cb9-12"><a aria-label="12"></a>)</span>
+<span id="cb9-13"><a aria-label="13"></a></span>
+<span id="cb9-14"><a aria-label="14"></a>train_mean, val_mean <span class="op">=</span> np.mean(train_scores, axis<span class="op">=</span><span class="dv">1</span>), np.mean(val_scores, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb9-15"><a aria-label="15"></a></span>
+<span id="cb9-16"><a aria-label="16"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb9-17"><a aria-label="17"></a>plt.plot(param_range, train_mean, label<span class="op">=</span><span class="st">&quot;Training Score&quot;</span>, color<span class="op">=</span><span class="st">&quot;blue&quot;</span>, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>)</span>
+<span id="cb9-18"><a aria-label="18"></a>plt.plot(param_range, val_mean, label<span class="op">=</span><span class="st">&quot;Validation Score&quot;</span>, color<span class="op">=</span><span class="st">&quot;red&quot;</span>, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>)</span>
+<span id="cb9-19"><a aria-label="19"></a>plt.xlabel(<span class="st">&quot;Max Depth&quot;</span>)</span>
+<span id="cb9-20"><a aria-label="20"></a>plt.ylabel(<span class="st">&quot;Accuracy&quot;</span>)</span>
+<span id="cb9-21"><a aria-label="21"></a>plt.title(<span class="st">&quot;Validation Curve for Decision Tree&quot;</span>)</span>
+<span id="cb9-22"><a aria-label="22"></a>plt.legend(loc<span class="op">=</span><span class="st">&quot;best&quot;</span>)</span>
+<span id="cb9-23"><a aria-label="23"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb9-24"><a aria-label="24"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section class="slide level2 center">
 
-Low Score +---------------------------------------&gt; Hyperparameter Value
-|&lt;--- Underfitting ---&gt;|&lt;--- Overfitting ---&gt;|
-</code></pre>
-<ul>
-<li><strong>Underfitting (High Bias)</strong>: Both training and validation scores are low.</li>
-<li><strong>Optimal Region</strong>: Validation score reaches its maximum.</li>
-<li><strong>Overfitting (High Variance)</strong>: Training score continues rising toward 100%, but validation score degrades.</li>
-</ul>
-</section>
-<section id="code-plotting-a-validation-curve" class="slide level2 center">
-<h2>Code: Plotting a Validation Curve</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a aria-label="1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb8-2"><a aria-label="2"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb8-3"><a aria-label="3"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> validation_curve</span>
-<span id="cb8-4"><a aria-label="4"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
-<span id="cb8-5"><a aria-label="5"></a></span>
-<span id="cb8-6"><a aria-label="6"></a>param_range <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">11</span>)</span>
-<span id="cb8-7"><a aria-label="7"></a>train_scores, val_scores <span class="op">=</span> validation_curve(</span>
-<span id="cb8-8"><a aria-label="8"></a>    DecisionTreeClassifier(random_state<span class="op">=</span><span class="dv">42</span>), X_train_val, y_train_val,</span>
-<span id="cb8-9"><a aria-label="9"></a>    param_name<span class="op">=</span><span class="st">&quot;max_depth&quot;</span>, param_range<span class="op">=</span>param_range, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&quot;accuracy&quot;</span></span>
-<span id="cb8-10"><a aria-label="10"></a>)</span>
-<span id="cb8-11"><a aria-label="11"></a></span>
-<span id="cb8-12"><a aria-label="12"></a>train_mean, val_mean <span class="op">=</span> np.mean(train_scores, axis<span class="op">=</span><span class="dv">1</span>), np.mean(val_scores, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb8-13"><a aria-label="13"></a></span>
-<span id="cb8-14"><a aria-label="14"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
-<span id="cb8-15"><a aria-label="15"></a>plt.plot(param_range, train_mean, label<span class="op">=</span><span class="st">&quot;Training Score&quot;</span>, color<span class="op">=</span><span class="st">&quot;blue&quot;</span>, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>)</span>
-<span id="cb8-16"><a aria-label="16"></a>plt.plot(param_range, val_mean, label<span class="op">=</span><span class="st">&quot;Validation Score&quot;</span>, color<span class="op">=</span><span class="st">&quot;red&quot;</span>, marker<span class="op">=</span><span class="st">&quot;o&quot;</span>)</span>
-<span id="cb8-17"><a aria-label="17"></a>plt.xlabel(<span class="st">&quot;Max Depth&quot;</span>)</span>
-<span id="cb8-18"><a aria-label="18"></a>plt.ylabel(<span class="st">&quot;Accuracy&quot;</span>)</span>
-<span id="cb8-19"><a aria-label="19"></a>plt.title(<span class="st">&quot;Validation Curve for Decision Tree&quot;</span>)</span>
-<span id="cb8-20"><a aria-label="20"></a>plt.legend(loc<span class="op">=</span><span class="st">&quot;best&quot;</span>)</span>
-<span id="cb8-21"><a aria-label="21"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb8-22"><a aria-label="22"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="summary-of-best-practices" class="slide level2 center">
-<h2>Summary of Best Practices</h2>
+<p>## Summary of Best Practices</p>
 <ol type="1">
 <li><strong>Keep the Test Set untouched</strong> until all model selection and hyperparameter tuning is finished.</li>
 <li><strong>Use Stratified Splitting</strong> whenever dealing with classification tasks.</li>
@@ -1384,7 +1548,7 @@ Low Score +---------------------------------------&gt; Hyperparameter Value
 </ol>
 
 
-</section>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img role="img" src="data:image/webp;base64,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" class="slide-logo"></p>
