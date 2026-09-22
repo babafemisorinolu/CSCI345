@@ -438,7 +438,7 @@
     "href": "lectures/lecture-05.html#how-do-we-know-if-a-model-works",
     "title": "Lecture 5: Model Validation",
     "section": "How Do We Know If a Model Works?",
-    "text": "How Do We Know If a Model Works?\nWe separate the data so that we can answer three different questions:\n1. Train — Can the model learn?\nUse training data to estimate the model’s parameters.\n2. Validate — Which model should we use?\nUse validation data to compare models and tune hyperparameters.\n3. Test — How well does the final model generalize?\nUse unseen test data to get an unbiased estimate of performance.\nTrain → Choose → Evaluate\n\nKey principle: Never use the test data to make modeling decisions."
+    "text": "How Do We Know If a Model Works?\nWe split the data into separate sets so that we can answer three different questions:\n\nTrain — Can the model learn?\nUse the training data to estimate the model’s parameters.\nValidate — Which model should we use?\nUse the validation data to compare models, select among alternatives, and tune hyperparameters.\nTest — How well does the final model generalize?\nUse unseen test data to obtain an unbiased estimate of the final model’s performance.\n\nTrain → Choose → Evaluate"
   },
   {
     "objectID": "lectures/lecture-05.html#why-is-cross-validation-important",
@@ -459,7 +459,7 @@
     "href": "lectures/lecture-05.html#stratified-splits",
     "title": "Lecture 5: Model Validation",
     "section": "Stratified Splits",
-    "text": "Stratified Splits\nWhat is Stratified Splitting?\nA sampling method that ensures each fold or split contains approximately the same percentage of samples of each target class as the complete dataset.\nWhen to Use?\n\nImbalanced Datasets: e.g., Fraud detection (99% normal, 1% fraud).\nSmall Datasets: Random splits might omit rare classes entirely from train or validation sets.\nClassification Tasks: Standard practice for single-label and multi-label classification."
+    "text": "Stratified Splits\nA sampling method that ensures each fold or split contains approximately the same percentage of samples of each target class as the complete dataset.\nWhen to Use?\n\nImbalanced Datasets: e.g., Fraud detection (99% normal, 1% fraud).\nSmall Datasets: Random splits might omit rare classes entirely from train or validation sets.\nClassification Tasks: Standard practice for single-label and multi-label classification."
   },
   {
     "objectID": "lectures/lecture-05.html#code-creating-train-validation-and-test-sets",
@@ -473,14 +473,14 @@
     "href": "lectures/lecture-05.html#k-fold-cross-validation",
     "title": "Lecture 5: Model Validation",
     "section": "K-Fold Cross-Validation",
-    "text": "K-Fold Cross-Validation\nDefinition\nSplit the training dataset into \\(K\\) equal-sized subsets (folds).\n\nTrain the model on \\(K-1\\) folds.\nValidate the model on the remaining \\(1\\) fold.\nRepeat \\(K\\) times, using each fold as validation once.\nCompute the final performance metric as the average across all \\(K\\) trials:\n\n\\[\\text{CV Score} = \\frac{1}{K} \\sum_{i=1}^{K} \\text{Score}_i\\]\n\nCommon Values for \\(K\\): \\(K=5\\) or \\(K=10\\) (good trade-off between computational cost and bias/variance)."
+    "text": "K-Fold Cross-Validation\nSplit the training dataset into \\(K\\) equal-sized subsets (folds).\n\nTrain the model on \\(K-1\\) folds.\nValidate the model on the remaining \\(1\\) fold.\nRepeat \\(K\\) times, using each fold as validation once.\nCompute the final performance metric as the average across all \\(K\\) trials:\n\n\\[\\text{CV Score} = \\frac{1}{K} \\sum_{i=1}^{K} \\text{Score}_i\\]\n\nCommon Values for \\(K\\): \\(K=5\\) or \\(K=10\\) (good trade-off between computational cost and bias/variance)."
   },
   {
     "objectID": "lectures/lecture-05.html#leave-one-out-cross-validation-loo-cv",
     "href": "lectures/lecture-05.html#leave-one-out-cross-validation-loo-cv",
     "title": "Lecture 5: Model Validation",
     "section": "Leave-One-Out Cross-Validation (LOO-CV)",
-    "text": "Leave-One-Out Cross-Validation (LOO-CV)\nDefinition\nAn extreme case of \\(K\\)-Fold CV where \\(K = N\\) (\\(N\\) = total number of samples).\n\nFor each iteration:\nTrain on \\(N-1\\) samples.\nTest on the single \\(1\\) remaining sample.\nAdvantages:\nUnbiased performance estimation (uses almost all data for training).\nFully deterministic (no randomness in splitting).\nDisadvantages:\nHigh computational cost (fits \\(N\\) separate models).\nHigh variance in evaluation error."
+    "text": "Leave-One-Out Cross-Validation (LOO-CV)\nAn extreme case of \\(K\\)-Fold CV where \\(K = N\\) (\\(N\\) = total number of samples).\n\nFor each iteration:\nTrain on \\(N-1\\) samples.\nTest on the single \\(1\\) remaining sample.\nAdvantages:\nUnbiased performance estimation (uses almost all data for training).\nFully deterministic (no randomness in splitting).\nDisadvantages:\nHigh computational cost (fits \\(N\\) separate models).\nHigh variance in evaluation error."
   },
   {
     "objectID": "lectures/lecture-05.html#code-leave-one-out-cv-in-scikit-learn",
@@ -504,11 +504,11 @@
     "text": "Model Selection\nModel Selection is the process of selecting the optimal machine learning algorithm (or architecture) among a set of candidate models for a given problem.\nExamples of candidate models:\n\nLogistic Regression vs. Support Vector Machines vs. Decision Trees vs. Random Forests.\n\nGoal\nIdentify the model architecture that generalizes best to unseen data."
   },
   {
-    "objectID": "lectures/lecture-05.html#model-selection-what-makes-a-good-model",
-    "href": "lectures/lecture-05.html#model-selection-what-makes-a-good-model",
+    "objectID": "lectures/lecture-05.html#what-makes-a-good-model",
+    "href": "lectures/lecture-05.html#what-makes-a-good-model",
     "title": "Lecture 5: Model Validation",
-    "section": "Model Selection: What Makes a Good Model?",
-    "text": "Model Selection: What Makes a Good Model?\nWhen comparing candidate models, consider:\n\nStrong performance — high accuracy, low mean squared error, etc.\nConsistent performance — similar results across cross-validation or different data splits.\nReasonable assumptions — model assumptions are appropriate and not seriously violated.\nInterpretability — the model is understandable when interpretation is important.\n\nKey Idea\nThere is often no single best model.\nWe want a model that generalizes well while balancing:\nPerformance + Consistency + Reasonable assumptions"
+    "section": "What Makes a Good Model?",
+    "text": "What Makes a Good Model?\nWhen comparing candidate models, consider:\n\nStrong performance — high accuracy, low mean squared error, etc.\nConsistent performance — similar results across cross-validation or different data splits.\nReasonable assumptions — model assumptions are appropriate and not seriously violated.\nInterpretability — the model is understandable when interpretation is important.\n\nKey Idea\nThere is often no single best model.\nWe want a model that generalizes well while balancing:\nPerformance + Consistency + Reasonable assumptions"
   },
   {
     "objectID": "lectures/lecture-05.html#biasvariance-tradeoff",
@@ -641,7 +641,14 @@
     "href": "lectures/lecture-05.html#interpreting-validation-curves",
     "title": "Lecture 5: Model Validation",
     "section": "Interpreting Validation Curves",
-    "text": "Interpreting Validation Curves\nA Validation Curve plots training and validation scores against a single hyperparameter’s values.\nValidation curves are useful for detecting overfitting: - Hyperparameters that are overfitted will have high training scores and low validation scores. - Optimal hyperparameters will perform well on the training sets and the validation sets. \n## Code: Plotting a Validation Curve\n#| eval: false\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom sklearn.model_selection import validation_curve\nfrom sklearn.tree import DecisionTreeClassifier\n\nparam_range = np.arange(1, 11)\ntrain_scores, val_scores = validation_curve(\n    DecisionTreeClassifier(random_state=42), X_train_val, y_train_val,\n    param_name=\"max_depth\", param_range=param_range, cv=5, scoring=\"accuracy\"\n)\n\ntrain_mean, val_mean = np.mean(train_scores, axis=1), np.mean(val_scores, axis=1)\n\nplt.figure(figsize=(8, 4))\nplt.plot(param_range, train_mean, label=\"Training Score\", color=\"blue\", marker=\"o\")\nplt.plot(param_range, val_mean, label=\"Validation Score\", color=\"red\", marker=\"o\")\nplt.xlabel(\"Max Depth\")\nplt.ylabel(\"Accuracy\")\nplt.title(\"Validation Curve for Decision Tree\")\nplt.legend(loc=\"best\")\nplt.grid(True)\nplt.show()"
+    "text": "Interpreting Validation Curves\nA Validation Curve plots training and validation scores against a single hyperparameter’s values.\nValidation curves are useful for detecting overfitting: - Hyperparameters that are overfitted will have high training scores and low validation scores. - Optimal hyperparameters will perform well on the training sets and the validation sets."
+  },
+  {
+    "objectID": "lectures/lecture-05.html#code-plotting-a-validation-curve",
+    "href": "lectures/lecture-05.html#code-plotting-a-validation-curve",
+    "title": "Lecture 5: Model Validation",
+    "section": "Code: Plotting a Validation Curve",
+    "text": "Code: Plotting a Validation Curve\n#| eval: false\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom sklearn.model_selection import validation_curve\nfrom sklearn.tree import DecisionTreeClassifier\n\nparam_range = np.arange(1, 11)\ntrain_scores, val_scores = validation_curve(\n    DecisionTreeClassifier(random_state=42), X_train_val, y_train_val,\n    param_name=\"max_depth\", param_range=param_range, cv=5, scoring=\"accuracy\"\n)\n\ntrain_mean, val_mean = np.mean(train_scores, axis=1), np.mean(val_scores, axis=1)\n\nplt.figure(figsize=(8, 4))\nplt.plot(param_range, train_mean, label=\"Training Score\", color=\"blue\", marker=\"o\")\nplt.plot(param_range, val_mean, label=\"Validation Score\", color=\"red\", marker=\"o\")\nplt.xlabel(\"Max Depth\")\nplt.ylabel(\"Accuracy\")\nplt.title(\"Validation Curve for Decision Tree\")\nplt.legend(loc=\"best\")\nplt.grid(True)\nplt.show()"
   },
   {
     "objectID": "index.html",
