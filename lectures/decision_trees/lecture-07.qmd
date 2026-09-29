@@ -20,6 +20,38 @@ format:
 
 # Decision Trees
 
+## Structure
+
+![Decision tree showing root, internal nodes, edges, and leaf nodes](../../img/decision_tree.jpg)
+
+
+## Terminology
+
+A decision tree asks a sequence of questions to make a prediction
+
+| **Component** | **What it does** |
+|---|---|
+| 🌱 **Root** | Starting point; contains the **entire dataset** |
+| ❓ **Internal node** | Applies a **question / decision rule** |
+| → **Edge** | Represents the **outcome** of a rule |
+| 🍃 **Leaf** | End of a path; produces the **final prediction** |
+| ↕ **Depth** | Number of edges from the **root** to a node |
+
+::: {.callout-note appearance="simple"}
+### The basic idea
+
+$$
+\boxed{\text{Question} \;\rightarrow\; \text{Split data} \;\rightarrow\;
+\text{Ask another question} \;\rightarrow\; \text{Predict}}
+$$
+:::
+
+**Classification:** a leaf predicts a **class** (e.g., $+$ or $-$).
+
+**Regression:** a leaf predicts a **numeric value** (typically the mean of the targets in that leaf).
+
+---
+
 ## CART Tree Construction Algorithm
 
 * Goal: Create the *smallest/simplest* tree that fits the training data
@@ -114,6 +146,19 @@ values give n minus 1 split points.
   * $(1-p_i)$ is the probability of making a mistake for class $i$.
 * Can be rewritten as:
   $\displaystyle \phi(\mathbf{p}) = 1 - \sum_i p_i^2$
+
+
+## Impurity Formulas: Gini vs. Entropy
+
+| Measure | Formula at Node $i$ | Scikit-Learn Flag | Behavior |
+| --- | --- | --- | --- |
+| **Gini Impurity** | $1 - \sum_{k=1}^{K} p_{ki}^{2}$ | `criterion="gini"` _(Default)_ | Measures misclassification probability. Reaches peak at equal class distribution ($p\_{ki} = 1/K$). |
+| **Entropy** |  $-\sum_{k=1}^{K} p_{ki}\log_{2}(p_{ki})$ | `criterion="entropy"` | Information-theoretic measure of uncertainty/disorder. Peak occurs when $p\_{ki} = 1/K$. |
+
+> **Note:** $p_{ki}$ represents the proportion of instances of class $k$ present at node $i$.
+
+---
+
 
 ## What the Numbers Look Like
 
@@ -313,6 +358,91 @@ $MSE_{\text{root}} = \frac{25+9+16+16+4+36}{6} \approx 17.67$
 
 Same algorithm, same weighted average, different $\phi$. Low MSE means a tight cluster of target values.
 
+# Worked Example: Gini Impurity Gain Calculation
+
+## Scenario
+
+ Evaluating a binary split on a parent node with $N = 10$ samples:
+
+ - 6 Arabica
+- 4 Robusta
+
+### Step 1: Calculate Parent Node Impurity
+
+ $$
+p_{\text{Arabica}} = \frac{6}{10} = 0.6,
+\qquad
+p_{\text{Robusta}} = \frac{4}{10} = 0.4
+$$
+
+ $$
+\text{Gini}_{\text{parent}}
+=
+1 - (0.6^2 + 0.4^2)
+=
+1 - (0.36 + 0.16)
+=
+\mathbf{0.480}
+$$
+
+---
+
+### Step 2: Evaluate Split Outcome
+
+ Suppose the candidate feature $X_1 \le 8.0$ splits the 10 samples into two child nodes:
+
+- **Left Child ($N_L = 5$):** 5 Arabica, 0 Robusta
+
+  $$
+  \begin{aligned}
+  \text{Gini}_L
+  &= 1 - \left(1.0^2 + 0.0^2\right) \\
+  &= \mathbf{0.000}
+  \qquad \text{(Pure Node)}
+  \end{aligned}
+  $$
+
+- **Right Child ($N_R = 5$):** 1 Arabica, 4 Robusta
+
+  $$
+  \begin{aligned}
+  \text{Gini}_R
+  &= 1 - \left(0.2^2 + 0.8^2\right) \\
+  &= 1 - (0.04 + 0.64) \\
+  &= \mathbf{0.320}
+  \end{aligned}
+  $$
+
+---
+
+### Step 3: Compute Weighted Child Impurity & Gain
+
+ $$
+\text{Gini}_{\text{split}}
+=
+\frac{5}{10}(0.000)
++
+\frac{5}{10}(0.320)
+=
+\mathbf{0.160}
+$$
+
+ $$
+\Delta \text{Gini}
+=
+\text{Gini}_{\text{parent}}
+-
+\text{Gini}_{\text{split}}
+=
+0.480 - 0.160
+=
+\mathbf{0.320}
+$$
+
+ > **Decision Rule:** CART selects the split that maximizes impurity reduction ($\Delta \text{Gini}$).
+
+---
+
 ## Issues to Consider
 
 * Default algorithm builds tree until the leaves are 100% pure.
@@ -344,3 +474,84 @@ The left tree gets every training point right. The extra slivers are chasing noi
 ![The same two class data before and after a 45 degree rotation, with the tree decision boundary drawn on each](figs_v2/rotation.svg)
 
 Every split is axis-aligned, so a boundary that is not axis-aligned has to be approximated by a staircase. Same data, same labels, much bigger tree.
+
+# Scikit-Learn Implementation
+
+## Basic Syntax
+
+ In `scikit-learn`, decision tree classifiers are provided by the `DecisionTreeClassifier` class.
+
+```
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+
+# 1. Load dataset
+data = pd.read_csv("coffee.csv")
+
+X = data[["sweetness", "uniformity", "acidity"]]
+y = data["species"]
+
+# 2. Train-test split
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42
+)
+
+# 3. Instantiate and fit model
+dtc = DecisionTreeClassifier(random_state=42)
+dtc.fit(X_train, y_train)
+
+# 4. Predict classes and probabilities
+y_pred = dtc.predict(X_test)
+y_prob = dtc.predict_proba(X_test)
+classes = dtc.classes_
+```
+
+---
+
+## 5\. Early Stopping (Pre-Pruning)
+
+ Unconstrained decision trees tend to grow until every leaf is 100% pure, memorizing training noise and leading to **severe overfitting**.
+
+ **Early stopping** restricts tree growth during training using stopping thresholds:
+
+ | Hyperparameter | Default | Description / Constraint Function |
+| --- | --- | --- |
+| `max_depth` | `None` | Caps maximum distance from root to leaf node. |
+| `min_samples_split` | `2` | Minimum samples (int or float fraction) required to attempt a split. |
+| `min_samples_leaf` | `1` | Minimum samples required in resulting left and right child nodes. |
+| `max_leaf_nodes` | `None` | Limits total leaf count; expands best nodes first. |
+
+---
+
+## Early Stopping Code Example
+
+```
+from sklearn.tree import DecisionTreeClassifier
+
+# Configure pre-pruning / early stopping parameters
+dtc_constrained = DecisionTreeClassifier(
+    criterion="gini",
+    max_depth=3,             # Maximum tree depth of 3
+    min_samples_split=10,    # Needs >= 10 samples to consider splitting
+    min_samples_leaf=4,      # Every leaf must have >= 4 samples
+    max_leaf_nodes=8,        # Maximum of 8 total leaves
+    random_state=42
+)
+
+# Train model on training set
+dtc_constrained.fit(X_train, y_train)
+
+# Evaluate generalization
+print("Train Score:", dtc_constrained.score(X_train, y_train))
+print("Test Score: ", dtc_constrained.score(X_test, y_test))
+```
+
+---
+
+## Google Colab
+
+[Open the notebook in Google Colab](https://colab.research.google.com/drive/1joqQfvPDQFU9vW9wSlGT_U9R9XHFLRvZ?usp=sharing)
