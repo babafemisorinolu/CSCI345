@@ -1,430 +1,360 @@
 [
   {
-    "objectID": "lectures/lecture-04_3.html#evaluating-models-with-plots",
-    "href": "lectures/lecture-04_3.html#evaluating-models-with-plots",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Evaluating models with plots",
-    "text": "Evaluating models with plots\n\nNumeric metrics tell us how well a model performs.\nPlots help us understand how the model is behaving.\nVisualizations can help us:\n\nExamine model fit.\nIdentify patterns in errors.\nCompare models.\nDetect possible overfitting or underfitting.\nUnderstand how features affect predictions.\n\n\n\n\nClassification\n\nDecision boundary plot\nROC curve\nConfusion matrix\n\n\nRegression\n\nPrediction error plot\nPartial dependence plot"
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#decision-boundary-plots",
-    "href": "lectures/lecture-04_3.html#decision-boundary-plots",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Decision boundary plots",
-    "text": "Decision boundary plots\n\nA decision boundary separates regions of the feature space associated with different classes.\nA decision boundary plot shows how a classifier assigns observations to different classes.\nParticularly useful when there are two or three input features.\nWe can use the plot to assess:\n\nWhether the boundary makes sense.\nWhether the model is too simple.\nWhether the model may be overfitting."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#comparing-decision-boundaries",
-    "href": "lectures/lecture-04_3.html#comparing-decision-boundaries",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Comparing decision boundaries",
-    "text": "Comparing decision boundaries\n\n\nLogistic Regression\n\nProduces a relatively simple, linear boundary.\nEasier to interpret.\nMay underfit when the relationship between features and classes is complex.\n\n\nk-Nearest Neighbors\n\nCan produce more irregular boundaries.\nFlexible enough to capture local patterns.\nVery irregular boundaries may indicate overfitting.\n\n\nQuestion: Which model would you trust more if the decision boundary closely follows every training observation?"
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#interpreting-a-decision-boundary",
-    "href": "lectures/lecture-04_3.html#interpreting-a-decision-boundary",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Interpreting a decision boundary",
-    "text": "Interpreting a decision boundary\n\nEach region of the plot corresponds to a predicted class.\nThe boundary indicates where the model changes its prediction.\nThe observed data points allow us to compare:\n\nPredicted class\nActual class\n\nMisclassified observations appear in a region belonging to the wrong class.\n\nQuestion: If an observation lies in the “Diabetic” region but is actually nondiabetic, what has happened?\n\nThe model has made a false positive."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#roc-curves-and-auc",
-    "href": "lectures/lecture-04_3.html#roc-curves-and-auc",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "ROC curves and AUC",
-    "text": "ROC curves and AUC\n\nAn ROC curve evaluates a binary classifier across many classification thresholds.\nThe x-axis shows the False Positive Rate (FPR):\n\n\\[\nFPR = \\frac{FP}{FP + TN}\n\\]\n\nThe y-axis shows the True Positive Rate (TPR), also called recall:\n\n\\[\nTPR = \\frac{TP}{TP + FN}\n\\]\n\nEach point on the ROC curve corresponds to a different decision threshold."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#understanding-the-roc-curve",
-    "href": "lectures/lecture-04_3.html#understanding-the-roc-curve",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Understanding the ROC curve",
-    "text": "Understanding the ROC curve\n\n\nPerfect classifier\n\nAUC = 1.0\nTPR = 1\nFPR = 0\nCurve reaches the upper-left corner.\n\nRandom classifier\n\nAUC = 0.5\nROC curve follows the diagonal.\nNo useful ability to distinguish the classes.\n\n\nGood classifier\n\nROC curve lies above the diagonal.\nHigher AUC generally indicates better ranking performance.\nExample:\n\n\\[\nAUC = 0.84\n\\]\n\nImportant: AUC summarizes performance across thresholds; it does not select the optimal threshold for you."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#what-happens-when-we-change-the-threshold",
-    "href": "lectures/lecture-04_3.html#what-happens-when-we-change-the-threshold",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "What happens when we change the threshold?",
-    "text": "What happens when we change the threshold?\n\nClassification models often produce a score or probability.\nWe convert that score into a class using a threshold.\nHigher threshold:\n\nFewer positive predictions.\nUsually fewer false positives.\nUsually more false negatives.\n\nLower threshold:\n\nMore positive predictions.\nUsually more true positives.\nUsually more false positives.\n\n\n\n\nHigh threshold\n\nHigher precision\nLower recall\nUseful when false positives are costly\n\n\nLow threshold\n\nHigher recall\nLower precision\nUseful when false negatives are costly"
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#roc-curve-an-important-distinction",
-    "href": "lectures/lecture-04_3.html#roc-curve-an-important-distinction",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "ROC curve: an important distinction",
-    "text": "ROC curve: an important distinction\n\nAUC evaluates how well the model ranks positive observations above negative observations.\nThe ROC curve shows the trade-off between TPR and FPR across thresholds.\nAUC can tell us which model has better overall discrimination.\nAUC does not tell us which threshold to use in practice.\n\nQuestion: Suppose missing a positive case is extremely costly. Would we necessarily choose the threshold that gives the highest AUC?\nNo. AUC evaluates the model across thresholds; the operational threshold should reflect the cost of false positives vs. false negatives."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#roc-curves-in-scikit-learn",
-    "href": "lectures/lecture-04_3.html#roc-curves-in-scikit-learn",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "ROC curves in scikit-learn",
-    "text": "ROC curves in scikit-learn\nfrom sklearn.metrics import RocCurveDisplay\n\nRocCurveDisplay.from_estimator(\n    model,\n    X_test,\n    y_test\n)\n\nfrom_estimator() uses the fitted model to generate predictions.\nThe ROC curve is created using the model’s prediction scores.\nWe can also calculate the AUC directly:\n\nfrom sklearn.metrics import roc_auc_score\n\ny_score = model.predict_proba(X_test)[:, 1]\n\nauc = roc_auc_score(y_test, y_score)\n\nprint(\"AUC:\", auc)"
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#prediction-error-plots",
-    "href": "lectures/lecture-04_3.html#prediction-error-plots",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Prediction error plots",
-    "text": "Prediction error plots\n\nA prediction error plot, also called a residual plot, shows:\n\nPredicted values on the x-axis.\nPrediction errors (residuals) on the y-axis.\n\n\n\\[\ne_i = y_i - \\hat{y}_i\n\\]\n\nA reference line at:\n\n\\[\ne_i = 0\n\\]\nis usually included.\n\nWe use the plot to examine whether the model’s errors show a systematic pattern."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#what-does-a-good-prediction-error-plot-look-like",
-    "href": "lectures/lecture-04_3.html#what-does-a-good-prediction-error-plot-look-like",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "What does a good prediction error plot look like?",
-    "text": "What does a good prediction error plot look like?\nIdeal pattern\n\nResiduals are randomly scattered around zero.\nPoints appear both above and below zero.\nNo obvious relationship between predicted values and residuals.\nSimilar spread across the range of predictions.\n\nWarning signs\n\nCurved pattern → possible nonlinear relationship.\nFunnel-shaped pattern → changing error variance.\nLarge isolated residuals → possible outliers.\nSystematic pattern → model may be missing important information."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#interpreting-prediction-error-plots",
-    "href": "lectures/lecture-04_3.html#interpreting-prediction-error-plots",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Interpreting prediction error plots",
-    "text": "Interpreting prediction error plots\n\n\nRandom pattern\n\nResiduals centered around zero.\nNo obvious structure.\nModel may be adequately capturing the relationship.\n\n\nSystematic pattern\n\nResiduals follow a curve or other pattern.\nSuggests the model may be missing something.\nConsider:\n\nNonlinear features.\nAdditional predictors.\nA different model.\n\n\n\nQuestion: What might a funnel-shaped residual plot tell us?\n\nThe variability of the prediction errors changes across the range of predicted values."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#creating-a-prediction-error-plot",
-    "href": "lectures/lecture-04_3.html#creating-a-prediction-error-plot",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Creating a prediction error plot",
-    "text": "Creating a prediction error plot\nfrom sklearn.linear_model import LinearRegression\nimport matplotlib.pyplot as plt\n\nmodel = LinearRegression()\nmodel.fit(X, y)\n\ny_pred = model.predict(X)\n\nresiduals = y - y_pred\n\nplt.scatter(y_pred, residuals)\nplt.axhline(0, color=\"black\", linestyle=\"--\")\n\nplt.xlabel(\"Predicted values\")\nplt.ylabel(\"Residuals\")\nplt.show()\n\ny_pred contains the model’s predictions.\nresiduals measures how far each prediction is from the observed value.\nWe look for patterns, not just the average size of the errors."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#partial-dependence-plots",
-    "href": "lectures/lecture-04_3.html#partial-dependence-plots",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Partial dependence plots",
-    "text": "Partial dependence plots\n\nA partial dependence plot (PDP) shows how an input feature affects the model’s average prediction.\nWe vary one feature while keeping the other features at their observed values.\nThe model makes predictions for these modified observations.\nWe then average the predictions.\n\nFor feature \\(x_j\\):\n\\[\nPD(x_j)\n=\n\\frac{1}{n}\n\\sum_{i=1}^{n}\nf(x_j, x_{i,-j})\n\\]\n\n\\(x_j\\) = feature being investigated.\n\\(x_{i,-j}\\) = the other features for observation \\(i\\)."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#interpreting-a-partial-dependence-plot",
-    "href": "lectures/lecture-04_3.html#interpreting-a-partial-dependence-plot",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Interpreting a partial dependence plot",
-    "text": "Interpreting a partial dependence plot\n\nA PDP answers:\n\n\n“On average, how does changing this feature affect the model’s prediction?”\n\n\n\nPositive relationship\n\nPDP increases as the feature increases.\nHigher feature values are associated with higher predictions.\n\n\nNegative relationship\n\nPDP decreases as the feature increases.\nHigher feature values are associated with lower predictions.\n\n\n\nA nonlinear curve indicates that the model’s relationship with the feature changes across its range.\nPDPs describe the model’s behavior, not necessarily a causal relationship."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#partial-dependence-and-the-observed-data",
-    "href": "lectures/lecture-04_3.html#partial-dependence-and-the-observed-data",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Partial dependence and the observed data",
-    "text": "Partial dependence and the observed data\n\nPDPs are most reliable where we have many observations.\nPredictions at values far outside the observed data can be misleading.\nIt is useful to show the distribution of the feature along the x-axis.\n\nDeciles\n\nDivide the observed distribution into ten approximately equal groups.\nVertical marks can show where observations occur.\n\nQuestion: Why should we be cautious about interpreting a PDP where there are very few observations?"
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#partial-dependence-in-scikit-learn",
-    "href": "lectures/lecture-04_3.html#partial-dependence-in-scikit-learn",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Partial dependence in scikit-learn",
-    "text": "Partial dependence in scikit-learn\nfrom sklearn.inspection import PartialDependenceDisplay\n\nPartialDependenceDisplay.from_estimator(\n    model,\n    X,\n    features=[0]\n)\n\nplt.show()\n\nmodel must already be fitted.\nX contains the input features.\nfeatures=[0] requests the PDP for the first feature.\nWe can request multiple features:\n\nPartialDependenceDisplay.from_estimator(\n    model,\n    X,\n    features=[0, 1, 2]\n)"
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#classification-vs.-regression-plots",
-    "href": "lectures/lecture-04_3.html#classification-vs.-regression-plots",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Classification vs. regression plots",
-    "text": "Classification vs. regression plots\n\n\n\n\n\n\n\n\n\nModel Type\nPlot\nWhat does it show?\nWhat can we learn?\n\n\n\n\nClassification\nDecision boundary\nHow features are divided into classes\nModel complexity, fit, possible overfitting\n\n\nClassification\nROC curve\nTPR vs. FPR across thresholds\nClassification performance across thresholds\n\n\nClassification\nConfusion matrix\nCounts of TP, TN, FP, FN\nTypes of classification errors\n\n\nRegression\nPrediction error\nResiduals vs. predictions\nPatterns, outliers, changing variance\n\n\nRegression\nPartial dependence\nFeature vs. average prediction\nHow the model uses an individual feature"
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#which-plot-should-we-use",
-    "href": "lectures/lecture-04_3.html#which-plot-should-we-use",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Which plot should we use?",
-    "text": "Which plot should we use?\n\n\n\n\n\n\n\nQuestion\nUseful Plot\n\n\n\n\nHow does a classifier divide the feature space?\nDecision boundary\n\n\nHow does classification performance change with the threshold?\nROC curve\n\n\nHow well does the classifier distinguish positive and negative cases?\nROC + AUC\n\n\nAre regression errors randomly distributed?\nPrediction error plot\n\n\nAre there patterns in the regression residuals?\nPrediction error plot\n\n\nHow does one feature affect model predictions?\nPartial dependence plot\n\n\nIs a feature’s relationship with predictions linear or nonlinear?\nPartial dependence plot"
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#questions-for-you",
-    "href": "lectures/lecture-04_3.html#questions-for-you",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Questions for you",
-    "text": "Questions for you\nSelect all of the following statements which are TRUE.\n\n\nA decision boundary plot can help us identify possible overfitting in a classifier.\n\n\nAn ROC curve shows true positive rate versus false positive rate across different thresholds.\n\n\nAn AUC of 0.5 indicates a perfect classifier.\n\n\nA good prediction error plot should show residuals randomly scattered around zero.\n\n\nA curved pattern in a prediction error plot may indicate that a model is missing a nonlinear relationship.\n\n\nA partial dependence plot shows the causal effect of a feature on the target."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#iclicker-exercise-1",
-    "href": "lectures/lecture-04_3.html#iclicker-exercise-1",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "iClicker Exercise 1",
-    "text": "iClicker Exercise 1\nWhich statements about ROC curves are TRUE?\n\n\nA perfect classifier has an AUC of 1.0.\n\n\nA random classifier has an AUC of approximately 0.5.\n\n\nIncreasing the classification threshold generally decreases both TPR and FPR.\n\n\nAUC automatically identifies the optimal classification threshold.\n\n\nThe ROC curve can be used to examine classifier performance across different thresholds."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#iclicker-exercise-2",
-    "href": "lectures/lecture-04_3.html#iclicker-exercise-2",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "iClicker Exercise 2",
-    "text": "iClicker Exercise 2\nWhich statements about regression plots are TRUE?\n\n\nResiduals are calculated as observed minus predicted values.\n\n\nA random scatter of residuals around zero is generally desirable.\n\n\nA funnel-shaped residual plot can indicate changing error variance.\n\n\nA systematic curve in the residuals can indicate a missing nonlinear relationship.\n\n\nA partial dependence plot directly proves that a feature causes changes in the target."
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#group-work-evaluate-a-fitted-model",
-    "href": "lectures/lecture-04_3.html#group-work-evaluate-a-fitted-model",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Group Work: Evaluate a fitted model",
-    "text": "Group Work: Evaluate a fitted model\nFor your assigned model:\n\nGenerate the appropriate evaluation plots.\nExamine the plots carefully.\nIdentify any unusual patterns.\nCompare the model with another fitted model.\nBe prepared to answer:\n\nWhat does the plot tell us that a single numeric metric does not?\nConsider:\n\nModel complexity\nErrors and outliers\nThreshold trade-offs\nFeature effects\nPossible overfitting or underfitting"
-  },
-  {
-    "objectID": "lectures/lecture-04_3.html#key-takeaways",
-    "href": "lectures/lecture-04_3.html#key-takeaways",
-    "title": "Lecture 4 - 3: Evaluating Models with Plots",
-    "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nPlots complement numeric metrics when evaluating machine learning models.\nDecision boundary plots show how classifiers divide the feature space.\nROC curves show the trade-off between true positive rate and false positive rate across thresholds.\nAUC summarizes a classifier’s ranking performance across thresholds.\nPrediction error plots help identify patterns, outliers, and problems with regression model fit.\nPartial dependence plots show how an input feature affects the model’s average prediction.\nA good model evaluation combines metrics + visualizations + domain knowledge."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#what-is-a-loss-function",
-    "href": "lectures/lecture-04_2.html#what-is-a-loss-function",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "What is a loss function?",
-    "text": "What is a loss function?\n\nA loss function measures how close a model’s predictions are to the actual values.\nRegression models are fitted by selecting weights that minimize the loss.\nCommon regression loss functions:\n\nAbsolute loss (L1)\nSquared loss (L2)\nHuber loss\nQuantile loss\n\nThe choice of loss function affects how the model responds to large errors and outliers."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#residuals-and-loss",
-    "href": "lectures/lecture-04_2.html#residuals-and-loss",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Residuals and loss",
-    "text": "Residuals and loss\n\nThe residual (prediction error) is the difference between the observed and predicted values: \\[e_i = y_i - \\hat{y}_i\\]\nA loss function transforms the residual into a measure of error.\nSmall loss → prediction is close to the observed value.\nLarge loss → prediction is far from the observed value.\nDuring model fitting, we choose parameters that minimize the overall loss."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#absolute-loss",
-    "href": "lectures/lecture-04_2.html#absolute-loss",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Absolute loss",
-    "text": "Absolute loss\n\nAbsolute loss measures the absolute value of the prediction error: \\[L_1(y, \\hat{y}) = |y - \\hat{y}|\\]\nAlso called L1 loss.\nAll errors are penalized proportionally to their size.\nThe Mean Absolute Error (MAE) is the average absolute loss: \\[MAE = \\frac{1}{n}\\sum_{i=1}^{n}|y_i-\\hat{y}_i|\\]\nLess sensitive to outliers than squared loss."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#squared-loss",
-    "href": "lectures/lecture-04_2.html#squared-loss",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Squared loss",
-    "text": "Squared loss\n\nSquared loss squares the prediction error: \\[L_2(y, \\hat{y}) = (y-\\hat{y})^2\\]\nAlso called L2 loss.\nLarge errors receive much larger penalties.\nThe Mean Squared Error (MSE) is the average squared loss: \\[MSE = \\frac{1}{n}\\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2\\]\nOrdinary linear regression is typically fitted using least squares, which minimizes squared loss."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#absolute-vs.-squared-loss",
-    "href": "lectures/lecture-04_2.html#absolute-vs.-squared-loss",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Absolute vs. squared loss",
-    "text": "Absolute vs. squared loss\n\n\n\nProperty\nAbsolute Loss\nSquared Loss\n\n\n\n\nFormula\n\\(|y-\\hat{y}|\\)\n\\((y-\\hat{y})^2\\)\n\n\nAlso called\nL1 loss\nL2 loss\n\n\nPenalizes large errors\nProportionally\nMuch more heavily\n\n\nSensitive to outliers\nLower\nHigher\n\n\nCommon metric\nMAE\nMSE / RMSE"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#why-does-squared-loss-care-about-outliers",
-    "href": "lectures/lecture-04_2.html#why-does-squared-loss-care-about-outliers",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Why does squared loss care about outliers?",
-    "text": "Why does squared loss care about outliers?\n\nSquaring an error makes large prediction errors disproportionately important.\nExample:\n\nError of 2 → squared loss = 4\nError of 10 → squared loss = 100\n\nA single extreme observation can therefore have a large influence on the fitted regression line.\nQuestion: Which loss would you prefer when your data contain substantial outliers?"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#huber-loss",
-    "href": "lectures/lecture-04_2.html#huber-loss",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Huber loss",
-    "text": "Huber loss\n\nHuber loss combines squared and absolute loss.\nFor small errors, it behaves like squared loss.\nFor large errors, it behaves like absolute loss.\nThis gives us:\n\nSmooth optimization near zero.\nLess sensitivity to outliers than squared loss.\n\nA hyperparameter \\(\\delta\\) controls where the loss transitions from quadratic to linear."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#huber-loss-the-best-of-both",
-    "href": "lectures/lecture-04_2.html#huber-loss-the-best-of-both",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Huber loss: the best of both?",
-    "text": "Huber loss: the best of both?\n\\[\nL_\\delta(e) =\n\\begin{cases}\n\\frac{1}{2}e^2, & |e| \\leq \\delta \\\\\n\\delta\\left(|e|-\\frac{1}{2}\\delta\\right), & |e| &gt; \\delta\n\\end{cases}\n\\]\n\nSmall errors: quadratic → similar to squared loss.\nLarge errors: linear → similar to absolute loss.\nSmaller \\(\\delta\\): Huber behaves more like absolute loss.\nLarger \\(\\delta\\): Huber behaves more like squared loss."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#quantile-loss",
-    "href": "lectures/lecture-04_2.html#quantile-loss",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Quantile loss",
-    "text": "Quantile loss\n\nQuantile loss allows us to penalize underprediction and overprediction differently.\nUseful for quantile regression, where we predict a specific quantile of the target distribution.\nThe loss depends on the quantile \\(\\tau\\) and whether the prediction is above or below the observed value.\nExamples:\n\n\\(\\tau=0.50\\) → median regression.\n\\(\\tau=0.75\\) → 75th percentile.\n\\(\\tau=0.90\\) → 90th percentile."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#quantile-loss-and-asymmetric-penalties",
-    "href": "lectures/lecture-04_2.html#quantile-loss-and-asymmetric-penalties",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Quantile loss and asymmetric penalties",
-    "text": "Quantile loss and asymmetric penalties\n\nFor small quantiles, overpredictions receive a larger penalty.\nFor large quantiles, underpredictions receive a larger penalty.\nAt \\(\\tau=0.50\\), underprediction and overprediction are penalized equally.\nQuestion: If we are predicting the 90th percentile, should an underprediction or an overprediction receive the larger penalty?"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#choosing-a-loss-function",
-    "href": "lectures/lecture-04_2.html#choosing-a-loss-function",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Choosing a loss function",
-    "text": "Choosing a loss function\n\n\n\n\n\n\n\n\nLoss Function\nKey Property\nWhen to Consider\n\n\n\n\nAbsolute (L1)\nLinear penalty\nRobust to outliers\n\n\nSquared (L2)\nLarge errors heavily penalized\nStandard linear regression\n\n\nHuber\nSquared near 0, linear for large errors\nWant robustness + smooth optimization\n\n\nQuantile\nAsymmetric penalties\nPredicting specific quantiles"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#loss-functions-in-scikit-learn",
-    "href": "lectures/lecture-04_2.html#loss-functions-in-scikit-learn",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Loss functions in scikit-learn",
-    "text": "Loss functions in scikit-learn\n\nAbsolute loss:\nfrom sklearn.metrics import mean_absolute_error\nSquared loss:\nfrom sklearn.metrics import mean_squared_error\nQuantile loss:\nfrom sklearn.metrics import mean_pinball_loss\nHuber regression:\nfrom sklearn.linear_model import HuberRegressor"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#comparing-loss-functions-in-scikit-learn",
-    "href": "lectures/lecture-04_2.html#comparing-loss-functions-in-scikit-learn",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Comparing loss functions in scikit-learn",
-    "text": "Comparing loss functions in scikit-learn\nfrom sklearn.metrics import (\n    mean_absolute_error,\n    mean_squared_error,\n    mean_pinball_loss\n)\n\ny_pred = model.predict(X)\n\nmae = mean_absolute_error(y, y_pred)\nmse = mean_squared_error(y, y_pred)\npinball = mean_pinball_loss(y, y_pred, alpha=0.75)\n\nprint(\"MAE:\", mae)\nprint(\"MSE:\", mse)\nprint(\"Pinball loss:\", pinball)"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#fitting-a-model-with-huber-loss",
-    "href": "lectures/lecture-04_2.html#fitting-a-model-with-huber-loss",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Fitting a model with Huber loss",
-    "text": "Fitting a model with Huber loss\nfrom sklearn.linear_model import HuberRegressor\n\nmodel_huber = HuberRegressor()\nmodel_huber.fit(X, y)\n\ny_pred = model_huber.predict(X)\n\nHuberRegressor() fits a linear model using Huber loss.\nSmall prediction errors are treated similarly to squared loss.\nLarge prediction errors are treated more like absolute loss.\nThis makes the model less sensitive to outliers."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#comparing-linear-regression-and-huber-regression",
-    "href": "lectures/lecture-04_2.html#comparing-linear-regression-and-huber-regression",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Comparing Linear Regression and Huber Regression",
-    "text": "Comparing Linear Regression and Huber Regression\nfrom sklearn.linear_model import LinearRegression, HuberRegressor\nfrom sklearn.metrics import mean_squared_error, mean_absolute_error\n\nmodel_lr = LinearRegression()\nmodel_huber = HuberRegressor()\n\nmodel_lr.fit(X, y)\nmodel_huber.fit(X, y)\n\ny_pred_lr = model_lr.predict(X)\ny_pred_huber = model_huber.predict(X)\n\nprint(\"Linear Regression MSE:\",\n      mean_squared_error(y, y_pred_lr))\n\nprint(\"Huber Regression MSE:\",\n      mean_squared_error(y, y_pred_huber))"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#what-happens-with-an-outlier",
-    "href": "lectures/lecture-04_2.html#what-happens-with-an-outlier",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "What happens with an outlier?",
-    "text": "What happens with an outlier?\n\n\nSquared loss\n\nLarge errors are squared.\nOutliers can have a large influence on the fitted model.\nThe regression line may be pulled toward extreme observations.\n\n\nHuber loss\n\nSmall errors → squared loss.\nLarge errors → absolute-like loss.\nOutliers have less influence on the fitted model."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#questions-for-you",
-    "href": "lectures/lecture-04_2.html#questions-for-you",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Questions for you",
-    "text": "Questions for you\nSelect all of the following statements which are TRUE.\n\n\nRegression models are fitted by minimizing a specified loss function.\n\n\nAbsolute loss is more sensitive to outliers than squared loss.\n\n\nSquared loss gives much more weight to large prediction errors.\n\n\nHuber loss behaves like squared loss for small errors and absolute loss for large errors.\n\n\nQuantile loss can assign different penalties to underpredictions and overpredictions."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#which-loss-function-would-you-choose",
-    "href": "lectures/lecture-04_2.html#which-loss-function-would-you-choose",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Which loss function would you choose?",
-    "text": "Which loss function would you choose?\n\n\n\nScenario\nPreferred Loss\n\n\n\n\nOutliers are common and should have limited influence.\n\n\n\nLarge errors are especially costly.\n\n\n\nYou want a smooth loss that is robust to outliers.\n\n\n\nYou want to predict the 90th percentile of a target."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#which-loss-function-would-you-choose-1",
-    "href": "lectures/lecture-04_2.html#which-loss-function-would-you-choose-1",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Which loss function would you choose?",
-    "text": "Which loss function would you choose?\n\n\n\n\n\n\n\nScenario\nPreferred Loss\n\n\n\n\nOutliers are common and should have limited influence.\nAbsolute Loss (MAE)\n\n\nLarge errors are especially costly.\nSquared Loss (MSE)\n\n\nYou want a smooth loss that is robust to outliers.\nHuber Loss\n\n\nYou want to predict the 90th percentile of a target.\nQuantile Loss (τ = 0.90)"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#key-takeaways",
-    "href": "lectures/lecture-04_2.html#key-takeaways",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nA loss function tells us how costly a prediction error is.\nAbsolute loss is more robust to outliers.\nSquared loss strongly penalizes large errors and is the standard choice for ordinary least squares.\nHuber loss combines the advantages of squared and absolute loss.\nQuantile loss allows us to make underprediction and overprediction have different costs.\nIn scikit-learn, these ideas are available through mean_absolute_error(), mean_squared_error(), mean_pinball_loss(), and HuberRegressor()."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#which-metric-fits-best",
-    "href": "lectures/lecture-04_2.html#which-metric-fits-best",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Which metric fits best?",
-    "text": "Which metric fits best?\n\n\n\nScenario\nData Imbalance\nMain Concern\nBest Metric(s) / Curve\n\n\n\n\nEmail Spam Detection\n10% spam\nAvoid false positives\n\n\n\nDisease Screening\n1 in 10,000\nAvoid false negatives\n\n\n\nCredit Card Fraud\n0.1% fraud\nFocus on rare positive class\n\n\n\nCustomer Churn\n20% churn\nBalance FP & FN\n\n\n\nSentiment Analysis\n50/50 balanced\nOverall correctness\n\n\n\nFace Recognition\nBalanced pairs\nTrade-off FP vs FN"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#summary-choosing-the-right-metric",
-    "href": "lectures/lecture-04_2.html#summary-choosing-the-right-metric",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Summary: Choosing the right metric",
-    "text": "Summary: Choosing the right metric\n\n\n\n\n\n\n\n\nMetric / Plot\nWhen to Use\nWhy\n\n\n\n\nPrecision, Recall, F1\nWhen you care about specific error types (FP vs FN) or a fixed threshold.\nFocus on particular tradeoffs.\n\n\nPR Curve & AP Score\nWhen the dataset is highly imbalanced (rare positives).\nIgnores TNs; focuses on positives.\n\n\nROC Curve & AUC\nWhen classes are moderately imbalanced.\nMeasures ranking ability across thresholds."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#questions-for-you-1",
-    "href": "lectures/lecture-04_2.html#questions-for-you-1",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Questions for you",
-    "text": "Questions for you\n\nWhat’s the difference between the average precision (AP) score and F1-score?\nWhich model would you pick?"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#roc-of-a-baseline-model",
-    "href": "lectures/lecture-04_2.html#roc-of-a-baseline-model",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "ROC of a baseline model",
-    "text": "ROC of a baseline model\n\n\n\n\nAUC–ROC measures the probability that a randomly chosen positive example receives a higher score than a randomly chosen negative example.\n\nPerfect model: (AUC = 1.0). Always ranks positives above negatives.\n\nRandom model (AUC = 0.5): No discriminative ability (equivalent to random guessing).\n\n\n\nSource"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#questions-for-you-2",
-    "href": "lectures/lecture-04_2.html#questions-for-you-2",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Questions for you",
-    "text": "Questions for you\n\n\n\n\n\nWhich model would you pick?"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#dealing-with-class-imbalance",
-    "href": "lectures/lecture-04_2.html#dealing-with-class-imbalance",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Dealing with class imbalance",
-    "text": "Dealing with class imbalance\n\nUnder sampling\nOversampling\nclass weight=\"balanced\" (preferred method for this course)\nSMOTE"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#handling-imbalance-by-chaning-class-weights",
-    "href": "lectures/lecture-04_2.html#handling-imbalance-by-chaning-class-weights",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Handling imbalance by chaning class weights",
-    "text": "Handling imbalance by chaning class weights\n\nWe can specify class_weight=“balanced” to give more importance to rare examples during training.\n\n\n\n\n\n\n\n\n\n\n\n\nThis sets the weights so that the classes are “equal”.\nWe have reduced false negatives but we have many more false positives now …\n\nDecreases false negatives, which improves recall.\nIncreases false positives, which might lower precision."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#comparing-linear-regression-and-huber-regression-1",
-    "href": "lectures/lecture-04_2.html#comparing-linear-regression-and-huber-regression-1",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Comparing Linear Regression and Huber Regression",
-    "text": "Comparing Linear Regression and Huber Regression\nfrom sklearn.linear_model import LogisticRegression\n\nmodel = LogisticRegression(class_weight=\"balanced\")\n\nmodel.fit(X_train, y_train)"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#ridge-and-ridgecv",
-    "href": "lectures/lecture-04_2.html#ridge-and-ridgecv",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Ridge and RidgeCV",
-    "text": "Ridge and RidgeCV\n\nRidge Regression: alpha hyperparameter controls model complexity.\nRidgeCV: Ridge regression with built-in cross-validation to find the optimal alpha."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#alpha-hyperparameter",
-    "href": "lectures/lecture-04_2.html#alpha-hyperparameter",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "alpha hyperparameter",
-    "text": "alpha hyperparameter\n\nRole of alpha:\n\nControls model complexity\nHigher alpha: Simpler model, smaller coefficients.\nLower alpha: Complex model, larger coefficients."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#regression-metrics-mse-rmse-mape-r2_score",
-    "href": "lectures/lecture-04_2.html#regression-metrics-mse-rmse-mape-r2_score",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Regression metrics: MSE, RMSE, MAPE, r2_score",
-    "text": "Regression metrics: MSE, RMSE, MAPE, r2_score\n\nMean Squared Error (MSE): Average of the squares of the errors.\nRoot Mean Squared Error (RMSE): Square root of MSE, same units as the target variable.\nr2 measures how much of the variation in the target variable your model can explain.-\nMean Absolute Percentage Error (MAPE): Average of the absolute percentage errors."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#applying-log-transformation-to-the-targets",
-    "href": "lectures/lecture-04_2.html#applying-log-transformation-to-the-targets",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Applying log transformation to the targets",
-    "text": "Applying log transformation to the targets\n\nSuitable when the target has a wide range and spans several orders of magnitude\n\nExample: counts data such as social media likes or price data\n\nHelps manage skewed data, making patterns more apparent and regression models more effective.\nTransformedTargetRegressor\n\nWraps a regression model and applies a transformation to the target values."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#which-metric-fits-the-scenario",
-    "href": "lectures/lecture-04_2.html#which-metric-fits-the-scenario",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Which metric fits the scenario?",
-    "text": "Which metric fits the scenario?\n\n\n\n\n\n\n\n\nScenario\nWhat matters most?\nBest metric(s)?\n\n\n\n\nPredicting house prices ranging from $60K–$800K.\nA $30K error is huge for a $60K house but small for a $500K house.\n\n\n\nPredicting exam scores (0–100).\nYou want an interpretable measure of average error in points.\n\n\n\nPredicting energy consumption in a large industrial system.\nLarge errors are very costly and should be penalized heavily.\n\n\n\nPredicting insurance claim amounts.\nYou want to compare how well different models explain the variation in claims."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#which-metric-fits-the-scenario-1",
-    "href": "lectures/lecture-04_2.html#which-metric-fits-the-scenario-1",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Which metric fits the scenario?",
-    "text": "Which metric fits the scenario?\n\n\n\n\n\n\n\n\nScenario\nWhat matters most?\nBest metric(s)?\n\n\n\n\nPredicting house prices ranging from $60K–$800K.\nA $30K error is huge for a $60K house but small for a $500K house.\nMAPE (Mean Absolute Percentage Error)\n\n\nPredicting exam scores (0–100).\nYou want an interpretable measure of average error in points.\nMAE (Mean Absolute Error)\n\n\nPredicting energy consumption in a large industrial system.\nLarge errors are very costly and should be penalized heavily.\nMSE (Mean Squared Error) or RMSE\n\n\nPredicting insurance claim amounts.\nYou want to compare how well different models explain the variation in claims.\nR² (R-squared)"
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#rationale",
-    "href": "lectures/lecture-04_2.html#rationale",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Rationale",
-    "text": "Rationale\n\nMAPE: Measures error relative to the actual value, so a $30K error on a $60K house counts much more than the same error on a $500K house.\nMAE: Gives the average absolute error in the same units as the target—here, exam points.\nMSE/RMSE: Squares errors, giving disproportionately more weight to large errors. MSE penalizes them most directly; RMSE is easier to interpret because it is in the original units.\nR² (R-squared): Measures the proportion of variation in the target explained by the model, making it useful for comparing how much variation in claim amounts the models account for."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#which-metric-fits-the-scenario-2",
-    "href": "lectures/lecture-04_2.html#which-metric-fits-the-scenario-2",
-    "title": "Lecture 4 - 2: Regression Metrics",
-    "section": "Which metric fits the scenario?",
-    "text": "Which metric fits the scenario?\n\nFor interpretability: prefer RMSE or MAPE\nWhen you want to discourage large error: MSE is common\nFor fair comparison: r2 provides a normalized score similar to accuracy in classification.\n\nFor imbalanced scales: MAPE helps when proportional error matters more than absolute error."
-  },
-  {
-    "objectID": "lectures/lecture-04_2.html#section",
-    "href": "lectures/lecture-04_2.html#section",
-    "title": "Lecture 4 - 2: Regression Metrics",
+    "objectID": "slides.html",
+    "href": "slides.html",
+    "title": "Overview",
     "section": "",
-    "text": "Slides adapted from Firas Moosvi"
+    "text": "Title\n\n\n\nDescription\n\n\n\n\n\n\n\n\nLecture 4 - 1: Classification Metrics\n\n\nconfusion metrics, precision, recall, f1-score, PR curves, AP score, ROC curve, ROC AUC, class imbalance\n\n\n\n\n\n\nLecture 4 - 2: Regression Metrics\n\n\nRegression metrics\n\n\n\n\n\n\nLecture 4 - 3: Evaluating Models with Plots\n\n\nEvaluating models with plots\n\n\n\n\n\n\nLecture 5: Model Validation\n\n\nModel validation, cross-validation, and hyperparameter tuning in scikit-learn.\n\n\n\n\n\n\nLecture 6: Model Improvement\n\n\nPre-processing, Transformations, and pipelines.\n\n\n\n\n\n\nLecture 6 -2 : Model Selection and Evaluation\n\n\nPre-processing, Transformations, and pipelines.\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#preprocessing-motivation-example",
+    "href": "lectures/lecture-06_1.html#preprocessing-motivation-example",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Preprocessing motivation: example",
+    "text": "Preprocessing motivation: example\nYou’re trying to find a suitable date based on:\n\nAge (closer to yours is better).\nNumber of Facebook Friends (closer to your social circle is ideal)."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#preprocessing-motivation-example-1",
+    "href": "lectures/lecture-06_1.html#preprocessing-motivation-example-1",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Preprocessing motivation: example",
+    "text": "Preprocessing motivation: example\n\nYou are 30 years old and have 250 Facebook friends.\n\n\n\n\n\n\n\n\n\n\n\nPerson\nAge\n#FB Friends\nEuclidean Distance Calculation\nDistance\n\n\n\n\nA\n25\n400\n\\(\\sqrt{5^2 + 150^2}\\)\n150.08\n\n\nB\n27\n300\n\\(\\sqrt{3^2 + 50^2}\\)\n50.09\n\n\nC\n30\n500\n\\(\\sqrt{0^2 + 250^2}\\)\n250.00\n\n\nD\n60\n250\n\\(\\sqrt{30^2 + 0^2}\\)\n30.00\n\n\n\nBased on the distances, the two nearest neighbors (2-NN) are:\n\nPerson D (Distance: 30.00)\nPerson B (Distance: 50.09)\n\nWhat’s the problem here?"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#preparing-data-for-machine-learning",
+    "href": "lectures/lecture-06_1.html#preparing-data-for-machine-learning",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Preparing Data for Machine Learning",
+    "text": "Preparing Data for Machine Learning\n\nData quality is a measure of how well data is used to meet a specific need.\nPoor data quality leads to misleading results and inaccurate predictions.\nData pre-processing changes or transforms raw data that contains missing values, noise, and other inconsistencies into a format that improves the performance of different machine learning models."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#why-data-must-be-pre-processed",
+    "href": "lectures/lecture-06_1.html#why-data-must-be-pre-processed",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Why Data Must Be Pre-processed",
+    "text": "Why Data Must Be Pre-processed\n\nAlgorithm Mechanics: Distance-based algorithms (k-NN, SVM, K-Means) and gradient-based methods are sensitive to feature scales and magnitudes.\nGarbage In, Garbage Out: Raw real-world data is dirty, incomplete, unformatted, and noisy.\nModel Efficiency & Accuracy: Proper preprocessing improves convergence speed, numerical stability, and generalizability.\nRequirements of ML Frameworks: Most algorithms cannot natively handle text labels or missing values (NaN)."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#the-six-dimensions-of-data-quality",
+    "href": "lectures/lecture-06_1.html#the-six-dimensions-of-data-quality",
+    "title": "Lecture 6: Model Improvement",
+    "section": "The Six Dimensions of Data Quality",
+    "text": "The Six Dimensions of Data Quality\n\nAccuracy: Is the data correct and reflective of reality?\nCompleteness: Are there missing records, missing fields, or incomplete attributes?\nConsistency: Does the data conflict across different systems or tables?\nTimeliness: Is the information up-to-date for the current problem?\nValidity: Does the data follow defined business rules, types, and ranges?\nUniqueness: Are there duplicated records or overlapping entities?"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#data-preprocessing-tasks",
+    "href": "lectures/lecture-06_1.html#data-preprocessing-tasks",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Data Preprocessing Tasks",
+    "text": "Data Preprocessing Tasks\nData preprocessing is important in machine learning because data quality directly affects model performance and predictions.\n\n\n\n\n\n\nNote\n\n\nMany classification algorithms are distance-based, meaning that their results can be affected by the units and scales of the input features.\nCommon Preprocessing Tasks\n\nData Cleaning: Addresses missing values, duplicate observations, and incorrectly formatted data.\nData Integration: Combines data from multiple sources into a unified dataset.\nData Reduction: Reduces the dimensionality or size of a dataset while retaining important information.\nData Transformation: Converts features into a format or scale suitable for a particular model or algorithm."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#types-of-missing-data-mechanisms",
+    "href": "lectures/lecture-06_1.html#types-of-missing-data-mechanisms",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Types of Missing Data Mechanisms",
+    "text": "Types of Missing Data Mechanisms\nUnderstanding why data is missing dictates how to fix it.\n\nMCAR (Missing Completely at Random):\nMissingness is independent of both observed and unobserved data.\nExample: A sensor battery dies randomly.\nMAR (Missing at Random):\nMissingness depends systematically on observed data, but not on the missing value itself.\nExample: Older patients are less likely to report their income, but among patients of the same age, whether income is missing does not depend on their actual income.\nMNAR (Missing Not at Random):\nMissingness depends directly on the unobserved value itself.\nExample: High earners refuse to reveal their high income on surveys."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#listwise-deletion-complete-case-analysis",
+    "href": "lectures/lecture-06_1.html#listwise-deletion-complete-case-analysis",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Listwise Deletion (Complete Case Analysis)",
+    "text": "Listwise Deletion (Complete Case Analysis)\nWhen dealing with missing values, simple deletion might be considered:\n\nDrops the entire row/record if any attribute contains a missing value.\nPros: Simple, unbiased under MCAR.\nCons: Severe loss of sample size and potential bias under MAR/MNAR."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#pairwise-deletion",
+    "href": "lectures/lecture-06_1.html#pairwise-deletion",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Pairwise Deletion",
+    "text": "Pairwise Deletion\n\nKeeps the row, dropping missing values only when analyzing specific pairs of variables (e.g., during correlation calculation).\nPros: Preserves more data points.\nCons: Leads to inconsistent sample sizes (\\(N\\)) across different calculations; covariance matrices can become non-positive definite."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#where-feature-transformation-fits",
+    "href": "lectures/lecture-06_1.html#where-feature-transformation-fits",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Where Feature Transformation Fits",
+    "text": "Where Feature Transformation Fits\n\\[\n\\begin{aligned}\n\\text{Raw Data}\n&\\longrightarrow \\text{Cleaning}\n\\longrightarrow \\mathbf{\\text{Feature Transformation / Scaling}} \\\\\n&\\longrightarrow \\text{Feature Selection}\n\\longrightarrow \\text{Model Training}\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#when-is-feature-removal-necessary",
+    "href": "lectures/lecture-06_1.html#when-is-feature-removal-necessary",
+    "title": "Lecture 6: Model Improvement",
+    "section": "When is Feature Removal Necessary?",
+    "text": "When is Feature Removal Necessary?\n\nZero / Near-Zero Variance: A feature has the same value for almost all rows.\nExtreme Multicollinearity: Two or more features are perfectly or highly correlated.\nIrrelevant Features: Features with zero signal/predictive relationship with the target.\nHigh Missingness: Features with \\(\\ge 50-70\\%\\) missing values where imputation introduces too much noise."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#standardization-vs.-normalization",
+    "href": "lectures/lecture-06_1.html#standardization-vs.-normalization",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Standardization vs. Normalization",
+    "text": "Standardization vs. Normalization"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#standardization-z-score-normalization",
+    "href": "lectures/lecture-06_1.html#standardization-z-score-normalization",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Standardization (\\(Z\\)-Score Normalization)",
+    "text": "Standardization (\\(Z\\)-Score Normalization)\nRescales data to centered mean (\\(\\mu=0\\)) and unit variance (\\(\\sigma=1\\)).\n\\[x' = \\frac{x - \\mu}{\\sigma}\\]\n\nBest when features follow a Gaussian distribution or when using algorithms that assume zero-mean features (e.g., Ridge/Lasso, PCA)."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#normalization-min-max-scaling",
+    "href": "lectures/lecture-06_1.html#normalization-min-max-scaling",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Normalization (Min-Max Scaling)",
+    "text": "Normalization (Min-Max Scaling)\nRescales data into a fixed range, typically \\([0, 1]\\).\n\\[x' = \\frac{x - x_{\\min}}{x_{\\max} - x_{\\min}}\\]\n\nBest when features have bounded ranges, non-Gaussian distributions, or sparse data. Sensitive to extreme outliers!"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#categorical-encoding-strategies",
+    "href": "lectures/lecture-06_1.html#categorical-encoding-strategies",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Categorical Encoding Strategies",
+    "text": "Categorical Encoding Strategies\n\n\n\n\n\n\n\n\n\nEncoding\nHow it Works\nPros\nCons\n\n\n\n\nLabel / Ordinal\nMaps each category to an integer (\\(1, 2, 3...\\))\nCompact (\\(1\\) column)\nImplies artificial ordering if data is nominal\n\n\nOne-Hot\nCreates \\(K\\) binary indicator columns\nNo artificial order imposed\nCauses high dimensionality (\\(d \\to \\infty\\)) for high-cardinality features\n\n\nBinary\nConverts integers to binary strings, then splits into binary columns\nCompact representation (\\(O(\\log_2 K)\\) columns)\nReduces interpretability compared to One-Hot"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#nonlinear-transformations-binning",
+    "href": "lectures/lecture-06_1.html#nonlinear-transformations-binning",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Nonlinear Transformations & Binning",
+    "text": "Nonlinear Transformations & Binning\nNonlinear Transformations\n\nLog / Box-Cox / Yeo-Johnson: Converts skewed distributions into normal distributions, stabilizing variance.\nPolynomial Features: Captures non-linear interactions between variables (\\(x_1^2, x_1 x_2\\)).\n\nBinning / Discretization\nConverts continuous variables into categorical intervals:\n\nEqual-Width Binning: Divides the feature range into \\(k\\) intervals of equal size (\\(\\Delta = \\frac{x_{\\max} - x_{\\min}}{k}\\)). Sensitive to outliers.\nEqual-Frequency Binning: Divides data into \\(k\\) intervals where each bin contains approximately the same number of samples (Quantiles)."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#scikit-learn-feature-transformations",
+    "href": "lectures/lecture-06_1.html#scikit-learn-feature-transformations",
+    "title": "Lecture 6: Model Improvement",
+    "section": "SciKit-Learn Feature Transformations",
+    "text": "SciKit-Learn Feature Transformations\nimport numpy as np\nfrom sklearn.preprocessing import (\nStandardScaler,\nMinMaxScaler,\nOneHotEncoder,\nOrdinalEncoder,\nFunctionTransformer,\nKBinsDiscretizer\n)\n\n# Scaling\n\nscaler = StandardScaler()\nX_scaled = scaler.fit_transform(X_numeric)\n\n# Categorical Encoding\n\nohe = OneHotEncoder(sparse_output=False, drop='first')\nX_ohe = ohe.fit_transform(X_categorical)\n\n# Binning (Equal Frequency)\n\nbinner = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='quantile')\nX_binned = binner.fit_transform(X_numeric)\n\n# Custom Nonlinear Transformation\n\nlog_transformer = FunctionTransformer(np.log1p)\nX_log = log_transformer.fit_transform(X_numeric)"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#imputation-fill-the-gaps",
+    "href": "lectures/lecture-06_1.html#imputation-fill-the-gaps",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Imputation: Fill the gaps! (🟩 🟧 🟦)",
+    "text": "Imputation: Fill the gaps! (🟩 🟧 🟦)\nFill in missing data using a chosen strategy:\n\nMean: Replace missing values with the average of the available data.\nMedian: Use the middle value.\nMost Frequent: Use the most common value (mode).\nKNN Imputation: Fill based on similar neighbors.\n\nExample:\nImputation is like filling in your average or median or most frequent grade for an assessment you missed.\nfrom sklearn.impute import SimpleImputer\nimputer = SimpleImputer(strategy='mean')\nX_imputed = imputer.fit_transform(X)"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#example-1",
+    "href": "lectures/lecture-06_1.html#example-1",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Example:",
+    "text": "Example:\nScaling is like adjusting the number of everyone’s Facebook friends so that both the number of friends and their age are on a comparable scale. This way, one feature doesn’t dominate the other when making comparisons.\nfrom sklearn.preprocessing import StandardScaler\nscaler = StandardScaler()\nX_scaled = scaler.fit_transform(X)"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#one-hot-encoding-1-0-0",
+    "href": "lectures/lecture-06_1.html#one-hot-encoding-1-0-0",
+    "title": "Lecture 6: Model Improvement",
+    "section": "One-Hot encoding: 🍎 → 1️⃣ 0️⃣ 0️⃣",
+    "text": "One-Hot encoding: 🍎 → 1️⃣ 0️⃣ 0️⃣\nConvert categorical features into binary columns.\n\nCreates new binary columns for each category.\nUseful for handling categorical data in machine learning models.\n\nExample:\nTurn “Apple, Banana, Orange” into binary columns:\n\n\n\nFruit\n🍎\n🍌\n🍊\n\n\n\n\nApple 🍎\n1\n0\n0\n\n\nBanana 🍌\n0\n1\n0\n\n\nOrange 🍊\n0\n0\n1\n\n\n\nfrom sklearn.preprocessing import OneHotEncoder\nencoder = OneHotEncoder()\nX_encoded = encoder.fit_transform(X)"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#ordinal-encoding-ranking-matters-3",
+    "href": "lectures/lecture-06_1.html#ordinal-encoding-ranking-matters-3",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Ordinal encoding: Ranking matters! (⭐️⭐️⭐️ → 3️⃣)",
+    "text": "Ordinal encoding: Ranking matters! (⭐️⭐️⭐️ → 3️⃣)\nConvert categories into integer values that have a meaningful order.\n\nAssign integers based on order or rank.\nUseful when there is an inherent ranking in the data.\n\nExample:\nTurn “Poor, Average, Good” into 1, 2, 3:\n\n\n\nRating\nOrdinal\n\n\n\n\nPoor\n1\n\n\nAverage\n2\n\n\nGood\n3\n\n\n\nfrom sklearn.preprocessing import OrdinalEncoder\nencoder = OrdinalEncoder()\nX_ordinal = encoder.fit_transform(X)"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#univariate-vs.-multivariate-imputation",
+    "href": "lectures/lecture-06_1.html#univariate-vs.-multivariate-imputation",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Univariate vs. Multivariate Imputation",
+    "text": "Univariate vs. Multivariate Imputation\n\nUnivariate Imputation:\nPredicts missing values using summary statistics calculated only from that single feature.\nMethods: Mean, Median, Mode substitution.\nPros: Fast, scalable, simple.\nCons: Ignores correlations with other attributes; underestimates variance."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#multivariate-imputation",
+    "href": "lectures/lecture-06_1.html#multivariate-imputation",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Multivariate Imputation",
+    "text": "Multivariate Imputation\n\nUses the entire set of observed features to estimate missing values.\nMethods: k-Nearest Neighbors (k-NN), MICE (IterativeImputer).\nPros: Preserves inter-feature relationships and dataset structure.\nCons: Computationally expensive; complex."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#imputation-techniques-deep-dive",
+    "href": "lectures/lecture-06_1.html#imputation-techniques-deep-dive",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Imputation Techniques Deep Dive",
+    "text": "Imputation Techniques Deep Dive"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#mean-median-mode-imputation-univariate",
+    "href": "lectures/lecture-06_1.html#mean-median-mode-imputation-univariate",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Mean / Median / Mode Imputation (Univariate)",
+    "text": "Mean / Median / Mode Imputation (Univariate)\n\nReplaces NaNs in feature \\(j\\) with \\(\\text{mean}(X_j)\\), \\(\\text{median}(X_j)\\), or \\(\\text{mode}(X_j)\\)."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#k-nearest-neighbors-k-nn-imputation",
+    "href": "lectures/lecture-06_1.html#k-nearest-neighbors-k-nn-imputation",
+    "title": "Lecture 6: Model Improvement",
+    "section": "k-Nearest Neighbors (k-NN) Imputation",
+    "text": "k-Nearest Neighbors (k-NN) Imputation\n\nFinds the \\(k\\) most similar rows (based on Euclidean distance across non-missing attributes).\nFills missing values with the weighted or unweighted average of those \\(k\\) neighbors."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#multivariate-imputation-by-chained-equations-mice",
+    "href": "lectures/lecture-06_1.html#multivariate-imputation-by-chained-equations-mice",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Multivariate Imputation by Chained Equations (MICE)",
+    "text": "Multivariate Imputation by Chained Equations (MICE)\n\nFills missing values with initial placeholder estimates (e.g., mean).\nSets feature \\(X_j\\) back to NaN.\nTrains a regression model predicting \\(X_j\\) using all other features.\nPredicts missing \\(X_j\\). Repeats iteratively across all features until convergence."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#implementing-imputation-in-scikit-learn",
+    "href": "lectures/lecture-06_1.html#implementing-imputation-in-scikit-learn",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Implementing Imputation in SciKit-Learn",
+    "text": "Implementing Imputation in SciKit-Learn\nimport numpy as np\nfrom sklearn.impute import SimpleImputer, KNNImputer\nfrom sklearn.experimental import enable_iterative_imputer\nfrom sklearn.impute import IterativeImputer\n\n# 1. Univariate Mean Imputation\n\nsimple_imp = SimpleImputer(strategy='mean')\nX_simple = simple_imp.fit_transform(X)\n\n# 2. k-NN Imputation\n\nknn_imp = KNNImputer(n_neighbors=5, weights='uniform')\nX_knn = knn_imp.fit_transform(X)\n\n# 3. MICE (Multivariate) Imputation\n\nmice_imp = IterativeImputer(max_iter=10, random_state=42)\nX_mice = mice_imp.fit_transform(X)"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#scikit-learn-transformers-vs-estimators",
+    "href": "lectures/lecture-06_1.html#scikit-learn-transformers-vs-estimators",
+    "title": "Lecture 6: Model Improvement",
+    "section": "SciKit-Learn Transformers vs Estimators",
+    "text": "SciKit-Learn Transformers vs Estimators"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#transformers",
+    "href": "lectures/lecture-06_1.html#transformers",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Transformers",
+    "text": "Transformers\n\nUsed for preprocessing and feature engineering.\nImplement fit() and transform().\nfit(X): Computes statistical parameters (e.g., \\(\\mu, \\sigma\\), categories).\ntransform(X): Applies parameters to transform \\(X\\).\nExamples: StandardScaler, SimpleImputer, OneHotEncoder."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#estimators",
+    "href": "lectures/lecture-06_1.html#estimators",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Estimators",
+    "text": "Estimators\n\nUsed for learning patterns and making predictions.\nImplement fit() and predict().\nfit(X, y): Learns weights/parameters from data.\npredict(X): Generates predictions on unseen data.\nExamples: DecisionTreeClassifier, SVC, KNeighborsClassifier."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#the-golden-rule-of-feature-transformations",
+    "href": "lectures/lecture-06_1.html#the-golden-rule-of-feature-transformations",
+    "title": "Lecture 6: Model Improvement",
+    "section": "The Golden Rule of Feature Transformations",
+    "text": "The Golden Rule of Feature Transformations\n\nNEVER transform the entire dataset at once!\n\n\nPerforming transformations across the full dataset causes Data Leakage.\nData leakage occurs when info from the validation/test set is inadvertently used to train the transformer (e.g., scaling using test set mean).\nRule:\n\n\nSplit data into Train and Test.\nfit_transform() transformers only on Train.\ntransform() Test using the fitted parameters."
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#code",
+    "href": "lectures/lecture-06_1.html#code",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Code:",
+    "text": "Code:\n\n# CORRECT APPROACH\n\nfrom sklearn.preprocessing import StandardScaler\n\nscaler = StandardScaler()\nX_train_scaled = scaler.fit_transform(X_train)\nX_test_scaled = scaler.transform(X_test)"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#scikit-learn-pipelines",
+    "href": "lectures/lecture-06_1.html#scikit-learn-pipelines",
+    "title": "Lecture 6: Model Improvement",
+    "section": "SciKit-Learn Pipelines",
+    "text": "SciKit-Learn Pipelines\n\nEncapsulates preprocessing steps and estimators into a single execution unit.\nPrevents data leakage during cross-validation.\nMakes code clean, reproducible, and easily deployable.\n\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.impute import SimpleImputer\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.neighbors import KNeighborsClassifier\n\n# Define Pipeline\n\npipeline = make_pipeline(\nSimpleImputer(strategy='median'),\nStandardScaler(),\nKNeighborsClassifier(n_neighbors=5)\n)\n\n# Train and Evaluate seamlessly\n\npipeline.fit(X_train, y_train)\naccuracy = pipeline.score(X_test, y_test)"
+  },
+  {
+    "objectID": "lectures/lecture-06_1.html#key-takeaways",
+    "href": "lectures/lecture-06_1.html#key-takeaways",
+    "title": "Lecture 6: Model Improvement",
+    "section": "Key Takeaways",
+    "text": "Key Takeaways\n\nPreprocessing eliminates feature scale dominant bias and fixes quality issues.\nMissing data mechanisms (MCAR, MAR, MNAR) guide whether deletion or imputation is best.\nScalers and Encoders must fit your variable types and algorithms.\nMultivariate imputation (k-NN, MICE) maintains dataset correlation structures better than univariate statistics.\nUse Pipeline objects to enforce the Golden Rule and stop data leakage!"
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#parameters-vs.-hyperparameters",
+    "href": "lectures/lecture-06_2.html#parameters-vs.-hyperparameters",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "Parameters vs. Hyperparameters",
+    "text": "Parameters vs. Hyperparameters\n\nParameters are learned from the training data.\n\nPolynomial coefficients. The split points in a decision tree.\n\nHyperparameters are chosen before learning starts.\n\nDegree of the polynomial. Max depth, max leaves, gini vs. entropy.\n\n“Model selection” involves picking an algorithm and setting all hyperparameters."
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#first-idea-hold-some-data-back",
+    "href": "lectures/lecture-06_2.html#first-idea-hold-some-data-back",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "First Idea: Hold Some Data Back",
+    "text": "First Idea: Hold Some Data Back\n\n\n\n\nA bar of data split into a large training portion and a smaller test portion\n\n\n\n\nFit on the training set. Score on the test set. That score estimates generalization error.\nWhat’s the problem?"
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#we-never-train-just-once",
+    "href": "lectures/lecture-06_2.html#we-never-train-just-once",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "We Never Train Just Once",
+    "text": "We Never Train Just Once\n\n\n\n\nTraining and test blocks joined in a cycle: an evaluate arrow over the top and an adjust arrow returning underneath\n\n\n\n\nWe train, score, adjust, and repeat until something looks good."
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#lets-run-an-experiment",
+    "href": "lectures/lecture-06_2.html#lets-run-an-experiment",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "Let’s run an experiment",
+    "text": "Let’s run an experiment\n\nWe are given 60 training samples, 30 test samples\n\nFive real-valued attributes with binary labels\n\nAsked to tune a decision tree to maximize accuracy on test set.\nLets go!"
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#what-we-found",
+    "href": "lectures/lecture-06_2.html#what-we-found",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "What We Found",
+    "text": "What We Found\n\n\n\n\nHistogram of test accuracies for 3534 model configurations centered on 50 percent, with the best one far to the right highlighted\n\n\n\n\nThe labels were assigned by coin flip, independently of the attributes, so no model can be expected to exceed 50% on unseen data."
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#and-on-a-real-problem",
+    "href": "lectures/lecture-06_2.html#and-on-a-real-problem",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "And On A Real Problem",
+    "text": "And On A Real Problem\n\n\n\n\nTwo curves against the number of hyperparameter settings tried: reported test error falls steadily while true error flattens out, with the widening gap shaded\n\n\n\n\nMore searching keeps improving the number we report."
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#three-sets",
+    "href": "lectures/lecture-06_2.html#three-sets",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "Three Sets",
+    "text": "Three Sets\n\n\n\n\nA bar of data split into training, validation, and test portions, with validation labeled used repeatedly and test labeled used once\n\n\n\n\nTune against the validation set. Lock the test set away."
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#refit-before-you-ship",
+    "href": "lectures/lecture-06_2.html#refit-before-you-ship",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "Refit Before You Ship",
+    "text": "Refit Before You Ship\n\n\n\n\n\nLearning curve showing accuracy rising with the amount of training data, with an arrow marking the gain from adding the validation data back in\n\n\n\n\n\nOnce the hyperparameters are chosen, the validation set has done its job.\nMore training data means a better model, so refit on training + validation.\nThen, and only then, unlock the test set."
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#the-protocol",
+    "href": "lectures/lecture-06_2.html#the-protocol",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "The Protocol",
+    "text": "The Protocol\n\nSplit into training / validation / test.\nSearch hyperparameters, scoring on validation.\nRefit the chosen model on training + validation.\nScore once on test. Report that number."
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#what-if-the-test-score-comes-back-bad",
+    "href": "lectures/lecture-06_2.html#what-if-the-test-score-comes-back-bad",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "“What If The Test Score Comes Back Bad?”",
+    "text": "“What If The Test Score Comes Back Bad?”"
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#k-fold-cross-validation",
+    "href": "lectures/lecture-06_2.html#k-fold-cross-validation",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "k-Fold Cross Validation",
+    "text": "k-Fold Cross Validation\n\n\n\n\nFive rounds of five folds, the held-out validation fold moving one position each round, with the test set drawn faded beside every round and labeled never touched\n\n\n\n\nEvery training sample gets a turn as validation data.\nWhat is the downside?\nCross validation helps with model selection, but not model evaluation: Nested cross validation goes one level further. Most people stop before that."
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#another-advantage-of-k-fold-which-differences-are-real",
+    "href": "lectures/lecture-06_2.html#another-advantage-of-k-fold-which-differences-are-real",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "Another Advantage of K-Fold: Which Differences Are Real?",
+    "text": "Another Advantage of K-Fold: Which Differences Are Real?\n\n\n\n\nCross validation error against max depth with error bars from the ten folds, and a dotted line one standard error above the best score\n\n\n\n\n\nTen folds give ten scores per setting: a spread, not just an average.\nDepths 3 and 4 fall below the line. Nothing separates them, so take the simpler.\nDepths 7 and up sit clearly above it.\nOne split gives a single number and no spread at all."
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#when-not-to-cross-validate",
+    "href": "lectures/lecture-06_2.html#when-not-to-cross-validate",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "When not to cross-validate",
+    "text": "When not to cross-validate\n\nIt is all a response to not having enough data.\nA million test samples? That estimate is already fine.\nA large validation set? One split is enough, skip cross validation."
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#the-assumption-underneath-all-of-this",
+    "href": "lectures/lecture-06_2.html#the-assumption-underneath-all-of-this",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "The Assumption Underneath All Of This",
+    "text": "The Assumption Underneath All Of This\nEverything today assumes the training data and the deployment data come from the same distribution.\n\nNever quite true. It is hard to collect data that is perfectly representative.\nEven if you do, the world changes between collection and deployment."
+  },
+  {
+    "objectID": "lectures/lecture-06_2.html#mistakes-have-costs",
+    "href": "lectures/lecture-06_2.html#mistakes-have-costs",
+    "title": "Lecture 6 -2 : Model Selection and Evaluation",
+    "section": "Mistakes Have Costs",
+    "text": "Mistakes Have Costs\n\n\nA hospital risk model used on millions of patients. Race was never an input. It predicted cost as a stand-in for need, and less is spent on Black patients at the same level of illness. Fixing the target raised the share of Black patients flagged for extra care from 17.7% to 46.5%.\nA sepsis model, widely deployed in US hospitals. Documented at an AUC of 0.76 to 0.83. Independent validation over 38,455 hospitalizations measured 0.63, missing 67% of sepsis cases.\nNeither team set out to harm anyone. One measured the wrong quantity. The other trusted a number nobody outside had checked.\nA test set drawn from the same skewed source will certify a bias, not reveal it.\n\n\nObermeyer, Powers, Vogeli & Mullainathan. Dissecting racial bias in an algorithm used to manage the health of populations. Science 366(6464):447–453, 2019. doi:10.1126/science.aax2342 Wong, Otles, Donnelly et al. External validation of a widely implemented proprietary sepsis prediction model in hospitalized patients. JAMA Intern Med 181(8):1065–1070, 2021. doi:10.1001/jamainternmed.2021.2626"
   },
   {
     "objectID": "lectures/lecture-05.html#lecture-overview",
@@ -658,18 +588,137 @@
     "text": "Summary of Best Practices\n\nKeep the Test Set untouched until all model selection and hyperparameter tuning is finished.\nUse Stratified Splitting whenever dealing with classification tasks.\nLeverage Cross-Validation (\\(K=5\\) or \\(K=10\\)) for reliable performance assessment and model selection.\nTune Hyperparameters systematically with GridSearchCV or RandomizedSearchCV.\nDiagnose with Validation Curves to detect underfitting vs. overfitting before deploying models."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Welcome",
-    "section": "",
-    "text": "Welcome to CSCI345! Here, you’ll find slides for CSCI 345.\n\nClass times 🕘 8:00 AM to 9:50 AM, Tuesday and Thursday\nWhere? 📍 Paine 212 Building"
+    "objectID": "lectures/decision_trees/lecture-07_2.html#cart-tree-construction-algorithm",
+    "href": "lectures/decision_trees/lecture-07_2.html#cart-tree-construction-algorithm",
+    "title": "Lecture 7: Decision Trees",
+    "section": "CART Tree Construction Algorithm",
+    "text": "CART Tree Construction Algorithm\n\nGoal: Create the smallest/simplest tree that fits the training data\nDoing this optimally is NP-Hard\nGreedy Algorithm:\n\nStart with a root node containing the full data set.\nIf there is only one class, terminate\nElse, check every possible split point for every attribute.\n\n(Involves sorting the data using the attributes as the key)\n\nSelect the split that results in the greatest overall reduction in impurity\nDistribute the data to the two children according to that split\nRecursively build decision trees starting at the two children"
   },
   {
-    "objectID": "slides.html",
-    "href": "slides.html",
-    "title": "Overview",
-    "section": "",
-    "text": "Title\n\n\n\nDescription\n\n\n\n\n\n\n\n\nLecture 4 - 1: Classification Metrics\n\n\nconfusion metrics, precision, recall, f1-score, PR curves, AP score, ROC curve, ROC AUC, class imbalance\n\n\n\n\n\n\nLecture 4 - 2: Regression Metrics\n\n\nRegression metrics\n\n\n\n\n\n\nLecture 4 - 3: Evaluating Models with Plots\n\n\nEvaluating models with plots\n\n\n\n\n\n\nLecture 5: Model Validation\n\n\nModel validation, cross-validation, and hyperparameter tuning in scikit-learn.\n\n\n\n\n\n\nLecture 6: Model Improvement\n\n\nPre-processing, Transformations, and pipelines.\n\n\n\n\n\n\nNo matching items"
+    "objectID": "lectures/decision_trees/lecture-07_2.html#a-training-set-to-work-with",
+    "href": "lectures/decision_trees/lecture-07_2.html#a-training-set-to-work-with",
+    "title": "Lecture 7: Decision Trees",
+    "section": "A Training Set to Work With",
+    "text": "A Training Set to Work With\n\n\n\n\n\n\\(x_1\\)\n\\(x_2\\)\nclass\n\n\n\n\n2\n4\n+\n\n\n7\n9\n+\n\n\n6\n3\n−\n\n\n1\n1\n+\n\n\n9\n5\n−\n\n\n3\n7\n+\n\n\n\nTwo attributes, two classes, six examples.\nRoot node: 4 +, 2 −\n\n\n\n\nScatter plot of the six training points on a zero to ten grid"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#step-1-enumerate-the-candidate-splits",
+    "href": "lectures/decision_trees/lecture-07_2.html#step-1-enumerate-the-candidate-splits",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Step 1: Enumerate the Candidate Splits",
+    "text": "Step 1: Enumerate the Candidate Splits\nSort by each attribute, then consider the midpoint between each pair of adjacent values.\n\n\n\n\n\n\\(x_1\\)\n\\(x_2\\)\nclass\n\n\n\n\n2\n4\n+\n\n\n7\n9\n+\n\n\n6\n3\n−\n\n\n1\n1\n+\n\n\n9\n5\n−\n\n\n3\n7\n+\n\n\n\n\n\n\n\nNumber lines showing the data sorted by each attribute with candidate split points marked\n\n\n\nFive split points per attribute, ten candidates in all."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#entropy",
+    "href": "lectures/decision_trees/lecture-07_2.html#entropy",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Entropy",
+    "text": "Entropy\n\nThe information associated with an event is defined as: \\(I(E) = -\\log_2 p(E)\\) \nEntropy is expected information: \\(\\displaystyle -\\sum_{i=1}^{c}  \\Big ( p_i  \\log_2 ( p_i ) \\Big )\\)"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#gini-impurity",
+    "href": "lectures/decision_trees/lecture-07_2.html#gini-impurity",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Gini Impurity",
+    "text": "Gini Impurity\n\nThe fraction of incorrect predictions in a node if the class of each element was predicted by randomly selecting a label according to the distribution of classes in the node:\n\\(\\displaystyle \\phi(\\mathbf{p}) = \\sum_i p_i(1-p_i)\\)\n\n\\((1-p_i)\\) is the probability of making a mistake for class \\(i\\).\n\nCan be rewritten as: \\(\\displaystyle \\phi(\\mathbf{p}) = 1 - \\sum_i p_i^2\\)"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#what-the-numbers-look-like",
+    "href": "lectures/decision_trees/lecture-07_2.html#what-the-numbers-look-like",
+    "title": "Lecture 7: Decision Trees",
+    "section": "What the Numbers Look Like",
+    "text": "What the Numbers Look Like\n\nFour nodes ranging from pure to evenly mixed, each labeled with its Gini impurity and entropyBoth measures are \\(0\\) for a pure node and largest when the node is evenly mixed."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#entropy-vs.-gini",
+    "href": "lectures/decision_trees/lecture-07_2.html#entropy-vs.-gini",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Entropy vs. Gini",
+    "text": "Entropy vs. Gini\n\n\n\n\n\nEntropy and Gini impurity plotted against the fraction of positive examples\n\n\n\n\nSame shape, same zeros, same peak location.\nEntropy peaks at \\(1\\) (it is measured in bits); Gini peaks at \\(0.5\\).\nWhich should you use? Doesn’t much matter. Gini is a bit cheaper: squaring beats taking a logarithm. Entropy tends to give more balanced splits."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#scoring-a-split",
+    "href": "lectures/decision_trees/lecture-07_2.html#scoring-a-split",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Scoring a Split",
+    "text": "Scoring a Split\n\nA split produces two children, so we need a single number for the pair. Weight each child by the fraction of examples that land in it:\n\\(\\displaystyle \\phi_{\\text{split}} = \\frac{m_{\\text{left}}}{m}\\phi(\\text{left}) + \\frac{m_{\\text{right}}}{m}\\phi(\\text{right})\\)\nThe gain is the reduction in impurity:\n\\(\\displaystyle \\text{Gain} = \\phi(\\text{parent}) - \\phi_{\\text{split}}\\)\n\\(\\phi(\\text{parent})\\) is the same for every candidate, so maximizing gain and minimizing \\(\\phi_{\\text{split}}\\) are the same thing."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#step-2-score-every-candidate",
+    "href": "lectures/decision_trees/lecture-07_2.html#step-2-score-every-candidate",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Step 2: Score Every Candidate",
+    "text": "Step 2: Score Every Candidate\nRoot: 4 +, 2 −, so \\(\\phi(\\text{parent}) = 1 - \\left(\\tfrac{4}{6}\\right)^2 - \\left(\\tfrac{2}{6}\\right)^2 = 0.444\\)\n\n\n\n\n\nsplit\nleft\nright\n\\(\\phi_{\\text{split}}\\)\ngain\n\n\n\n\n\\(x_1 \\le 1.5\\)\n\n\n\n\n\n\n\\(x_1 \\le 2.5\\)\n\n\n\n\n\n\n\\(x_1 \\le 4.5\\)\n\n\n\n\n\n\n\\(x_1 \\le 6.5\\)\n\n\n\n\n\n\n\\(x_1 \\le 8\\)\n\n\n\n\n\n\n\n\n\n\n\nsplit\nleft\nright\n\\(\\phi_{\\text{split}}\\)\ngain\n\n\n\n\n\\(x_2 \\le 2\\)\n\n\n\n\n\n\n\\(x_2 \\le 3.5\\)\n\n\n\n\n\n\n\\(x_2 \\le 4.5\\)\n\n\n\n\n\n\n\\(x_2 \\le 6\\)\n\n\n\n\n\n\n\\(x_2 \\le 8\\)"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#step-2-the-answers",
+    "href": "lectures/decision_trees/lecture-07_2.html#step-2-the-answers",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Step 2: The Answers",
+    "text": "Step 2: The Answers\n\n\n\n\nsplit\nleft\nright\n\\(\\phi_{\\text{split}}\\)\ngain\n\n\n\n\n\\(x_1 \\le 4.5\\)\n3 +, 0 −\n1 +, 2 −\n0.222\n0.222\n\n\n\\(x_1 \\le 8\\)\n4 +, 1 −\n0 +, 1 −\n0.267\n0.178\n\n\n\\(x_1 \\le 2.5\\)\n2 +, 0 −\n2 +, 2 −\n0.333\n0.111\n\n\n\\(x_2 \\le 6\\)\n2 +, 2 −\n2 +, 0 −\n0.333\n0.111\n\n\n\\(x_1 \\le 1.5\\)\n1 +, 0 −\n3 +, 2 −\n0.400\n0.044\n\n\n\\(x_2 \\le 2\\)\n1 +, 0 −\n3 +, 2 −\n0.400\n0.044\n\n\n\\(x_2 \\le 8\\)\n3 +, 2 −\n1 +, 0 −\n0.400\n0.044\n\n\n\\(x_1 \\le 6.5\\)\n3 +, 1 −\n1 +, 1 −\n0.417\n0.028\n\n\n\\(x_2 \\le 3.5\\)\n1 +, 1 −\n3 +, 1 −\n0.417\n0.028\n\n\n\\(x_2 \\le 4.5\\)\n2 +, 1 −\n2 +, 1 −\n0.444\n0.000\n\n\n\n\nWinner: \\(x_1 \\le 4.5\\)."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#step-3-take-the-best-split",
+    "href": "lectures/decision_trees/lecture-07_2.html#step-3-take-the-best-split",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Step 3: Take the Best Split",
+    "text": "Step 3: Take the Best Split\n\n\n\n\n\nScatter plot with a vertical line at x1 equals 4.5\n\n\n\n\n\n\nTree with root testing x1 less than or equal to 4.5, a pure plus leaf on the left and an impure node on the right\n\n\n\nLeft child is pure, so it becomes a leaf. Right child still holds 1 +, 2 −, so we recurse."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#step-4-recurse-on-the-right-child",
+    "href": "lectures/decision_trees/lecture-07_2.html#step-4-recurse-on-the-right-child",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Step 4: Recurse on the Right Child",
+    "text": "Step 4: Recurse on the Right Child\n\n\nThree examples: \\((7,9,+)\\), \\((6,3,-)\\), \\((9,5,-)\\)\nOnly two split points per attribute now.\n\n\n\nsplit\nleft\nright\n\\(\\phi_{\\text{split}}\\)\ngain\n\n\n\n\n\\(x_2 \\le 7\\)\n0 +, 2 −\n1 +, 0 −\n0.000\n0.444\n\n\n\\(x_1 \\le 6.5\\)\n0 +, 1 −\n1 +, 1 −\n0.333\n0.111\n\n\n\\(x_1 \\le 8\\)\n1 +, 1 −\n0 +, 1 −\n0.333\n0.111\n\n\n\\(x_2 \\le 4\\)\n0 +, 1 −\n1 +, 1 −\n0.333\n0.111\n\n\n\n\nBoth children of \\(x_2 \\le 7\\) are pure, so both become leaves and the algorithm terminates.\nNote that the candidate set shrinks as we descend: fewer examples means fewer distinct values means fewer split points."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#two-views-of-the-finished-tree",
+    "href": "lectures/decision_trees/lecture-07_2.html#two-views-of-the-finished-tree",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Two Views of the Finished Tree",
+    "text": "Two Views of the Finished Tree\n\n\n\n\n\nFinal decision tree with three leaves\n\n\n\n\n\n\nScatter plot partitioned into three rectangular regions by the two splits\n\n\n\nEvery internal node is an axis-aligned cut. Three leaves, three regions. A tree and a partition of the feature space are the same object."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#mse",
+    "href": "lectures/decision_trees/lecture-07_2.html#mse",
+    "title": "Lecture 7: Decision Trees",
+    "section": "MSE",
+    "text": "MSE\n\nFor regression trees, we are predicting a real value: \\(\\displaystyle\\hat{y}_{\\text{node}} = \\frac{\\sum_{i\\in \\text{node}}y^{(i)}}{m_{\\text{node}}}\\)\nMSE is then: \\(\\displaystyle MSE_{\\text{node}} = \\frac{\\sum_{i\\in \\text{node}}(\\hat{y}_{\\text{node}} - y^{(i)})^2}{m_{\\text{node}}}\\)\n(Notice that this is exactly the sample variance)"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#mse-a-worked-example",
+    "href": "lectures/decision_trees/lecture-07_2.html#mse-a-worked-example",
+    "title": "Lecture 7: Decision Trees",
+    "section": "MSE: A Worked Example",
+    "text": "MSE: A Worked Example\n\n\n\n\n\n\\(x\\)\n1\n2\n3\n4\n5\n6\n\n\n\n\n\\(y\\)\n3\n5\n4\n12\n10\n14\n\n\n\n\n\\(\\hat{y}_{\\text{root}} = \\frac{48}{6} = 8\\)\n\\(MSE_{\\text{root}} = \\frac{25+9+16+16+4+36}{6} \\approx 17.67\\)\n\n\n\n\n\nRegression data with the root prediction as one flat line, and with the best split producing two flat lines\n\n\n\nSame algorithm, same weighted average, different \\(\\phi\\). Low MSE means a tight cluster of target values."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#issues-to-consider",
+    "href": "lectures/decision_trees/lecture-07_2.html#issues-to-consider",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Issues to Consider",
+    "text": "Issues to Consider\n\nDefault algorithm builds tree until the leaves are 100% pure.\nLikely to result in overfitting.\nSolutions:\n\nPruning - build out the full tree, then combine leaves that don’t significantly improve classification\nRestrict the size of the tree during construction - limit the depth, number of leaves, etc.\nLooking ahead: Ensemble methods that combine multiple trees"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#what-overfitting-looks-like",
+    "href": "lectures/decision_trees/lecture-07_2.html#what-overfitting-looks-like",
+    "title": "Lecture 7: Decision Trees",
+    "section": "What Overfitting Looks Like",
+    "text": "What Overfitting Looks Like\n\nDecision boundaries for a fully grown tree and a depth three tree on the same noisy dataThe left tree gets every training point right. The extra slivers are chasing noise, and they will cost accuracy on data the tree has not seen."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#proscons",
+    "href": "lectures/decision_trees/lecture-07_2.html#proscons",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Pros/Cons",
+    "text": "Pros/Cons\n\nPros:\n\nPrediction is fast\nExplainable\nWe don’t need to worry about the relative scale of the different attributes\n\nCons\n\nSensitive to data orientation\nGenerally not very competitive in terms of accuracy"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_2.html#sensitive-to-data-orientation",
+    "href": "lectures/decision_trees/lecture-07_2.html#sensitive-to-data-orientation",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Sensitive to Data Orientation",
+    "text": "Sensitive to Data Orientation\n\nThe same two class data before and after a 45 degree rotation, with the tree decision boundary drawn on eachEvery split is axis-aligned, so a boundary that is not axis-aligned has to be approximated by a staircase. Same data, same labels, much bigger tree."
   },
   {
     "objectID": "SETUP.html",
@@ -693,242 +742,585 @@
     "text": "After the initial setup, only work on main:\ngit add .\ngit commit -m \"Update lecture slides\"\ngit push origin main\nThe Quarto Publish GitHub Action renders the project and updates gh-pages automatically. Do not edit gh-pages directly.\nIf a deployment fails, open the Actions tab in GitHub and inspect the failed Quarto Publish run."
   },
   {
-    "objectID": "lectures/lecture-06.html#preprocessing-motivation-example",
-    "href": "lectures/lecture-06.html#preprocessing-motivation-example",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Preprocessing motivation: example",
-    "text": "Preprocessing motivation: example\nYou’re trying to find a suitable date based on:\n\nAge (closer to yours is better).\nNumber of Facebook Friends (closer to your social circle is ideal)."
+    "objectID": "lectures/lecture-04_3.html#evaluating-models-with-plots",
+    "href": "lectures/lecture-04_3.html#evaluating-models-with-plots",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Evaluating models with plots",
+    "text": "Evaluating models with plots\n\nNumeric metrics tell us how well a model performs.\nPlots help us understand how the model is behaving.\nVisualizations can help us:\n\nExamine model fit.\nIdentify patterns in errors.\nCompare models.\nDetect possible overfitting or underfitting.\nUnderstand how features affect predictions.\n\n\n\n\nClassification\n\nDecision boundary plot\nROC curve\nConfusion matrix\n\n\nRegression\n\nPrediction error plot\nPartial dependence plot"
   },
   {
-    "objectID": "lectures/lecture-06.html#preprocessing-motivation-example-1",
-    "href": "lectures/lecture-06.html#preprocessing-motivation-example-1",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Preprocessing motivation: example",
-    "text": "Preprocessing motivation: example\n\nYou are 30 years old and have 250 Facebook friends.\n\n\n\n\n\n\n\n\n\n\n\nPerson\nAge\n#FB Friends\nEuclidean Distance Calculation\nDistance\n\n\n\n\nA\n25\n400\n\\(\\sqrt{5^2 + 150^2}\\)\n150.08\n\n\nB\n27\n300\n\\(\\sqrt{3^2 + 50^2}\\)\n50.09\n\n\nC\n30\n500\n\\(\\sqrt{0^2 + 250^2}\\)\n250.00\n\n\nD\n60\n250\n\\(\\sqrt{30^2 + 0^2}\\)\n30.00\n\n\n\nBased on the distances, the two nearest neighbors (2-NN) are:\n\nPerson D (Distance: 30.00)\nPerson B (Distance: 50.09)\n\nWhat’s the problem here?"
+    "objectID": "lectures/lecture-04_3.html#decision-boundary-plots",
+    "href": "lectures/lecture-04_3.html#decision-boundary-plots",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Decision boundary plots",
+    "text": "Decision boundary plots\n\nA decision boundary separates regions of the feature space associated with different classes.\nA decision boundary plot shows how a classifier assigns observations to different classes.\nParticularly useful when there are two or three input features.\nWe can use the plot to assess:\n\nWhether the boundary makes sense.\nWhether the model is too simple.\nWhether the model may be overfitting."
   },
   {
-    "objectID": "lectures/lecture-06.html#preparing-data-for-machine-learning",
-    "href": "lectures/lecture-06.html#preparing-data-for-machine-learning",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Preparing Data for Machine Learning",
-    "text": "Preparing Data for Machine Learning\n\nData quality is a measure of how well data is used to meet a specific need.\nPoor data quality leads to misleading results and inaccurate predictions.\nData pre-processing changes or transforms raw data that contains missing values, noise, and other inconsistencies into a format that improves the performance of different machine learning models."
+    "objectID": "lectures/lecture-04_3.html#comparing-decision-boundaries",
+    "href": "lectures/lecture-04_3.html#comparing-decision-boundaries",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Comparing decision boundaries",
+    "text": "Comparing decision boundaries\n\n\nLogistic Regression\n\nProduces a relatively simple, linear boundary.\nEasier to interpret.\nMay underfit when the relationship between features and classes is complex.\n\n\nk-Nearest Neighbors\n\nCan produce more irregular boundaries.\nFlexible enough to capture local patterns.\nVery irregular boundaries may indicate overfitting.\n\n\nQuestion: Which model would you trust more if the decision boundary closely follows every training observation?"
   },
   {
-    "objectID": "lectures/lecture-06.html#why-data-must-be-pre-processed",
-    "href": "lectures/lecture-06.html#why-data-must-be-pre-processed",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Why Data Must Be Pre-processed",
-    "text": "Why Data Must Be Pre-processed\n\nAlgorithm Mechanics: Distance-based algorithms (k-NN, SVM, K-Means) and gradient-based methods are sensitive to feature scales and magnitudes.\nGarbage In, Garbage Out: Raw real-world data is dirty, incomplete, unformatted, and noisy.\nModel Efficiency & Accuracy: Proper preprocessing improves convergence speed, numerical stability, and generalizability.\nRequirements of ML Frameworks: Most algorithms cannot natively handle text labels or missing values (NaN)."
+    "objectID": "lectures/lecture-04_3.html#interpreting-a-decision-boundary",
+    "href": "lectures/lecture-04_3.html#interpreting-a-decision-boundary",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Interpreting a decision boundary",
+    "text": "Interpreting a decision boundary\n\nEach region of the plot corresponds to a predicted class.\nThe boundary indicates where the model changes its prediction.\nThe observed data points allow us to compare:\n\nPredicted class\nActual class\n\nMisclassified observations appear in a region belonging to the wrong class.\n\nQuestion: If an observation lies in the “Diabetic” region but is actually nondiabetic, what has happened?\n\nThe model has made a false positive."
   },
   {
-    "objectID": "lectures/lecture-06.html#the-six-dimensions-of-data-quality",
-    "href": "lectures/lecture-06.html#the-six-dimensions-of-data-quality",
-    "title": "Lecture 6: Model Improvement",
-    "section": "The Six Dimensions of Data Quality",
-    "text": "The Six Dimensions of Data Quality\n\nAccuracy: Is the data correct and reflective of reality?\nCompleteness: Are there missing records, missing fields, or incomplete attributes?\nConsistency: Does the data conflict across different systems or tables?\nTimeliness: Is the information up-to-date for the current problem?\nValidity: Does the data follow defined business rules, types, and ranges?\nUniqueness: Are there duplicated records or overlapping entities?"
+    "objectID": "lectures/lecture-04_3.html#roc-curves-and-auc",
+    "href": "lectures/lecture-04_3.html#roc-curves-and-auc",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "ROC curves and AUC",
+    "text": "ROC curves and AUC\n\nAn ROC curve evaluates a binary classifier across many classification thresholds.\nThe x-axis shows the False Positive Rate (FPR):\n\n\\[\nFPR = \\frac{FP}{FP + TN}\n\\]\n\nThe y-axis shows the True Positive Rate (TPR), also called recall:\n\n\\[\nTPR = \\frac{TP}{TP + FN}\n\\]\n\nEach point on the ROC curve corresponds to a different decision threshold."
   },
   {
-    "objectID": "lectures/lecture-06.html#data-preprocessing-tasks",
-    "href": "lectures/lecture-06.html#data-preprocessing-tasks",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Data Preprocessing Tasks",
-    "text": "Data Preprocessing Tasks\nData preprocessing is important in machine learning because data quality directly affects model performance and predictions.\n\n\n\n\n\n\nNote\n\n\nMany classification algorithms are distance-based, meaning that their results can be affected by the units and scales of the input features.\nCommon Preprocessing Tasks\n\nData Cleaning: Addresses missing values, duplicate observations, and incorrectly formatted data.\nData Integration: Combines data from multiple sources into a unified dataset.\nData Reduction: Reduces the dimensionality or size of a dataset while retaining important information.\nData Transformation: Converts features into a format or scale suitable for a particular model or algorithm."
+    "objectID": "lectures/lecture-04_3.html#understanding-the-roc-curve",
+    "href": "lectures/lecture-04_3.html#understanding-the-roc-curve",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Understanding the ROC curve",
+    "text": "Understanding the ROC curve\n\n\nPerfect classifier\n\nAUC = 1.0\nTPR = 1\nFPR = 0\nCurve reaches the upper-left corner.\n\nRandom classifier\n\nAUC = 0.5\nROC curve follows the diagonal.\nNo useful ability to distinguish the classes.\n\n\nGood classifier\n\nROC curve lies above the diagonal.\nHigher AUC generally indicates better ranking performance.\nExample:\n\n\\[\nAUC = 0.84\n\\]\n\nImportant: AUC summarizes performance across thresholds; it does not select the optimal threshold for you."
   },
   {
-    "objectID": "lectures/lecture-06.html#types-of-missing-data-mechanisms",
-    "href": "lectures/lecture-06.html#types-of-missing-data-mechanisms",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Types of Missing Data Mechanisms",
-    "text": "Types of Missing Data Mechanisms\nUnderstanding why data is missing dictates how to fix it.\n\nMCAR (Missing Completely at Random):\nMissingness is independent of both observed and unobserved data.\nExample: A sensor battery dies randomly.\nMAR (Missing at Random):\nMissingness depends systematically on observed data, but not on the missing value itself.\nExample: Older patients are less likely to report their income, but among patients of the same age, whether income is missing does not depend on their actual income.\nMNAR (Missing Not at Random):\nMissingness depends directly on the unobserved value itself.\nExample: High earners refuse to reveal their high income on surveys."
+    "objectID": "lectures/lecture-04_3.html#what-happens-when-we-change-the-threshold",
+    "href": "lectures/lecture-04_3.html#what-happens-when-we-change-the-threshold",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "What happens when we change the threshold?",
+    "text": "What happens when we change the threshold?\n\nClassification models often produce a score or probability.\nWe convert that score into a class using a threshold.\nHigher threshold:\n\nFewer positive predictions.\nUsually fewer false positives.\nUsually more false negatives.\n\nLower threshold:\n\nMore positive predictions.\nUsually more true positives.\nUsually more false positives.\n\n\n\n\nHigh threshold\n\nHigher precision\nLower recall\nUseful when false positives are costly\n\n\nLow threshold\n\nHigher recall\nLower precision\nUseful when false negatives are costly"
   },
   {
-    "objectID": "lectures/lecture-06.html#listwise-deletion-complete-case-analysis",
-    "href": "lectures/lecture-06.html#listwise-deletion-complete-case-analysis",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Listwise Deletion (Complete Case Analysis)",
-    "text": "Listwise Deletion (Complete Case Analysis)\nWhen dealing with missing values, simple deletion might be considered:\n\nDrops the entire row/record if any attribute contains a missing value.\nPros: Simple, unbiased under MCAR.\nCons: Severe loss of sample size and potential bias under MAR/MNAR."
+    "objectID": "lectures/lecture-04_3.html#roc-curve-an-important-distinction",
+    "href": "lectures/lecture-04_3.html#roc-curve-an-important-distinction",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "ROC curve: an important distinction",
+    "text": "ROC curve: an important distinction\n\nAUC evaluates how well the model ranks positive observations above negative observations.\nThe ROC curve shows the trade-off between TPR and FPR across thresholds.\nAUC can tell us which model has better overall discrimination.\nAUC does not tell us which threshold to use in practice.\n\nQuestion: Suppose missing a positive case is extremely costly. Would we necessarily choose the threshold that gives the highest AUC?\nNo. AUC evaluates the model across thresholds; the operational threshold should reflect the cost of false positives vs. false negatives."
   },
   {
-    "objectID": "lectures/lecture-06.html#pairwise-deletion",
-    "href": "lectures/lecture-06.html#pairwise-deletion",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Pairwise Deletion",
-    "text": "Pairwise Deletion\n\nKeeps the row, dropping missing values only when analyzing specific pairs of variables (e.g., during correlation calculation).\nPros: Preserves more data points.\nCons: Leads to inconsistent sample sizes (\\(N\\)) across different calculations; covariance matrices can become non-positive definite."
+    "objectID": "lectures/lecture-04_3.html#roc-curves-in-scikit-learn",
+    "href": "lectures/lecture-04_3.html#roc-curves-in-scikit-learn",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "ROC curves in scikit-learn",
+    "text": "ROC curves in scikit-learn\nfrom sklearn.metrics import RocCurveDisplay\n\nRocCurveDisplay.from_estimator(\n    model,\n    X_test,\n    y_test\n)\n\nfrom_estimator() uses the fitted model to generate predictions.\nThe ROC curve is created using the model’s prediction scores.\nWe can also calculate the AUC directly:\n\nfrom sklearn.metrics import roc_auc_score\n\ny_score = model.predict_proba(X_test)[:, 1]\n\nauc = roc_auc_score(y_test, y_score)\n\nprint(\"AUC:\", auc)"
   },
   {
-    "objectID": "lectures/lecture-06.html#when-is-feature-removal-necessary",
-    "href": "lectures/lecture-06.html#when-is-feature-removal-necessary",
-    "title": "Lecture 6: Model Improvement",
-    "section": "When is Feature Removal Necessary?",
-    "text": "When is Feature Removal Necessary?\n\nZero / Near-Zero Variance: A feature has the same value for almost all rows.\nExtreme Multicollinearity: Two or more features are perfectly or highly correlated.\nIrrelevant Features: Features with zero signal/predictive relationship with the target.\nHigh Missingness: Features with \\(\\ge 50-70\\%\\) missing values where imputation introduces too much noise."
+    "objectID": "lectures/lecture-04_3.html#prediction-error-plots",
+    "href": "lectures/lecture-04_3.html#prediction-error-plots",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Prediction error plots",
+    "text": "Prediction error plots\n\nA prediction error plot, also called a residual plot, shows:\n\nPredicted values on the x-axis.\nPrediction errors (residuals) on the y-axis.\n\n\n\\[\ne_i = y_i - \\hat{y}_i\n\\]\n\nA reference line at:\n\n\\[\ne_i = 0\n\\]\nis usually included.\n\nWe use the plot to examine whether the model’s errors show a systematic pattern."
   },
   {
-    "objectID": "lectures/lecture-06.html#standardization-vs.-normalization",
-    "href": "lectures/lecture-06.html#standardization-vs.-normalization",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Standardization vs. Normalization",
-    "text": "Standardization vs. Normalization"
+    "objectID": "lectures/lecture-04_3.html#what-does-a-good-prediction-error-plot-look-like",
+    "href": "lectures/lecture-04_3.html#what-does-a-good-prediction-error-plot-look-like",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "What does a good prediction error plot look like?",
+    "text": "What does a good prediction error plot look like?\nIdeal pattern\n\nResiduals are randomly scattered around zero.\nPoints appear both above and below zero.\nNo obvious relationship between predicted values and residuals.\nSimilar spread across the range of predictions.\n\nWarning signs\n\nCurved pattern → possible nonlinear relationship.\nFunnel-shaped pattern → changing error variance.\nLarge isolated residuals → possible outliers.\nSystematic pattern → model may be missing important information."
   },
   {
-    "objectID": "lectures/lecture-06.html#standardization-z-score-normalization",
-    "href": "lectures/lecture-06.html#standardization-z-score-normalization",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Standardization (\\(Z\\)-Score Normalization)",
-    "text": "Standardization (\\(Z\\)-Score Normalization)\nRescales data to centered mean (\\(\\mu=0\\)) and unit variance (\\(\\sigma=1\\)).\n\\[x' = \\frac{x - \\mu}{\\sigma}\\]\n\nBest when features follow a Gaussian distribution or when using algorithms that assume zero-mean features (e.g., Ridge/Lasso, PCA)."
+    "objectID": "lectures/lecture-04_3.html#interpreting-prediction-error-plots",
+    "href": "lectures/lecture-04_3.html#interpreting-prediction-error-plots",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Interpreting prediction error plots",
+    "text": "Interpreting prediction error plots\n\n\nRandom pattern\n\nResiduals centered around zero.\nNo obvious structure.\nModel may be adequately capturing the relationship.\n\n\nSystematic pattern\n\nResiduals follow a curve or other pattern.\nSuggests the model may be missing something.\nConsider:\n\nNonlinear features.\nAdditional predictors.\nA different model.\n\n\n\nQuestion: What might a funnel-shaped residual plot tell us?\n\nThe variability of the prediction errors changes across the range of predicted values."
   },
   {
-    "objectID": "lectures/lecture-06.html#normalization-min-max-scaling",
-    "href": "lectures/lecture-06.html#normalization-min-max-scaling",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Normalization (Min-Max Scaling)",
-    "text": "Normalization (Min-Max Scaling)\nRescales data into a fixed range, typically \\([0, 1]\\).\n\\[x' = \\frac{x - x_{\\min}}{x_{\\max} - x_{\\min}}\\]\n\nBest when features have bounded ranges, non-Gaussian distributions, or sparse data. Sensitive to extreme outliers!"
+    "objectID": "lectures/lecture-04_3.html#creating-a-prediction-error-plot",
+    "href": "lectures/lecture-04_3.html#creating-a-prediction-error-plot",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Creating a prediction error plot",
+    "text": "Creating a prediction error plot\nfrom sklearn.linear_model import LinearRegression\nimport matplotlib.pyplot as plt\n\nmodel = LinearRegression()\nmodel.fit(X, y)\n\ny_pred = model.predict(X)\n\nresiduals = y - y_pred\n\nplt.scatter(y_pred, residuals)\nplt.axhline(0, color=\"black\", linestyle=\"--\")\n\nplt.xlabel(\"Predicted values\")\nplt.ylabel(\"Residuals\")\nplt.show()\n\ny_pred contains the model’s predictions.\nresiduals measures how far each prediction is from the observed value.\nWe look for patterns, not just the average size of the errors."
   },
   {
-    "objectID": "lectures/lecture-06.html#categorical-encoding-strategies",
-    "href": "lectures/lecture-06.html#categorical-encoding-strategies",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Categorical Encoding Strategies",
-    "text": "Categorical Encoding Strategies\n\n\n\n\n\n\n\n\n\nEncoding\nHow it Works\nPros\nCons\n\n\n\n\nLabel / Ordinal\nMaps each category to an integer (\\(1, 2, 3...\\))\nCompact (\\(1\\) column)\nImplies artificial ordering if data is nominal\n\n\nOne-Hot\nCreates \\(K\\) binary indicator columns\nNo artificial order imposed\nCauses high dimensionality (\\(d \\to \\infty\\)) for high-cardinality features\n\n\nBinary\nConverts integers to binary strings, then splits into binary columns\nCompact representation (\\(O(\\log_2 K)\\) columns)\nReduces interpretability compared to One-Hot"
+    "objectID": "lectures/lecture-04_3.html#partial-dependence-plots",
+    "href": "lectures/lecture-04_3.html#partial-dependence-plots",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Partial dependence plots",
+    "text": "Partial dependence plots\n\nA partial dependence plot (PDP) shows how an input feature affects the model’s average prediction.\nWe vary one feature while keeping the other features at their observed values.\nThe model makes predictions for these modified observations.\nWe then average the predictions.\n\nFor feature \\(x_j\\):\n\\[\nPD(x_j)\n=\n\\frac{1}{n}\n\\sum_{i=1}^{n}\nf(x_j, x_{i,-j})\n\\]\n\n\\(x_j\\) = feature being investigated.\n\\(x_{i,-j}\\) = the other features for observation \\(i\\)."
   },
   {
-    "objectID": "lectures/lecture-06.html#nonlinear-transformations-binning",
-    "href": "lectures/lecture-06.html#nonlinear-transformations-binning",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Nonlinear Transformations & Binning",
-    "text": "Nonlinear Transformations & Binning\nNonlinear Transformations\n\nLog / Box-Cox / Yeo-Johnson: Converts skewed distributions into normal distributions, stabilizing variance.\nPolynomial Features: Captures non-linear interactions between variables (\\(x_1^2, x_1 x_2\\)).\n\nBinning / Discretization\nConverts continuous variables into categorical intervals:\n\nEqual-Width Binning: Divides the feature range into \\(k\\) intervals of equal size (\\(\\Delta = \\frac{x_{\\max} - x_{\\min}}{k}\\)). Sensitive to outliers.\nEqual-Frequency Binning: Divides data into \\(k\\) intervals where each bin contains approximately the same number of samples (Quantiles)."
+    "objectID": "lectures/lecture-04_3.html#interpreting-a-partial-dependence-plot",
+    "href": "lectures/lecture-04_3.html#interpreting-a-partial-dependence-plot",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Interpreting a partial dependence plot",
+    "text": "Interpreting a partial dependence plot\n\nA PDP answers:\n\n\n“On average, how does changing this feature affect the model’s prediction?”\n\n\n\nPositive relationship\n\nPDP increases as the feature increases.\nHigher feature values are associated with higher predictions.\n\n\nNegative relationship\n\nPDP decreases as the feature increases.\nHigher feature values are associated with lower predictions.\n\n\n\nA nonlinear curve indicates that the model’s relationship with the feature changes across its range.\nPDPs describe the model’s behavior, not necessarily a causal relationship."
   },
   {
-    "objectID": "lectures/lecture-06.html#scikit-learn-feature-transformations",
-    "href": "lectures/lecture-06.html#scikit-learn-feature-transformations",
-    "title": "Lecture 6: Model Improvement",
-    "section": "SciKit-Learn Feature Transformations",
-    "text": "SciKit-Learn Feature Transformations\nimport numpy as np\nfrom sklearn.preprocessing import (\nStandardScaler,\nMinMaxScaler,\nOneHotEncoder,\nOrdinalEncoder,\nFunctionTransformer,\nKBinsDiscretizer\n)\n\n# Scaling\n\nscaler = StandardScaler()\nX_scaled = scaler.fit_transform(X_numeric)\n\n# Categorical Encoding\n\nohe = OneHotEncoder(sparse_output=False, drop='first')\nX_ohe = ohe.fit_transform(X_categorical)\n\n# Binning (Equal Frequency)\n\nbinner = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='quantile')\nX_binned = binner.fit_transform(X_numeric)\n\n# Custom Nonlinear Transformation\n\nlog_transformer = FunctionTransformer(np.log1p)\nX_log = log_transformer.fit_transform(X_numeric)"
+    "objectID": "lectures/lecture-04_3.html#partial-dependence-and-the-observed-data",
+    "href": "lectures/lecture-04_3.html#partial-dependence-and-the-observed-data",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Partial dependence and the observed data",
+    "text": "Partial dependence and the observed data\n\nPDPs are most reliable where we have many observations.\nPredictions at values far outside the observed data can be misleading.\nIt is useful to show the distribution of the feature along the x-axis.\n\nDeciles\n\nDivide the observed distribution into ten approximately equal groups.\nVertical marks can show where observations occur.\n\nQuestion: Why should we be cautious about interpreting a PDP where there are very few observations?"
   },
   {
-    "objectID": "lectures/lecture-06.html#imputation-fill-the-gaps",
-    "href": "lectures/lecture-06.html#imputation-fill-the-gaps",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Imputation: Fill the gaps! (🟩 🟧 🟦)",
-    "text": "Imputation: Fill the gaps! (🟩 🟧 🟦)\nFill in missing data using a chosen strategy:\n\nMean: Replace missing values with the average of the available data.\nMedian: Use the middle value.\nMost Frequent: Use the most common value (mode).\nKNN Imputation: Fill based on similar neighbors.\n\nExample:\nImputation is like filling in your average or median or most frequent grade for an assessment you missed.\nfrom sklearn.impute import SimpleImputer\nimputer = SimpleImputer(strategy='mean')\nX_imputed = imputer.fit_transform(X)"
+    "objectID": "lectures/lecture-04_3.html#partial-dependence-in-scikit-learn",
+    "href": "lectures/lecture-04_3.html#partial-dependence-in-scikit-learn",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Partial dependence in scikit-learn",
+    "text": "Partial dependence in scikit-learn\nfrom sklearn.inspection import PartialDependenceDisplay\n\nPartialDependenceDisplay.from_estimator(\n    model,\n    X,\n    features=[0]\n)\n\nplt.show()\n\nmodel must already be fitted.\nX contains the input features.\nfeatures=[0] requests the PDP for the first feature.\nWe can request multiple features:\n\nPartialDependenceDisplay.from_estimator(\n    model,\n    X,\n    features=[0, 1, 2]\n)"
   },
   {
-    "objectID": "lectures/lecture-06.html#example-1",
-    "href": "lectures/lecture-06.html#example-1",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Example:",
-    "text": "Example:\nScaling is like adjusting the number of everyone’s Facebook friends so that both the number of friends and their age are on a comparable scale. This way, one feature doesn’t dominate the other when making comparisons.\nfrom sklearn.preprocessing import StandardScaler\nscaler = StandardScaler()\nX_scaled = scaler.fit_transform(X)"
+    "objectID": "lectures/lecture-04_3.html#classification-vs.-regression-plots",
+    "href": "lectures/lecture-04_3.html#classification-vs.-regression-plots",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Classification vs. regression plots",
+    "text": "Classification vs. regression plots\n\n\n\n\n\n\n\n\n\nModel Type\nPlot\nWhat does it show?\nWhat can we learn?\n\n\n\n\nClassification\nDecision boundary\nHow features are divided into classes\nModel complexity, fit, possible overfitting\n\n\nClassification\nROC curve\nTPR vs. FPR across thresholds\nClassification performance across thresholds\n\n\nClassification\nConfusion matrix\nCounts of TP, TN, FP, FN\nTypes of classification errors\n\n\nRegression\nPrediction error\nResiduals vs. predictions\nPatterns, outliers, changing variance\n\n\nRegression\nPartial dependence\nFeature vs. average prediction\nHow the model uses an individual feature"
   },
   {
-    "objectID": "lectures/lecture-06.html#one-hot-encoding-1-0-0",
-    "href": "lectures/lecture-06.html#one-hot-encoding-1-0-0",
-    "title": "Lecture 6: Model Improvement",
-    "section": "One-Hot encoding: 🍎 → 1️⃣ 0️⃣ 0️⃣",
-    "text": "One-Hot encoding: 🍎 → 1️⃣ 0️⃣ 0️⃣\nConvert categorical features into binary columns.\n\nCreates new binary columns for each category.\nUseful for handling categorical data in machine learning models.\n\nExample:\nTurn “Apple, Banana, Orange” into binary columns:\n\n\n\nFruit\n🍎\n🍌\n🍊\n\n\n\n\nApple 🍎\n1\n0\n0\n\n\nBanana 🍌\n0\n1\n0\n\n\nOrange 🍊\n0\n0\n1\n\n\n\nfrom sklearn.preprocessing import OneHotEncoder\nencoder = OneHotEncoder()\nX_encoded = encoder.fit_transform(X)"
+    "objectID": "lectures/lecture-04_3.html#which-plot-should-we-use",
+    "href": "lectures/lecture-04_3.html#which-plot-should-we-use",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Which plot should we use?",
+    "text": "Which plot should we use?\n\n\n\n\n\n\n\nQuestion\nUseful Plot\n\n\n\n\nHow does a classifier divide the feature space?\nDecision boundary\n\n\nHow does classification performance change with the threshold?\nROC curve\n\n\nHow well does the classifier distinguish positive and negative cases?\nROC + AUC"
   },
   {
-    "objectID": "lectures/lecture-06.html#ordinal-encoding-ranking-matters-3",
-    "href": "lectures/lecture-06.html#ordinal-encoding-ranking-matters-3",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Ordinal encoding: Ranking matters! (⭐️⭐️⭐️ → 3️⃣)",
-    "text": "Ordinal encoding: Ranking matters! (⭐️⭐️⭐️ → 3️⃣)\nConvert categories into integer values that have a meaningful order.\n\nAssign integers based on order or rank.\nUseful when there is an inherent ranking in the data.\n\nExample:\nTurn “Poor, Average, Good” into 1, 2, 3:\n\n\n\nRating\nOrdinal\n\n\n\n\nPoor\n1\n\n\nAverage\n2\n\n\nGood\n3\n\n\n\nfrom sklearn.preprocessing import OrdinalEncoder\nencoder = OrdinalEncoder()\nX_ordinal = encoder.fit_transform(X)"
+    "objectID": "lectures/lecture-04_3.html#which-plot-should-we-use-1",
+    "href": "lectures/lecture-04_3.html#which-plot-should-we-use-1",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Which plot should we use?",
+    "text": "Which plot should we use?\n\n\n\n\n\n\n\nQuestion\nUseful Plot\n\n\n\n\nAre regression errors randomly distributed?\nPrediction error plot\n\n\nAre there patterns in the regression residuals?\nPrediction error plot\n\n\nHow does one feature affect model predictions?\nPartial dependence plot\n\n\nIs a feature’s relationship with predictions linear or nonlinear?\nPartial dependence plot"
   },
   {
-    "objectID": "lectures/lecture-06.html#univariate-vs.-multivariate-imputation",
-    "href": "lectures/lecture-06.html#univariate-vs.-multivariate-imputation",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Univariate vs. Multivariate Imputation",
-    "text": "Univariate vs. Multivariate Imputation\n\nUnivariate Imputation:\nPredicts missing values using summary statistics calculated only from that single feature.\nMethods: Mean, Median, Mode substitution.\nPros: Fast, scalable, simple.\nCons: Ignores correlations with other attributes; underestimates variance."
+    "objectID": "lectures/lecture-04_3.html#questions-for-you",
+    "href": "lectures/lecture-04_3.html#questions-for-you",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Questions for you",
+    "text": "Questions for you\nSelect all of the following statements which are TRUE.\n\n\nA decision boundary plot can help us identify possible overfitting in a classifier.\n\n\nAn ROC curve shows true positive rate versus false positive rate across different thresholds.\n\n\nAn AUC of 0.5 indicates a perfect classifier.\n\n\nA good prediction error plot should show residuals randomly scattered around zero.\n\n\nA curved pattern in a prediction error plot may indicate that a model is missing a nonlinear relationship.\n\n\nA partial dependence plot shows the causal effect of a feature on the target."
   },
   {
-    "objectID": "lectures/lecture-06.html#multivariate-imputation",
-    "href": "lectures/lecture-06.html#multivariate-imputation",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Multivariate Imputation",
-    "text": "Multivariate Imputation\n\nUses the entire set of observed features to estimate missing values.\nMethods: k-Nearest Neighbors (k-NN), MICE (IterativeImputer).\nPros: Preserves inter-feature relationships and dataset structure.\nCons: Computationally expensive; complex."
+    "objectID": "lectures/lecture-04_3.html#iclicker-exercise-1",
+    "href": "lectures/lecture-04_3.html#iclicker-exercise-1",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "iClicker Exercise 1",
+    "text": "iClicker Exercise 1\nWhich statements about ROC curves are TRUE?\n\n\nA perfect classifier has an AUC of 1.0.\n\n\nA random classifier has an AUC of approximately 0.5.\n\n\nIncreasing the classification threshold generally decreases both TPR and FPR.\n\n\nAUC automatically identifies the optimal classification threshold.\n\n\nThe ROC curve can be used to examine classifier performance across different thresholds."
   },
   {
-    "objectID": "lectures/lecture-06.html#imputation-techniques-deep-dive",
-    "href": "lectures/lecture-06.html#imputation-techniques-deep-dive",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Imputation Techniques Deep Dive",
-    "text": "Imputation Techniques Deep Dive"
+    "objectID": "lectures/lecture-04_3.html#iclicker-exercise-2",
+    "href": "lectures/lecture-04_3.html#iclicker-exercise-2",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "iClicker Exercise 2",
+    "text": "iClicker Exercise 2\nWhich statements about regression plots are TRUE?\n\n\nResiduals are calculated as observed minus predicted values.\n\n\nA random scatter of residuals around zero is generally desirable.\n\n\nA funnel-shaped residual plot can indicate changing error variance.\n\n\nA systematic curve in the residuals can indicate a missing nonlinear relationship.\n\n\nA partial dependence plot directly proves that a feature causes changes in the target."
   },
   {
-    "objectID": "lectures/lecture-06.html#mean-median-mode-imputation-univariate",
-    "href": "lectures/lecture-06.html#mean-median-mode-imputation-univariate",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Mean / Median / Mode Imputation (Univariate)",
-    "text": "Mean / Median / Mode Imputation (Univariate)\n\nReplaces NaNs in feature \\(j\\) with \\(\\text{mean}(X_j)\\), \\(\\text{median}(X_j)\\), or \\(\\text{mode}(X_j)\\)."
+    "objectID": "lectures/lecture-04_3.html#group-work-evaluate-a-fitted-model",
+    "href": "lectures/lecture-04_3.html#group-work-evaluate-a-fitted-model",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
+    "section": "Group Work: Evaluate a fitted model",
+    "text": "Group Work: Evaluate a fitted model\nFor your assigned model:\n\nGenerate the appropriate evaluation plots.\nExamine the plots carefully.\nIdentify any unusual patterns.\nCompare the model with another fitted model.\nBe prepared to answer:"
   },
   {
-    "objectID": "lectures/lecture-06.html#k-nearest-neighbors-k-nn-imputation",
-    "href": "lectures/lecture-06.html#k-nearest-neighbors-k-nn-imputation",
-    "title": "Lecture 6: Model Improvement",
-    "section": "k-Nearest Neighbors (k-NN) Imputation",
-    "text": "k-Nearest Neighbors (k-NN) Imputation\n\nFinds the \\(k\\) most similar rows (based on Euclidean distance across non-missing attributes).\nFills missing values with the weighted or unweighted average of those \\(k\\) neighbors."
-  },
-  {
-    "objectID": "lectures/lecture-06.html#multivariate-imputation-by-chained-equations-mice",
-    "href": "lectures/lecture-06.html#multivariate-imputation-by-chained-equations-mice",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Multivariate Imputation by Chained Equations (MICE)",
-    "text": "Multivariate Imputation by Chained Equations (MICE)\n\nFills missing values with initial placeholder estimates (e.g., mean).\nSets feature \\(X_j\\) back to NaN.\nTrains a regression model predicting \\(X_j\\) using all other features.\nPredicts missing \\(X_j\\). Repeats iteratively across all features until convergence."
-  },
-  {
-    "objectID": "lectures/lecture-06.html#implementing-imputation-in-scikit-learn",
-    "href": "lectures/lecture-06.html#implementing-imputation-in-scikit-learn",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Implementing Imputation in SciKit-Learn",
-    "text": "Implementing Imputation in SciKit-Learn\nimport numpy as np\nfrom sklearn.impute import SimpleImputer, KNNImputer\nfrom sklearn.experimental import enable_iterative_imputer\nfrom sklearn.impute import IterativeImputer\n\n# 1. Univariate Mean Imputation\n\nsimple_imp = SimpleImputer(strategy='mean')\nX_simple = simple_imp.fit_transform(X)\n\n# 2. k-NN Imputation\n\nknn_imp = KNNImputer(n_neighbors=5, weights='uniform')\nX_knn = knn_imp.fit_transform(X)\n\n# 3. MICE (Multivariate) Imputation\n\nmice_imp = IterativeImputer(max_iter=10, random_state=42)\nX_mice = mice_imp.fit_transform(X)"
-  },
-  {
-    "objectID": "lectures/lecture-06.html#scikit-learn-transformers-vs-estimators",
-    "href": "lectures/lecture-06.html#scikit-learn-transformers-vs-estimators",
-    "title": "Lecture 6: Model Improvement",
-    "section": "SciKit-Learn Transformers vs Estimators",
-    "text": "SciKit-Learn Transformers vs Estimators"
-  },
-  {
-    "objectID": "lectures/lecture-06.html#transformers",
-    "href": "lectures/lecture-06.html#transformers",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Transformers",
-    "text": "Transformers\n\nUsed for preprocessing and feature engineering.\nImplement fit() and transform().\nfit(X): Computes statistical parameters (e.g., \\(\\mu, \\sigma\\), categories).\ntransform(X): Applies parameters to transform \\(X\\).\nExamples: StandardScaler, SimpleImputer, OneHotEncoder."
-  },
-  {
-    "objectID": "lectures/lecture-06.html#estimators",
-    "href": "lectures/lecture-06.html#estimators",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Estimators",
-    "text": "Estimators\n\nUsed for learning patterns and making predictions.\nImplement fit() and predict().\nfit(X, y): Learns weights/parameters from data.\npredict(X): Generates predictions on unseen data.\nExamples: DecisionTreeClassifier, SVC, KNeighborsClassifier."
-  },
-  {
-    "objectID": "lectures/lecture-06.html#the-golden-rule-of-feature-transformations",
-    "href": "lectures/lecture-06.html#the-golden-rule-of-feature-transformations",
-    "title": "Lecture 6: Model Improvement",
-    "section": "The Golden Rule of Feature Transformations",
-    "text": "The Golden Rule of Feature Transformations\n\nNEVER transform the entire dataset at once!\n\n\nPerforming transformations across the full dataset causes Data Leakage.\nData leakage occurs when info from the validation/test set is inadvertently used to train the transformer (e.g., scaling using test set mean).\nRule:\n\n\nSplit data into Train and Test.\nfit_transform() transformers only on Train.\ntransform() Test using the fitted parameters."
-  },
-  {
-    "objectID": "lectures/lecture-06.html#code",
-    "href": "lectures/lecture-06.html#code",
-    "title": "Lecture 6: Model Improvement",
-    "section": "Code:",
-    "text": "Code:\n\n# CORRECT APPROACH\n\nfrom sklearn.preprocessing import StandardScaler\n\nscaler = StandardScaler()\nX_train_scaled = scaler.fit_transform(X_train)\nX_test_scaled = scaler.transform(X_test)"
-  },
-  {
-    "objectID": "lectures/lecture-06.html#scikit-learn-pipelines",
-    "href": "lectures/lecture-06.html#scikit-learn-pipelines",
-    "title": "Lecture 6: Model Improvement",
-    "section": "SciKit-Learn Pipelines",
-    "text": "SciKit-Learn Pipelines\n\nEncapsulates preprocessing steps and estimators into a single execution unit.\nPrevents data leakage during cross-validation.\nMakes code clean, reproducible, and easily deployable.\n\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.impute import SimpleImputer\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.neighbors import KNeighborsClassifier\n\n# Define Pipeline\n\npipeline = make_pipeline(\nSimpleImputer(strategy='median'),\nStandardScaler(),\nKNeighborsClassifier(n_neighbors=5)\n)\n\n# Train and Evaluate seamlessly\n\npipeline.fit(X_train, y_train)\naccuracy = pipeline.score(X_test, y_test)"
-  },
-  {
-    "objectID": "lectures/lecture-06.html#key-takeaways",
-    "href": "lectures/lecture-06.html#key-takeaways",
-    "title": "Lecture 6: Model Improvement",
+    "objectID": "lectures/lecture-04_3.html#key-takeaways",
+    "href": "lectures/lecture-04_3.html#key-takeaways",
+    "title": "Lecture 4 - 3: Evaluating Models with Plots",
     "section": "Key Takeaways",
-    "text": "Key Takeaways\n\nPreprocessing eliminates feature scale dominant bias and fixes quality issues.\nMissing data mechanisms (MCAR, MAR, MNAR) guide whether deletion or imputation is best.\nScalers and Encoders must fit your variable types and algorithms.\nMultivariate imputation (k-NN, MICE) maintains dataset correlation structures better than univariate statistics.\nUse Pipeline objects to enforce the Golden Rule and stop data leakage!"
+    "text": "Key Takeaways\n\nPlots complement numeric metrics when evaluating machine learning models.\nDecision boundary plots show how classifiers divide the feature space.\nROC curves show the trade-off between true positive rate and false positive rate across thresholds.\nAUC summarizes a classifier’s ranking performance across thresholds.\nPrediction error plots help identify patterns, outliers, and problems with regression model fit.\nPartial dependence plots show how an input feature affects the model’s average prediction.\nA good model evaluation combines metrics + visualizations + domain knowledge."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#overview-learning-objectives",
+    "href": "lectures/decision_trees/lecture-07_1.html#overview-learning-objectives",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Overview & Learning Objectives",
+    "text": "Overview & Learning Objectives\nIn this lecture, we will cover the foundational concepts and practical implementations of decision tree classifiers:\n\nDefine and use a decision tree (structure, nodes, edges, and depth).\nDescribe how a classification tree is trained (CART, recursive binary splitting).\nImplement a classification tree in scikit-learn (DecisionTreeClassifier).\nDefine impurity measures (Gini Impurity vs. Entropy + worked examples).\nImplement early stopping in scikit-learn to prevent overfitting.\nDescribe cost complexity pruning (\\(R\\_alpha(T)\\) evaluation + worked example).\nAnalyze advantages and disadvantages of decision tree models."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#defining-using-a-decision-tree",
+    "href": "lectures/decision_trees/lecture-07_1.html#defining-using-a-decision-tree",
+    "title": "Lecture 7: Decision Trees",
+    "section": "1. Defining & Using a Decision Tree",
+    "text": "1. Defining & Using a Decision Tree\nWhat is a Decision Tree?\nA decision tree is a hierarchical, acyclic graph structure composed of nodes and directed edges.\n\nRoot Node: The topmost node with no parent node; contains the complete dataset.\nInternal Decision Nodes: Nodes with one parent and multiple child nodes. Each evaluates a conditional question/rule.\nEdges: Directed links representing the outcome of a decision node test.\nLeaf Nodes (Terminal Nodes): Nodes with no child edges. They communicate the final predicted class outcome.\nDepth: The number of edges traversed from the root node to reach a specific node."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#decision-tree-traversal-example",
+    "href": "lectures/decision_trees/lecture-07_1.html#decision-tree-traversal-example",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Decision Tree Traversal: Example",
+    "text": "Decision Tree Traversal: Example\nCoffee Species Identification\nConsider identifying coffee species based on physical characteristics:\n\nRoot Node (Depth 0): Is the bean shape round and symmetric?\nYes → Proceed to Pollination Node.\nNo → Leaf: C. liberica.\nDecision Node (Depth 1): Does the plant require an external pollinator (e.g., bees)?\n\nYes → Leaf (Depth 2): C. canephora (Robusta).\nNo → Leaf (Depth 2): C. arabica (Arabica).\n\n\n\nKey Intuition: Decision trees act as flowchart-like decision rules that map feature inputs to target classifications."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#how-classification-trees-are-trained",
+    "href": "lectures/decision_trees/lecture-07_1.html#how-classification-trees-are-trained",
+    "title": "Lecture 7: Decision Trees",
+    "section": "2. How Classification Trees Are Trained",
+    "text": "2. How Classification Trees Are Trained\nThe CART Algorithm\nClassification trees are typically trained using the CART (Classification and Regression Trees) algorithm, which employs Recursive Binary Splitting:"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#top-down-greedy-approach",
+    "href": "lectures/decision_trees/lecture-07_1.html#top-down-greedy-approach",
+    "title": "Lecture 7: Decision Trees",
+    "section": "1. Top-Down Greedy Approach",
+    "text": "1. Top-Down Greedy Approach\n- Starts at the root node and evaluates every available feature $X_j$ and possible split threshold $t$.\n- Selects the feature-threshold pair $(X_j, t)$ that yields the maximum reduction in impurity."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#feature-space-partitioning",
+    "href": "lectures/decision_trees/lecture-07_1.html#feature-space-partitioning",
+    "title": "Lecture 7: Decision Trees",
+    "section": "2. Feature Space Partitioning",
+    "text": "2. Feature Space Partitioning\n\nNumeric splits (\\(X_j \\le t\\)) create decision boundaries (hyperplanes) perpendicular to the feature axis. - Categorical splits (\\(X_j == \\text{'value'}\\)) separate discrete groups."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#recursive-execution",
+    "href": "lectures/decision_trees/lecture-07_1.html#recursive-execution",
+    "title": "Lecture 7: Decision Trees",
+    "section": "3. Recursive Execution",
+    "text": "3. Recursive Execution\n\nThe process repeats independently on child subsets until a stopping criterion is met.\nFinal leaves predict the majority target class within their subset region."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#scikit-learn-implementation",
+    "href": "lectures/decision_trees/lecture-07_1.html#scikit-learn-implementation",
+    "title": "Lecture 7: Decision Trees",
+    "section": "3. Scikit-Learn Implementation",
+    "text": "3. Scikit-Learn Implementation\nBasic Syntax\nIn scikit-learn, decision tree classifiers are provided by the DecisionTreeClassifier class.\nimport pandas as pd\nfrom sklearn.tree import DecisionTreeClassifier\nfrom sklearn.model_selection import train_test_split\n\n# 1. Load dataset\ndata = pd.read_csv(\"coffee.csv\")\n\nX = data[[\"sweetness\", \"uniformity\", \"acidity\"]]\ny = data[\"species\"]\n\n# 2. Train-test split\nX_train, X_test, y_train, y_test = train_test_split(\n    X,\n    y,\n    test_size=0.2,\n    random_state=42\n)\n\n# 3. Instantiate and fit model\ndtc = DecisionTreeClassifier(random_state=42)\ndtc.fit(X_train, y_train)\n\n# 4. Predict classes and probabilities\ny_pred = dtc.predict(X_test)\ny_prob = dtc.predict_proba(X_test)\nclasses = dtc.classes_"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#impurity-measures",
+    "href": "lectures/decision_trees/lecture-07_1.html#impurity-measures",
+    "title": "Lecture 7: Decision Trees",
+    "section": "4. Impurity Measures",
+    "text": "4. Impurity Measures\nNode Purity vs. Impurity\n\nPurity: The proportion of instances at a node belonging to the most frequent class. A node with 100% single-class membership has purity \\(= 1.0\\).\nImpurity: A mathematical metric quantifying the heterogeneity or disorder of class distributions at node \\(i\\).\n\nTree Impurity\nThe total impurity of a tree \\(T\\) with leaves \\(i \\in \\tilde{T}\\) is calculated as the weighted average of leaf impurities:\n\\[\n\\text{Impurity}(T)\n=\n\\frac{\n\\sum_{i \\in \\tilde{T}} n_i \\cdot \\text{Impurity}_i\n}{\n\\sum_{i \\in \\tilde{T}} n_i\n}\n\\]\nwhere \\(n\\_i\\) is the number of training samples reaching leaf \\(i\\)."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#impurity-formulas-gini-vs.-entropy",
+    "href": "lectures/decision_trees/lecture-07_1.html#impurity-formulas-gini-vs.-entropy",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Impurity Formulas: Gini vs. Entropy",
+    "text": "Impurity Formulas: Gini vs. Entropy\n\n\n\n\n\n\n\n\n\nMeasure\nFormula at Node \\(i\\)\nScikit-Learn Flag\nBehavior\n\n\n\n\nGini Impurity\n\\(1 - \\sum_{k=1}^{K} p_{ki}^{2}\\)\ncriterion=\"gini\" (Default)\nMeasures misclassification probability. Reaches peak at equal class distribution (\\(p\\_{ki} = 1/K\\)).\n\n\nEntropy\n\\(-\\sum_{k=1}^{K} p_{ki}\\log_{2}(p_{ki})\\)\ncriterion=\"entropy\"\nInformation-theoretic measure of uncertainty/disorder. Peak occurs when \\(p\\_{ki} = 1/K\\).\n\n\n\n\nNote: \\(p_{ki}\\) represents the proportion of instances of class \\(k\\) present at node \\(i\\)."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#worked-example-gini-impurity-gain-calculation",
+    "href": "lectures/decision_trees/lecture-07_1.html#worked-example-gini-impurity-gain-calculation",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Worked Example: Gini Impurity Gain Calculation",
+    "text": "Worked Example: Gini Impurity Gain Calculation\nScenario\nEvaluating a binary split on a parent node with \\(N = 10\\) samples:\n\n6 Arabica\n4 Robusta\n\nStep 1: Calculate Parent Node Impurity\n\\[\np_{\\text{Arabica}} = \\frac{6}{10} = 0.6,\n\\qquad\np_{\\text{Robusta}} = \\frac{4}{10} = 0.4\n\\]\n\\[\n\\text{Gini}_{\\text{parent}}\n=\n1 - (0.6^2 + 0.4^2)\n=\n1 - (0.36 + 0.16)\n=\n\\mathbf{0.480}\n\\]"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#worked-example-gini-impurity-gain",
+    "href": "lectures/decision_trees/lecture-07_1.html#worked-example-gini-impurity-gain",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Worked Example: Gini Impurity Gain",
+    "text": "Worked Example: Gini Impurity Gain\nStep 2: Evaluate Split Outcome\nSuppose candidate feature \\(X\\_1 \\le 8.0\\) splits the 10 samples into two child nodes:\n\nLeft Child (\\(N\\_L = 5\\)): 5 Arabica, 0 Robusta\n\n\\[\n\\text{Gini}_L\n=\n1 - (1.0^2 + 0.0^2)\n=\n\\mathbf{0.000}\n\\qquad\n\\text{(Pure Node)}\n\\]\n\nRight Child (\\(N\\_R = 5\\)): 1 Arabica, 4 Robusta\n\n\\[\n\\text{Gini}_R\n=\n1 - (0.2^2 + 0.8^2)\n=\n1 - (0.04 + 0.64)\n=\n\\mathbf{0.320}\n\\]"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#early-stopping-pre-pruning",
+    "href": "lectures/decision_trees/lecture-07_1.html#early-stopping-pre-pruning",
+    "title": "Lecture 7: Decision Trees",
+    "section": "5. Early Stopping (Pre-Pruning)",
+    "text": "5. Early Stopping (Pre-Pruning)\nUnconstrained decision trees tend to grow until every leaf is 100% pure, memorizing training noise and leading to severe overfitting.\nEarly stopping restricts tree growth during training using stopping thresholds:\n\n\n\n\n\n\n\n\nHyperparameter\nDefault\nDescription / Constraint Function\n\n\n\n\nmax_depth\nNone\nCaps maximum distance from root to leaf node.\n\n\nmin_samples_split\n2\nMinimum samples (int or float fraction) required to attempt a split.\n\n\nmin_samples_leaf\n1\nMinimum samples required in resulting left and right child nodes.\n\n\nmax_leaf_nodes\nNone\nLimits total leaf count; expands best nodes first."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#early-stopping-code-example",
+    "href": "lectures/decision_trees/lecture-07_1.html#early-stopping-code-example",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Early Stopping Code Example",
+    "text": "Early Stopping Code Example\nfrom sklearn.tree import DecisionTreeClassifier\n\n# Configure pre-pruning / early stopping parameters\ndtc_constrained = DecisionTreeClassifier(\n    criterion=\"gini\",\n    max_depth=3,             # Maximum tree depth of 3\n    min_samples_split=10,    # Needs &gt;= 10 samples to consider splitting\n    min_samples_leaf=4,      # Every leaf must have &gt;= 4 samples\n    max_leaf_nodes=8,        # Maximum of 8 total leaves\n    random_state=42\n)\n\n# Train model on training set\ndtc_constrained.fit(X_train, y_train)\n\n# Evaluate generalization\nprint(\"Train Score:\", dtc_constrained.score(X_train, y_train))\nprint(\"Test Score: \", dtc_constrained.score(X_test, y_test))"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#cost-complexity-pruning-post-pruning",
+    "href": "lectures/decision_trees/lecture-07_1.html#cost-complexity-pruning-post-pruning",
+    "title": "Lecture 7: Decision Trees",
+    "section": "6. Cost Complexity Pruning (Post-Pruning)",
+    "text": "6. Cost Complexity Pruning (Post-Pruning)\nAn alternative to early stopping is allowing a tree to grow fully and then pruning non-essential decision branches bottom-up.\nCost Complexity Objective Equation\nCost complexity balances overall tree impurity against tree size using a penalty parameter \\(\\alpha \\ge 0\\):\n\\[\nR_\\alpha(T)\n=\nR(T)\n+\n\\alpha |\\tilde{T}|\n\\]\n\n\\(R(T)\\): Total weighted impurity of tree \\(T\\).\n\\(|\\tilde{T}|\\): Number of terminal leaf nodes in tree \\(T\\).\n\\(\\alpha\\): Complexity tuning parameter (ccp_alpha in scikit-learn)."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#pruning-evaluation-rule",
+    "href": "lectures/decision_trees/lecture-07_1.html#pruning-evaluation-rule",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Pruning Evaluation Rule",
+    "text": "Pruning Evaluation Rule\nFor any internal node \\(t\\):\n\nCost as a collapsed leaf node:\n\n\\[\nR_\\alpha(t) = R(t) + \\alpha\n\\]\n- **Cost of subtree $T_t$ descending from $t$:**\n\\[\nR_\\alpha(T_t)\n=\nR(T_t)\n+\n\\alpha |\\tilde{T}_t|\n\\]\n\\[\n\\boxed{\n\\text{Prune subtree } T_t\n\\text{ if }\nR_\\alpha(t)\n\\le\nR_\\alpha(T_t)\n}\n\\]"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#worked-example-pruning-decision",
+    "href": "lectures/decision_trees/lecture-07_1.html#worked-example-pruning-decision",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Worked Example: Pruning Decision",
+    "text": "Worked Example: Pruning Decision\nNode Setup\nInternal decision node \\(t\\) contains \\(N_t = 83\\) total samples (\\(R(t) = 0.092\\)).\nIt splits into two leaves (\\(|\\tilde{T}_t| = 2\\)):\n\nLeft leaf: \\(N_L = 50\\), \\(\\text{Gini}_L = 0.147\\)\nRight leaf: \\(N_R = 33\\), \\(\\text{Gini}_R = 0.000\\)\n\nLet complexity parameter \\(\\alpha = 0.05\\)."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#worked-example-pruning-decision-1",
+    "href": "lectures/decision_trees/lecture-07_1.html#worked-example-pruning-decision-1",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Worked Example: Pruning Decision",
+    "text": "Worked Example: Pruning Decision\n1. Calculate Subtree Cost \\(R_\\alpha(T_t)\\)\n\\[\nR(T_t)\n=\n\\frac{50(0.147) + 33(0.000)}{83}\n=\n\\frac{7.35}{83}\n\\approx\n0.0886\n\\]\n\\[\nR_\\alpha(T_t)\n=\nR(T_t)\n+\n\\alpha |\\tilde{T}_t|\n=\n0.0886 + 0.05(2)\n=\n\\mathbf{0.1886}\n\\]"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#cost-complexity-pruning-in-scikit-learn",
+    "href": "lectures/decision_trees/lecture-07_1.html#cost-complexity-pruning-in-scikit-learn",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Cost Complexity Pruning in Scikit-Learn",
+    "text": "Cost Complexity Pruning in Scikit-Learn\n\n# 1. Compute effective alpha pruning path\nclf = DecisionTreeClassifier(random_state=42)\n\npath = clf.cost_complexity_pruning_path(\n    X_train,\n    y_train\n)\n\nccp_alphas = path.ccp_alphas\nimpurities = path.impurities\n\n# 2. Train candidate trees across different alpha values\nclfs = []\n\nfor ccp_alpha in ccp_alphas:\n    clf = DecisionTreeClassifier(\n        random_state=42,\n        ccp_alpha=ccp_alpha\n    )\n\n    clf.fit(X_train, y_train)\n    clfs.append(clf)\n\n# 3. Select alpha based on test-set accuracy\ntest_scores = [\n    clf.score(X_test, y_test)\n    for clf in clfs\n]\n\nbest_idx = test_scores.index(max(test_scores))\nbest_tree = clfs[best_idx]\n\nprint(f\"Optimal Alpha: {ccp_alphas[best_idx]:.4f}\")"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#advantages-disadvantages",
+    "href": "lectures/decision_trees/lecture-07_1.html#advantages-disadvantages",
+    "title": "Lecture 7: Decision Trees",
+    "section": "7. Advantages & Disadvantages",
+    "text": "7. Advantages & Disadvantages\nAdvantages\n\nHigh Interpretability: Decision logic easily translates into human-readable rules and visual flowcharts.\nNo Feature Scaling: Invariant to monotonic transformations; does not require standardization or normalization.\nMixed Data Types: Can work with numerical and categorical features when appropriately encoded.\nFeature Selection: Top-level nodes can highlight highly discriminative features."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07_1.html#lecture-summary",
+    "href": "lectures/decision_trees/lecture-07_1.html#lecture-summary",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Lecture Summary",
+    "text": "Lecture Summary\n\nStructure: Decision trees partition data using root, internal decision, and leaf nodes.\nTraining: Greedy recursive binary splitting minimizes weighted node impurity at each level.\nMetrics: Gini Impurity (\\(1 - \\sum_{k=1}^{K} p_k^2\\)) and Entropy (\\(-\\sum_{k=1}^{K} p_k \\log_2 p_k\\)) quantify node disorder.\nRegularization: Control overfitting using Pre-Pruning (max_depth, min_samples_leaf) or Post-Pruning (ccp_alpha).\nTrade-offs: Highly interpretable and scale-invariant, but prone to high variance and axis-aligned boundary constraints."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#what-is-a-loss-function",
+    "href": "lectures/lecture-04_2.html#what-is-a-loss-function",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "What is a loss function?",
+    "text": "What is a loss function?\n\nA loss function measures how close a model’s predictions are to the actual values.\nRegression models are fitted by selecting weights that minimize the loss.\nCommon regression loss functions:\n\nAbsolute loss (L1)\nSquared loss (L2)\nHuber loss\nQuantile loss\n\nThe choice of loss function affects how the model responds to large errors and outliers."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#residuals-and-loss",
+    "href": "lectures/lecture-04_2.html#residuals-and-loss",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Residuals and loss",
+    "text": "Residuals and loss\n\nThe residual (prediction error) is the difference between the observed and predicted values: \\[e_i = y_i - \\hat{y}_i\\]\nA loss function transforms the residual into a measure of error.\nSmall loss → prediction is close to the observed value.\nLarge loss → prediction is far from the observed value.\nDuring model fitting, we choose parameters that minimize the overall loss."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#absolute-loss",
+    "href": "lectures/lecture-04_2.html#absolute-loss",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Absolute loss",
+    "text": "Absolute loss\n\nAbsolute loss measures the absolute value of the prediction error: \\[L_1(y, \\hat{y}) = |y - \\hat{y}|\\]\nAlso called L1 loss.\nAll errors are penalized proportionally to their size.\nThe Mean Absolute Error (MAE) is the average absolute loss: \\[MAE = \\frac{1}{n}\\sum_{i=1}^{n}|y_i-\\hat{y}_i|\\]\nLess sensitive to outliers than squared loss."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#squared-loss",
+    "href": "lectures/lecture-04_2.html#squared-loss",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Squared loss",
+    "text": "Squared loss\n\nSquared loss squares the prediction error: \\[L_2(y, \\hat{y}) = (y-\\hat{y})^2\\]\nAlso called L2 loss.\nLarge errors receive much larger penalties.\nThe Mean Squared Error (MSE) is the average squared loss: \\[MSE = \\frac{1}{n}\\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2\\]\nOrdinary linear regression is typically fitted using least squares, which minimizes squared loss."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#absolute-vs.-squared-loss",
+    "href": "lectures/lecture-04_2.html#absolute-vs.-squared-loss",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Absolute vs. squared loss",
+    "text": "Absolute vs. squared loss\n\n\n\nProperty\nAbsolute Loss\nSquared Loss\n\n\n\n\nFormula\n\\(|y-\\hat{y}|\\)\n\\((y-\\hat{y})^2\\)\n\n\nAlso called\nL1 loss\nL2 loss\n\n\nPenalizes large errors\nProportionally\nMuch more heavily\n\n\nSensitive to outliers\nLower\nHigher\n\n\nCommon metric\nMAE\nMSE / RMSE"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#why-does-squared-loss-care-about-outliers",
+    "href": "lectures/lecture-04_2.html#why-does-squared-loss-care-about-outliers",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Why does squared loss care about outliers?",
+    "text": "Why does squared loss care about outliers?\n\nSquaring an error makes large prediction errors disproportionately important.\nExample:\n\nError of 2 → squared loss = 4\nError of 10 → squared loss = 100\n\nA single extreme observation can therefore have a large influence on the fitted regression line.\nQuestion: Which loss would you prefer when your data contain substantial outliers?"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#huber-loss",
+    "href": "lectures/lecture-04_2.html#huber-loss",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Huber loss",
+    "text": "Huber loss\n\nHuber loss combines squared and absolute loss.\nFor small errors, it behaves like squared loss.\nFor large errors, it behaves like absolute loss.\nThis gives us:\n\nSmooth optimization near zero.\nLess sensitivity to outliers than squared loss.\n\nA hyperparameter \\(\\delta\\) controls where the loss transitions from quadratic to linear."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#huber-loss-the-best-of-both",
+    "href": "lectures/lecture-04_2.html#huber-loss-the-best-of-both",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Huber loss: the best of both?",
+    "text": "Huber loss: the best of both?\n\\[\nL_\\delta(e) =\n\\begin{cases}\n\\frac{1}{2}e^2, & |e| \\leq \\delta \\\\\n\\delta\\left(|e|-\\frac{1}{2}\\delta\\right), & |e| &gt; \\delta\n\\end{cases}\n\\]\n\nSmall errors: quadratic → similar to squared loss.\nLarge errors: linear → similar to absolute loss.\nSmaller \\(\\delta\\): Huber behaves more like absolute loss.\nLarger \\(\\delta\\): Huber behaves more like squared loss."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#quantile-loss",
+    "href": "lectures/lecture-04_2.html#quantile-loss",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Quantile loss",
+    "text": "Quantile loss\n\nQuantile loss allows us to penalize underprediction and overprediction differently.\nUseful for quantile regression, where we predict a specific quantile of the target distribution.\nThe loss depends on the quantile \\(\\tau\\) and whether the prediction is above or below the observed value.\nExamples:\n\n\\(\\tau=0.50\\) → median regression.\n\\(\\tau=0.75\\) → 75th percentile.\n\\(\\tau=0.90\\) → 90th percentile."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#quantile-loss-and-asymmetric-penalties",
+    "href": "lectures/lecture-04_2.html#quantile-loss-and-asymmetric-penalties",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Quantile loss and asymmetric penalties",
+    "text": "Quantile loss and asymmetric penalties\n\nFor small quantiles, overpredictions receive a larger penalty.\nFor large quantiles, underpredictions receive a larger penalty.\nAt \\(\\tau=0.50\\), underprediction and overprediction are penalized equally.\nQuestion: If we are predicting the 90th percentile, should an underprediction or an overprediction receive the larger penalty?"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#choosing-a-loss-function",
+    "href": "lectures/lecture-04_2.html#choosing-a-loss-function",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Choosing a loss function",
+    "text": "Choosing a loss function\n\n\n\n\n\n\n\n\nLoss Function\nKey Property\nWhen to Consider\n\n\n\n\nAbsolute (L1)\nLinear penalty\nRobust to outliers\n\n\nSquared (L2)\nLarge errors heavily penalized\nStandard linear regression\n\n\nHuber\nSquared near 0, linear for large errors\nWant robustness + smooth optimization\n\n\nQuantile\nAsymmetric penalties\nPredicting specific quantiles"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#loss-functions-in-scikit-learn",
+    "href": "lectures/lecture-04_2.html#loss-functions-in-scikit-learn",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Loss functions in scikit-learn",
+    "text": "Loss functions in scikit-learn\n\nAbsolute loss:\nfrom sklearn.metrics import mean_absolute_error\nSquared loss:\nfrom sklearn.metrics import mean_squared_error\nQuantile loss:\nfrom sklearn.metrics import mean_pinball_loss\nHuber regression:\nfrom sklearn.linear_model import HuberRegressor"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#comparing-loss-functions-in-scikit-learn",
+    "href": "lectures/lecture-04_2.html#comparing-loss-functions-in-scikit-learn",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Comparing loss functions in scikit-learn",
+    "text": "Comparing loss functions in scikit-learn\nfrom sklearn.metrics import (\n    mean_absolute_error,\n    mean_squared_error,\n    mean_pinball_loss\n)\n\ny_pred = model.predict(X)\n\nmae = mean_absolute_error(y, y_pred)\nmse = mean_squared_error(y, y_pred)\npinball = mean_pinball_loss(y, y_pred, alpha=0.75)\n\nprint(\"MAE:\", mae)\nprint(\"MSE:\", mse)\nprint(\"Pinball loss:\", pinball)"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#fitting-a-model-with-huber-loss",
+    "href": "lectures/lecture-04_2.html#fitting-a-model-with-huber-loss",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Fitting a model with Huber loss",
+    "text": "Fitting a model with Huber loss\nfrom sklearn.linear_model import HuberRegressor\n\nmodel_huber = HuberRegressor()\nmodel_huber.fit(X, y)\n\ny_pred = model_huber.predict(X)\n\nHuberRegressor() fits a linear model using Huber loss.\nSmall prediction errors are treated similarly to squared loss.\nLarge prediction errors are treated more like absolute loss.\nThis makes the model less sensitive to outliers."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#comparing-linear-regression-and-huber-regression",
+    "href": "lectures/lecture-04_2.html#comparing-linear-regression-and-huber-regression",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Comparing Linear Regression and Huber Regression",
+    "text": "Comparing Linear Regression and Huber Regression\nfrom sklearn.linear_model import LinearRegression, HuberRegressor\nfrom sklearn.metrics import mean_squared_error, mean_absolute_error\n\nmodel_lr = LinearRegression()\nmodel_huber = HuberRegressor()\n\nmodel_lr.fit(X, y)\nmodel_huber.fit(X, y)\n\ny_pred_lr = model_lr.predict(X)\ny_pred_huber = model_huber.predict(X)\n\nprint(\"Linear Regression MSE:\",\n      mean_squared_error(y, y_pred_lr))\n\nprint(\"Huber Regression MSE:\",\n      mean_squared_error(y, y_pred_huber))"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#what-happens-with-an-outlier",
+    "href": "lectures/lecture-04_2.html#what-happens-with-an-outlier",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "What happens with an outlier?",
+    "text": "What happens with an outlier?\n\n\nSquared loss\n\nLarge errors are squared.\nOutliers can have a large influence on the fitted model.\nThe regression line may be pulled toward extreme observations.\n\n\nHuber loss\n\nSmall errors → squared loss.\nLarge errors → absolute-like loss.\nOutliers have less influence on the fitted model."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#questions-for-you",
+    "href": "lectures/lecture-04_2.html#questions-for-you",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Questions for you",
+    "text": "Questions for you\nSelect all of the following statements which are TRUE.\n\n\nRegression models are fitted by minimizing a specified loss function.\n\n\nAbsolute loss is more sensitive to outliers than squared loss.\n\n\nSquared loss gives much more weight to large prediction errors.\n\n\nHuber loss behaves like squared loss for small errors and absolute loss for large errors.\n\n\nQuantile loss can assign different penalties to underpredictions and overpredictions."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#which-loss-function-would-you-choose",
+    "href": "lectures/lecture-04_2.html#which-loss-function-would-you-choose",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Which loss function would you choose?",
+    "text": "Which loss function would you choose?\n\n\n\nScenario\nPreferred Loss\n\n\n\n\nOutliers are common and should have limited influence.\n\n\n\nLarge errors are especially costly.\n\n\n\nYou want a smooth loss that is robust to outliers.\n\n\n\nYou want to predict the 90th percentile of a target."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#which-loss-function-would-you-choose-1",
+    "href": "lectures/lecture-04_2.html#which-loss-function-would-you-choose-1",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Which loss function would you choose?",
+    "text": "Which loss function would you choose?\n\n\n\n\n\n\n\nScenario\nPreferred Loss\n\n\n\n\nOutliers are common and should have limited influence.\nAbsolute Loss (MAE)\n\n\nLarge errors are especially costly.\nSquared Loss (MSE)\n\n\nYou want a smooth loss that is robust to outliers.\nHuber Loss\n\n\nYou want to predict the 90th percentile of a target.\nQuantile Loss (τ = 0.90)"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#key-takeaways",
+    "href": "lectures/lecture-04_2.html#key-takeaways",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Key Takeaways",
+    "text": "Key Takeaways\n\nA loss function tells us how costly a prediction error is.\nAbsolute loss is more robust to outliers.\nSquared loss strongly penalizes large errors and is the standard choice for ordinary least squares.\nHuber loss combines the advantages of squared and absolute loss.\nQuantile loss allows us to make underprediction and overprediction have different costs.\nIn scikit-learn, these ideas are available through mean_absolute_error(), mean_squared_error(), mean_pinball_loss(), and HuberRegressor()."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#which-metric-fits-best",
+    "href": "lectures/lecture-04_2.html#which-metric-fits-best",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Which metric fits best?",
+    "text": "Which metric fits best?\n\n\n\nScenario\nData Imbalance\nMain Concern\nBest Metric(s) / Curve\n\n\n\n\nEmail Spam Detection\n10% spam\nAvoid false positives\n\n\n\nDisease Screening\n1 in 10,000\nAvoid false negatives\n\n\n\nCredit Card Fraud\n0.1% fraud\nFocus on rare positive class\n\n\n\nCustomer Churn\n20% churn\nBalance FP & FN\n\n\n\nSentiment Analysis\n50/50 balanced\nOverall correctness\n\n\n\nFace Recognition\nBalanced pairs\nTrade-off FP vs FN"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#summary-choosing-the-right-metric",
+    "href": "lectures/lecture-04_2.html#summary-choosing-the-right-metric",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Summary: Choosing the right metric",
+    "text": "Summary: Choosing the right metric\n\n\n\n\n\n\n\n\nMetric / Plot\nWhen to Use\nWhy\n\n\n\n\nPrecision, Recall, F1\nWhen you care about specific error types (FP vs FN) or a fixed threshold.\nFocus on particular tradeoffs.\n\n\nPR Curve & AP Score\nWhen the dataset is highly imbalanced (rare positives).\nIgnores TNs; focuses on positives.\n\n\nROC Curve & AUC\nWhen classes are moderately imbalanced.\nMeasures ranking ability across thresholds."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#questions-for-you-1",
+    "href": "lectures/lecture-04_2.html#questions-for-you-1",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Questions for you",
+    "text": "Questions for you\n\nWhat’s the difference between the average precision (AP) score and F1-score?\nWhich model would you pick?"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#roc-of-a-baseline-model",
+    "href": "lectures/lecture-04_2.html#roc-of-a-baseline-model",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "ROC of a baseline model",
+    "text": "ROC of a baseline model\n\n\n\n\nAUC–ROC measures the probability that a randomly chosen positive example receives a higher score than a randomly chosen negative example.\n\nPerfect model: (AUC = 1.0). Always ranks positives above negatives.\n\nRandom model (AUC = 0.5): No discriminative ability (equivalent to random guessing).\n\n\n\nSource"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#questions-for-you-2",
+    "href": "lectures/lecture-04_2.html#questions-for-you-2",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Questions for you",
+    "text": "Questions for you\n\n\n\n\n\nWhich model would you pick?"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#dealing-with-class-imbalance",
+    "href": "lectures/lecture-04_2.html#dealing-with-class-imbalance",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Dealing with class imbalance",
+    "text": "Dealing with class imbalance\n\nUnder sampling\nOversampling\nclass weight=\"balanced\" (preferred method for this course)\nSMOTE"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#handling-imbalance-by-chaning-class-weights",
+    "href": "lectures/lecture-04_2.html#handling-imbalance-by-chaning-class-weights",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Handling imbalance by chaning class weights",
+    "text": "Handling imbalance by chaning class weights\n\nWe can specify class_weight=“balanced” to give more importance to rare examples during training.\n\n\n\n\n\n\n\n\n\n\n\n\nThis sets the weights so that the classes are “equal”.\nWe have reduced false negatives but we have many more false positives now …\n\nDecreases false negatives, which improves recall.\nIncreases false positives, which might lower precision."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#comparing-linear-regression-and-huber-regression-1",
+    "href": "lectures/lecture-04_2.html#comparing-linear-regression-and-huber-regression-1",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Comparing Linear Regression and Huber Regression",
+    "text": "Comparing Linear Regression and Huber Regression\nfrom sklearn.linear_model import LogisticRegression\n\nmodel = LogisticRegression(class_weight=\"balanced\")\n\nmodel.fit(X_train, y_train)"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#ridge-and-ridgecv",
+    "href": "lectures/lecture-04_2.html#ridge-and-ridgecv",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Ridge and RidgeCV",
+    "text": "Ridge and RidgeCV\n\nRidge Regression: alpha hyperparameter controls model complexity.\nRidgeCV: Ridge regression with built-in cross-validation to find the optimal alpha."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#alpha-hyperparameter",
+    "href": "lectures/lecture-04_2.html#alpha-hyperparameter",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "alpha hyperparameter",
+    "text": "alpha hyperparameter\n\nRole of alpha:\n\nControls model complexity\nHigher alpha: Simpler model, smaller coefficients.\nLower alpha: Complex model, larger coefficients."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#regression-metrics-mse-rmse-mape-and-r2_score",
+    "href": "lectures/lecture-04_2.html#regression-metrics-mse-rmse-mape-and-r2_score",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Regression Metrics: MSE, RMSE, MAPE, and r2_score",
+    "text": "Regression Metrics: MSE, RMSE, MAPE, and r2_score\n\nMean Squared Error (MSE): Average of the squares of the errors.\nRoot Mean Squared Error (RMSE): Square root of MSE, same units as the target variable.\n\\(R^2\\) measures how much of the variation in the target variable your model can explain.-\nMean Absolute Percentage Error (MAPE): Average of the absolute percentage errors."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#applying-log-transformation-to-the-targets",
+    "href": "lectures/lecture-04_2.html#applying-log-transformation-to-the-targets",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Applying log transformation to the targets",
+    "text": "Applying log transformation to the targets\n\nSuitable when the target has a wide range and spans several orders of magnitude\n\nExample: counts data such as social media likes or price data\n\nHelps manage skewed data, making patterns more apparent and regression models more effective.\nTransformedTargetRegressor\n\nWraps a regression model and applies a transformation to the target values."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#which-metric-fits-the-scenario",
+    "href": "lectures/lecture-04_2.html#which-metric-fits-the-scenario",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Which metric fits the scenario?",
+    "text": "Which metric fits the scenario?\n\n\n\n\n\n\n\n\nScenario\nWhat matters most?\nBest metric(s)?\n\n\n\n\nPredicting house prices ranging from $60K–$800K.\nA $30K error is huge for a $60K house but small for a $500K house.\n\n\n\nPredicting exam scores (0–100).\nYou want an interpretable measure of average error in points.\n\n\n\nPredicting energy consumption in a large industrial system.\nLarge errors are very costly and should be penalized heavily.\n\n\n\nPredicting insurance claim amounts.\nYou want to compare how well different models explain the variation in claims."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#which-metric-fits-the-scenario-1",
+    "href": "lectures/lecture-04_2.html#which-metric-fits-the-scenario-1",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Which metric fits the scenario?",
+    "text": "Which metric fits the scenario?\n\n\n\n\n\n\n\n\nScenario\nWhat matters most?\nBest metric(s)?\n\n\n\n\nPredicting house prices ranging from $60K–$800K.\nA $30K error is huge for a $60K house but small for a $500K house.\nMAPE (Mean Absolute Percentage Error)\n\n\nPredicting exam scores (0–100).\nYou want an interpretable measure of average error in points.\nMAE (Mean Absolute Error)\n\n\nPredicting energy consumption in a large industrial system.\nLarge errors are very costly and should be penalized heavily.\nMSE (Mean Squared Error) or RMSE\n\n\nPredicting insurance claim amounts.\nYou want to compare how well different models explain the variation in claims.\nR² (R-squared)"
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#rationale",
+    "href": "lectures/lecture-04_2.html#rationale",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Rationale",
+    "text": "Rationale\n\nMAPE: Measures error relative to the actual value, so a $30K error on a $60K house counts much more than the same error on a $500K house.\nMAE: Gives the average absolute error in the same units as the target—here, exam points.\nMSE/RMSE: Squares errors, giving disproportionately more weight to large errors. MSE penalizes them most directly; RMSE is easier to interpret because it is in the original units.\nR² (R-squared): Measures the proportion of variation in the target explained by the model, making it useful for comparing how much variation in claim amounts the models account for."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#which-metric-fits-the-scenario-2",
+    "href": "lectures/lecture-04_2.html#which-metric-fits-the-scenario-2",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "Which metric fits the scenario?",
+    "text": "Which metric fits the scenario?\n\nFor interpretability: prefer RMSE or MAPE\nWhen you want to discourage large error: MSE is common\nFor fair comparison: r2 provides a normalized score similar to accuracy in classification.\n\nFor imbalanced scales: MAPE helps when proportional error matters more than absolute error."
+  },
+  {
+    "objectID": "lectures/lecture-04_2.html#section",
+    "href": "lectures/lecture-04_2.html#section",
+    "title": "Lecture 4 - 2: Regression Metrics",
+    "section": "",
+    "text": "Slides adapted from Firas Moosvi"
   },
   {
     "objectID": "lectures/lecture-04_1.html#learning-objectives",
@@ -1496,5 +1888,12 @@
     "title": "Lecture 4 - 1: Classification Metrics",
     "section": "",
     "text": "Slides adapted from Firas Moosvi"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "Welcome to CSCI345! Here, you’ll find slides for CSCI 345.\n\nClass times 🕘 8:00 AM to 9:50 AM, Tuesday and Thursday\nWhere? 📍 Paine 212 Building"
   }
 ]
