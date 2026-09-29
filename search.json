@@ -588,160 +588,6 @@
     "text": "Summary of Best Practices\n\nKeep the Test Set untouched until all model selection and hyperparameter tuning is finished.\nUse Stratified Splitting whenever dealing with classification tasks.\nLeverage Cross-Validation (\\(K=5\\) or \\(K=10\\)) for reliable performance assessment and model selection.\nTune Hyperparameters systematically with GridSearchCV or RandomizedSearchCV.\nDiagnose with Validation Curves to detect underfitting vs. overfitting before deploying models."
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#cart-tree-construction-algorithm",
-    "href": "lectures/decision_trees/lecture-07_2.html#cart-tree-construction-algorithm",
-    "title": "Lecture 7: Decision Trees",
-    "section": "CART Tree Construction Algorithm",
-    "text": "CART Tree Construction Algorithm\n\nGoal: Create the smallest/simplest tree that fits the training data\nDoing this optimally is NP-Hard\nGreedy Algorithm:\n\nStart with a root node containing the full data set.\nIf there is only one class, terminate\nElse, check every possible split point for every attribute.\n\n(Involves sorting the data using the attributes as the key)\n\nSelect the split that results in the greatest overall reduction in impurity\nDistribute the data to the two children according to that split\nRecursively build decision trees starting at the two children"
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#a-training-set-to-work-with",
-    "href": "lectures/decision_trees/lecture-07_2.html#a-training-set-to-work-with",
-    "title": "Lecture 7: Decision Trees",
-    "section": "A Training Set to Work With",
-    "text": "A Training Set to Work With\n\n\n\n\n\n\\(x_1\\)\n\\(x_2\\)\nclass\n\n\n\n\n2\n4\n+\n\n\n7\n9\n+\n\n\n6\n3\n−\n\n\n1\n1\n+\n\n\n9\n5\n−\n\n\n3\n7\n+\n\n\n\nTwo attributes, two classes, six examples.\nRoot node: 4 +, 2 −\n\n\n\n\nScatter plot of the six training points on a zero to ten grid"
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#step-1-enumerate-the-candidate-splits",
-    "href": "lectures/decision_trees/lecture-07_2.html#step-1-enumerate-the-candidate-splits",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Step 1: Enumerate the Candidate Splits",
-    "text": "Step 1: Enumerate the Candidate Splits\nSort by each attribute, then consider the midpoint between each pair of adjacent values.\n\n\n\n\n\n\\(x_1\\)\n\\(x_2\\)\nclass\n\n\n\n\n2\n4\n+\n\n\n7\n9\n+\n\n\n6\n3\n−\n\n\n1\n1\n+\n\n\n9\n5\n−\n\n\n3\n7\n+\n\n\n\n\n\n\n\nNumber lines showing the data sorted by each attribute with candidate split points marked\n\n\n\nFive split points per attribute, ten candidates in all."
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#entropy",
-    "href": "lectures/decision_trees/lecture-07_2.html#entropy",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Entropy",
-    "text": "Entropy\n\nThe information associated with an event is defined as: \\(I(E) = -\\log_2 p(E)\\) \nEntropy is expected information: \\(\\displaystyle -\\sum_{i=1}^{c}  \\Big ( p_i  \\log_2 ( p_i ) \\Big )\\)"
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#gini-impurity",
-    "href": "lectures/decision_trees/lecture-07_2.html#gini-impurity",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Gini Impurity",
-    "text": "Gini Impurity\n\nThe fraction of incorrect predictions in a node if the class of each element was predicted by randomly selecting a label according to the distribution of classes in the node:\n\\(\\displaystyle \\phi(\\mathbf{p}) = \\sum_i p_i(1-p_i)\\)\n\n\\((1-p_i)\\) is the probability of making a mistake for class \\(i\\).\n\nCan be rewritten as: \\(\\displaystyle \\phi(\\mathbf{p}) = 1 - \\sum_i p_i^2\\)"
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#what-the-numbers-look-like",
-    "href": "lectures/decision_trees/lecture-07_2.html#what-the-numbers-look-like",
-    "title": "Lecture 7: Decision Trees",
-    "section": "What the Numbers Look Like",
-    "text": "What the Numbers Look Like\n\nFour nodes ranging from pure to evenly mixed, each labeled with its Gini impurity and entropyBoth measures are \\(0\\) for a pure node and largest when the node is evenly mixed."
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#entropy-vs.-gini",
-    "href": "lectures/decision_trees/lecture-07_2.html#entropy-vs.-gini",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Entropy vs. Gini",
-    "text": "Entropy vs. Gini\n\n\n\n\n\nEntropy and Gini impurity plotted against the fraction of positive examples\n\n\n\n\nSame shape, same zeros, same peak location.\nEntropy peaks at \\(1\\) (it is measured in bits); Gini peaks at \\(0.5\\).\nWhich should you use? Doesn’t much matter. Gini is a bit cheaper: squaring beats taking a logarithm. Entropy tends to give more balanced splits."
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#scoring-a-split",
-    "href": "lectures/decision_trees/lecture-07_2.html#scoring-a-split",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Scoring a Split",
-    "text": "Scoring a Split\n\nA split produces two children, so we need a single number for the pair. Weight each child by the fraction of examples that land in it:\n\\(\\displaystyle \\phi_{\\text{split}} = \\frac{m_{\\text{left}}}{m}\\phi(\\text{left}) + \\frac{m_{\\text{right}}}{m}\\phi(\\text{right})\\)\nThe gain is the reduction in impurity:\n\\(\\displaystyle \\text{Gain} = \\phi(\\text{parent}) - \\phi_{\\text{split}}\\)\n\\(\\phi(\\text{parent})\\) is the same for every candidate, so maximizing gain and minimizing \\(\\phi_{\\text{split}}\\) are the same thing."
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#step-2-score-every-candidate",
-    "href": "lectures/decision_trees/lecture-07_2.html#step-2-score-every-candidate",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Step 2: Score Every Candidate",
-    "text": "Step 2: Score Every Candidate\nRoot: 4 +, 2 −, so \\(\\phi(\\text{parent}) = 1 - \\left(\\tfrac{4}{6}\\right)^2 - \\left(\\tfrac{2}{6}\\right)^2 = 0.444\\)\n\n\n\n\n\nsplit\nleft\nright\n\\(\\phi_{\\text{split}}\\)\ngain\n\n\n\n\n\\(x_1 \\le 1.5\\)\n\n\n\n\n\n\n\\(x_1 \\le 2.5\\)\n\n\n\n\n\n\n\\(x_1 \\le 4.5\\)\n\n\n\n\n\n\n\\(x_1 \\le 6.5\\)\n\n\n\n\n\n\n\\(x_1 \\le 8\\)\n\n\n\n\n\n\n\n\n\n\n\nsplit\nleft\nright\n\\(\\phi_{\\text{split}}\\)\ngain\n\n\n\n\n\\(x_2 \\le 2\\)\n\n\n\n\n\n\n\\(x_2 \\le 3.5\\)\n\n\n\n\n\n\n\\(x_2 \\le 4.5\\)\n\n\n\n\n\n\n\\(x_2 \\le 6\\)\n\n\n\n\n\n\n\\(x_2 \\le 8\\)"
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#step-2-the-answers",
-    "href": "lectures/decision_trees/lecture-07_2.html#step-2-the-answers",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Step 2: The Answers",
-    "text": "Step 2: The Answers\n\n\n\n\nsplit\nleft\nright\n\\(\\phi_{\\text{split}}\\)\ngain\n\n\n\n\n\\(x_1 \\le 4.5\\)\n3 +, 0 −\n1 +, 2 −\n0.222\n0.222\n\n\n\\(x_1 \\le 8\\)\n4 +, 1 −\n0 +, 1 −\n0.267\n0.178\n\n\n\\(x_1 \\le 2.5\\)\n2 +, 0 −\n2 +, 2 −\n0.333\n0.111\n\n\n\\(x_2 \\le 6\\)\n2 +, 2 −\n2 +, 0 −\n0.333\n0.111\n\n\n\\(x_1 \\le 1.5\\)\n1 +, 0 −\n3 +, 2 −\n0.400\n0.044\n\n\n\\(x_2 \\le 2\\)\n1 +, 0 −\n3 +, 2 −\n0.400\n0.044\n\n\n\\(x_2 \\le 8\\)\n3 +, 2 −\n1 +, 0 −\n0.400\n0.044\n\n\n\\(x_1 \\le 6.5\\)\n3 +, 1 −\n1 +, 1 −\n0.417\n0.028\n\n\n\\(x_2 \\le 3.5\\)\n1 +, 1 −\n3 +, 1 −\n0.417\n0.028\n\n\n\\(x_2 \\le 4.5\\)\n2 +, 1 −\n2 +, 1 −\n0.444\n0.000\n\n\n\n\nWinner: \\(x_1 \\le 4.5\\)."
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#step-3-take-the-best-split",
-    "href": "lectures/decision_trees/lecture-07_2.html#step-3-take-the-best-split",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Step 3: Take the Best Split",
-    "text": "Step 3: Take the Best Split\n\n\n\n\n\nScatter plot with a vertical line at x1 equals 4.5\n\n\n\n\n\n\nTree with root testing x1 less than or equal to 4.5, a pure plus leaf on the left and an impure node on the right\n\n\n\nLeft child is pure, so it becomes a leaf. Right child still holds 1 +, 2 −, so we recurse."
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#step-4-recurse-on-the-right-child",
-    "href": "lectures/decision_trees/lecture-07_2.html#step-4-recurse-on-the-right-child",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Step 4: Recurse on the Right Child",
-    "text": "Step 4: Recurse on the Right Child\n\n\nThree examples: \\((7,9,+)\\), \\((6,3,-)\\), \\((9,5,-)\\)\nOnly two split points per attribute now.\n\n\n\nsplit\nleft\nright\n\\(\\phi_{\\text{split}}\\)\ngain\n\n\n\n\n\\(x_2 \\le 7\\)\n0 +, 2 −\n1 +, 0 −\n0.000\n0.444\n\n\n\\(x_1 \\le 6.5\\)\n0 +, 1 −\n1 +, 1 −\n0.333\n0.111\n\n\n\\(x_1 \\le 8\\)\n1 +, 1 −\n0 +, 1 −\n0.333\n0.111\n\n\n\\(x_2 \\le 4\\)\n0 +, 1 −\n1 +, 1 −\n0.333\n0.111\n\n\n\n\nBoth children of \\(x_2 \\le 7\\) are pure, so both become leaves and the algorithm terminates.\nNote that the candidate set shrinks as we descend: fewer examples means fewer distinct values means fewer split points."
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#two-views-of-the-finished-tree",
-    "href": "lectures/decision_trees/lecture-07_2.html#two-views-of-the-finished-tree",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Two Views of the Finished Tree",
-    "text": "Two Views of the Finished Tree\n\n\n\n\n\nFinal decision tree with three leaves\n\n\n\n\n\n\nScatter plot partitioned into three rectangular regions by the two splits\n\n\n\nEvery internal node is an axis-aligned cut. Three leaves, three regions. A tree and a partition of the feature space are the same object."
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#mse",
-    "href": "lectures/decision_trees/lecture-07_2.html#mse",
-    "title": "Lecture 7: Decision Trees",
-    "section": "MSE",
-    "text": "MSE\n\nFor regression trees, we are predicting a real value: \\(\\displaystyle\\hat{y}_{\\text{node}} = \\frac{\\sum_{i\\in \\text{node}}y^{(i)}}{m_{\\text{node}}}\\)\nMSE is then: \\(\\displaystyle MSE_{\\text{node}} = \\frac{\\sum_{i\\in \\text{node}}(\\hat{y}_{\\text{node}} - y^{(i)})^2}{m_{\\text{node}}}\\)\n(Notice that this is exactly the sample variance)"
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#mse-a-worked-example",
-    "href": "lectures/decision_trees/lecture-07_2.html#mse-a-worked-example",
-    "title": "Lecture 7: Decision Trees",
-    "section": "MSE: A Worked Example",
-    "text": "MSE: A Worked Example\n\n\n\n\n\n\\(x\\)\n1\n2\n3\n4\n5\n6\n\n\n\n\n\\(y\\)\n3\n5\n4\n12\n10\n14\n\n\n\n\n\\(\\hat{y}_{\\text{root}} = \\frac{48}{6} = 8\\)\n\\(MSE_{\\text{root}} = \\frac{25+9+16+16+4+36}{6} \\approx 17.67\\)\n\n\n\n\n\nRegression data with the root prediction as one flat line, and with the best split producing two flat lines\n\n\n\nSame algorithm, same weighted average, different \\(\\phi\\). Low MSE means a tight cluster of target values."
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#issues-to-consider",
-    "href": "lectures/decision_trees/lecture-07_2.html#issues-to-consider",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Issues to Consider",
-    "text": "Issues to Consider\n\nDefault algorithm builds tree until the leaves are 100% pure.\nLikely to result in overfitting.\nSolutions:\n\nPruning - build out the full tree, then combine leaves that don’t significantly improve classification\nRestrict the size of the tree during construction - limit the depth, number of leaves, etc.\nLooking ahead: Ensemble methods that combine multiple trees"
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#what-overfitting-looks-like",
-    "href": "lectures/decision_trees/lecture-07_2.html#what-overfitting-looks-like",
-    "title": "Lecture 7: Decision Trees",
-    "section": "What Overfitting Looks Like",
-    "text": "What Overfitting Looks Like\n\nDecision boundaries for a fully grown tree and a depth three tree on the same noisy dataThe left tree gets every training point right. The extra slivers are chasing noise, and they will cost accuracy on data the tree has not seen."
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#proscons",
-    "href": "lectures/decision_trees/lecture-07_2.html#proscons",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Pros/Cons",
-    "text": "Pros/Cons\n\nPros:\n\nPrediction is fast\nExplainable\nWe don’t need to worry about the relative scale of the different attributes\n\nCons\n\nSensitive to data orientation\nGenerally not very competitive in terms of accuracy"
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_2.html#sensitive-to-data-orientation",
-    "href": "lectures/decision_trees/lecture-07_2.html#sensitive-to-data-orientation",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Sensitive to Data Orientation",
-    "text": "Sensitive to Data Orientation\n\nThe same two class data before and after a 45 degree rotation, with the tree decision boundary drawn on eachEvery split is axis-aligned, so a boundary that is not axis-aligned has to be approximated by a staircase. Same data, same labels, much bigger tree."
-  },
-  {
-    "objectID": "SETUP.html",
-    "href": "SETUP.html",
-    "title": "CSCI 345 slides",
-    "section": "",
-    "text": "Lecture slides and course pages for CSCI 345, built with Quarto and published through GitHub Pages.\n\n\n\n\nCreate an empty GitHub repository, then clone it and add the project files. The repository should include:\n\n_quarto.yml\n.github/workflows/publish.yml\nyour .qmd pages and any image or data files they use\nrequirements.txt when pages execute Python code\n\nThe workflow publishes the rendered site to a gh-pages branch. Keep your editable Quarto source files on main.\n\n\n\nInstall Quarto and Python 3.12. Then create a virtual environment and install the Python packages:\npython3.12 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npython -m pip install -r requirements.txt\nOn Windows, activate the environment with:\n.venv\\Scripts\\Activate.ps1\n\n\n\nUse the preview server while editing:\nquarto preview\nBefore the first deployment, verify that the full site renders:\nquarto render\nThis project uses Quarto’s freeze: auto setting. Rendering creates a _freeze/ directory containing saved Python outputs. Commit that directory so GitHub Actions does not need to rerun every notebook cell or download external data on each push.\n\n\n\nRun the following command once from the repository root:\nquarto publish gh-pages\nFollow the prompts. This creates the gh-pages branch and Quarto’s _publish.yml configuration file. Commit _publish.yml to main:\ngit add _publish.yml _freeze\ngit commit -m \"Configure Quarto publishing\"\ngit push origin main\n\n\n\nIn the GitHub repository, open Settings → Pages and select:\n\nSource: Deploy from a branch\nBranch: gh-pages\nFolder: /(root)\n\nAfter saving, GitHub will serve the generated site from the gh-pages branch.\n\n\n\nTo use a custom domain, add the domain in Settings → Pages, configure its DNS record with your domain provider, and place the domain name in a CNAME file at the repository root. For a subdomain, the DNS CNAME normally points to &lt;your-github-username&gt;.github.io.\n\n\n\n\nAfter the initial setup, only work on main:\ngit add .\ngit commit -m \"Update lecture slides\"\ngit push origin main\nThe Quarto Publish GitHub Action renders the project and updates gh-pages automatically. Do not edit gh-pages directly.\nIf a deployment fails, open the Actions tab in GitHub and inspect the failed Quarto Publish run."
-  },
-  {
-    "objectID": "SETUP.html#set-up-a-new-repository",
-    "href": "SETUP.html#set-up-a-new-repository",
-    "title": "CSCI 345 slides",
-    "section": "",
-    "text": "Create an empty GitHub repository, then clone it and add the project files. The repository should include:\n\n_quarto.yml\n.github/workflows/publish.yml\nyour .qmd pages and any image or data files they use\nrequirements.txt when pages execute Python code\n\nThe workflow publishes the rendered site to a gh-pages branch. Keep your editable Quarto source files on main.\n\n\n\nInstall Quarto and Python 3.12. Then create a virtual environment and install the Python packages:\npython3.12 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npython -m pip install -r requirements.txt\nOn Windows, activate the environment with:\n.venv\\Scripts\\Activate.ps1\n\n\n\nUse the preview server while editing:\nquarto preview\nBefore the first deployment, verify that the full site renders:\nquarto render\nThis project uses Quarto’s freeze: auto setting. Rendering creates a _freeze/ directory containing saved Python outputs. Commit that directory so GitHub Actions does not need to rerun every notebook cell or download external data on each push.\n\n\n\nRun the following command once from the repository root:\nquarto publish gh-pages\nFollow the prompts. This creates the gh-pages branch and Quarto’s _publish.yml configuration file. Commit _publish.yml to main:\ngit add _publish.yml _freeze\ngit commit -m \"Configure Quarto publishing\"\ngit push origin main\n\n\n\nIn the GitHub repository, open Settings → Pages and select:\n\nSource: Deploy from a branch\nBranch: gh-pages\nFolder: /(root)\n\nAfter saving, GitHub will serve the generated site from the gh-pages branch.\n\n\n\nTo use a custom domain, add the domain in Settings → Pages, configure its DNS record with your domain provider, and place the domain name in a CNAME file at the repository root. For a subdomain, the DNS CNAME normally points to &lt;your-github-username&gt;.github.io."
-  },
-  {
-    "objectID": "SETUP.html#publishing-updates",
-    "href": "SETUP.html#publishing-updates",
-    "title": "CSCI 345 slides",
-    "section": "",
-    "text": "After the initial setup, only work on main:\ngit add .\ngit commit -m \"Update lecture slides\"\ngit push origin main\nThe Quarto Publish GitHub Action renders the project and updates gh-pages automatically. Do not edit gh-pages directly.\nIf a deployment fails, open the Actions tab in GitHub and inspect the failed Quarto Publish run."
-  },
-  {
     "objectID": "lectures/lecture-04_3.html#evaluating-models-with-plots",
     "href": "lectures/lecture-04_3.html#evaluating-models-with-plots",
     "title": "Lecture 4 - 3: Evaluating Models with Plots",
@@ -917,151 +763,214 @@
     "text": "Key Takeaways\n\nPlots complement numeric metrics when evaluating machine learning models.\nDecision boundary plots show how classifiers divide the feature space.\nROC curves show the trade-off between true positive rate and false positive rate across thresholds.\nAUC summarizes a classifier’s ranking performance across thresholds.\nPrediction error plots help identify patterns, outliers, and problems with regression model fit.\nPartial dependence plots show how an input feature affects the model’s average prediction.\nA good model evaluation combines metrics + visualizations + domain knowledge."
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#overview-learning-objectives",
-    "href": "lectures/decision_trees/lecture-07_1.html#overview-learning-objectives",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Overview & Learning Objectives",
-    "text": "Overview & Learning Objectives\nIn this lecture, we will cover the foundational concepts and practical implementations of decision tree classifiers:\n\nDefine and use a decision tree (structure, nodes, edges, and depth).\nDescribe how a classification tree is trained (CART, recursive binary splitting).\nImplement a classification tree in scikit-learn (DecisionTreeClassifier).\nDefine impurity measures (Gini Impurity vs. Entropy + worked examples).\nImplement early stopping in scikit-learn to prevent overfitting.\nDescribe cost complexity pruning (\\(R\\_alpha(T)\\) evaluation + worked example).\nAnalyze advantages and disadvantages of decision tree models."
+    "objectID": "SETUP.html",
+    "href": "SETUP.html",
+    "title": "CSCI 345 slides",
+    "section": "",
+    "text": "Lecture slides and course pages for CSCI 345, built with Quarto and published through GitHub Pages.\n\n\n\n\nCreate an empty GitHub repository, then clone it and add the project files. The repository should include:\n\n_quarto.yml\n.github/workflows/publish.yml\nyour .qmd pages and any image or data files they use\nrequirements.txt when pages execute Python code\n\nThe workflow publishes the rendered site to a gh-pages branch. Keep your editable Quarto source files on main.\n\n\n\nInstall Quarto and Python 3.12. Then create a virtual environment and install the Python packages:\npython3.12 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npython -m pip install -r requirements.txt\nOn Windows, activate the environment with:\n.venv\\Scripts\\Activate.ps1\n\n\n\nUse the preview server while editing:\nquarto preview\nBefore the first deployment, verify that the full site renders:\nquarto render\nThis project uses Quarto’s freeze: auto setting. Rendering creates a _freeze/ directory containing saved Python outputs. Commit that directory so GitHub Actions does not need to rerun every notebook cell or download external data on each push.\n\n\n\nRun the following command once from the repository root:\nquarto publish gh-pages\nFollow the prompts. This creates the gh-pages branch and Quarto’s _publish.yml configuration file. Commit _publish.yml to main:\ngit add _publish.yml _freeze\ngit commit -m \"Configure Quarto publishing\"\ngit push origin main\n\n\n\nIn the GitHub repository, open Settings → Pages and select:\n\nSource: Deploy from a branch\nBranch: gh-pages\nFolder: /(root)\n\nAfter saving, GitHub will serve the generated site from the gh-pages branch.\n\n\n\nTo use a custom domain, add the domain in Settings → Pages, configure its DNS record with your domain provider, and place the domain name in a CNAME file at the repository root. For a subdomain, the DNS CNAME normally points to &lt;your-github-username&gt;.github.io.\n\n\n\n\nAfter the initial setup, only work on main:\ngit add .\ngit commit -m \"Update lecture slides\"\ngit push origin main\nThe Quarto Publish GitHub Action renders the project and updates gh-pages automatically. Do not edit gh-pages directly.\nIf a deployment fails, open the Actions tab in GitHub and inspect the failed Quarto Publish run."
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#defining-using-a-decision-tree",
-    "href": "lectures/decision_trees/lecture-07_1.html#defining-using-a-decision-tree",
-    "title": "Lecture 7: Decision Trees",
-    "section": "1. Defining & Using a Decision Tree",
-    "text": "1. Defining & Using a Decision Tree\nWhat is a Decision Tree?\nA decision tree is a hierarchical, acyclic graph structure composed of nodes and directed edges.\n\nRoot Node: The topmost node with no parent node; contains the complete dataset.\nInternal Decision Nodes: Nodes with one parent and multiple child nodes. Each evaluates a conditional question/rule.\nEdges: Directed links representing the outcome of a decision node test.\nLeaf Nodes (Terminal Nodes): Nodes with no child edges. They communicate the final predicted class outcome.\nDepth: The number of edges traversed from the root node to reach a specific node."
+    "objectID": "SETUP.html#set-up-a-new-repository",
+    "href": "SETUP.html#set-up-a-new-repository",
+    "title": "CSCI 345 slides",
+    "section": "",
+    "text": "Create an empty GitHub repository, then clone it and add the project files. The repository should include:\n\n_quarto.yml\n.github/workflows/publish.yml\nyour .qmd pages and any image or data files they use\nrequirements.txt when pages execute Python code\n\nThe workflow publishes the rendered site to a gh-pages branch. Keep your editable Quarto source files on main.\n\n\n\nInstall Quarto and Python 3.12. Then create a virtual environment and install the Python packages:\npython3.12 -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npython -m pip install -r requirements.txt\nOn Windows, activate the environment with:\n.venv\\Scripts\\Activate.ps1\n\n\n\nUse the preview server while editing:\nquarto preview\nBefore the first deployment, verify that the full site renders:\nquarto render\nThis project uses Quarto’s freeze: auto setting. Rendering creates a _freeze/ directory containing saved Python outputs. Commit that directory so GitHub Actions does not need to rerun every notebook cell or download external data on each push.\n\n\n\nRun the following command once from the repository root:\nquarto publish gh-pages\nFollow the prompts. This creates the gh-pages branch and Quarto’s _publish.yml configuration file. Commit _publish.yml to main:\ngit add _publish.yml _freeze\ngit commit -m \"Configure Quarto publishing\"\ngit push origin main\n\n\n\nIn the GitHub repository, open Settings → Pages and select:\n\nSource: Deploy from a branch\nBranch: gh-pages\nFolder: /(root)\n\nAfter saving, GitHub will serve the generated site from the gh-pages branch.\n\n\n\nTo use a custom domain, add the domain in Settings → Pages, configure its DNS record with your domain provider, and place the domain name in a CNAME file at the repository root. For a subdomain, the DNS CNAME normally points to &lt;your-github-username&gt;.github.io."
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#decision-tree-traversal-example",
-    "href": "lectures/decision_trees/lecture-07_1.html#decision-tree-traversal-example",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Decision Tree Traversal: Example",
-    "text": "Decision Tree Traversal: Example\nCoffee Species Identification\nConsider identifying coffee species based on physical characteristics:\n\nRoot Node (Depth 0): Is the bean shape round and symmetric?\nYes → Proceed to Pollination Node.\nNo → Leaf: C. liberica.\nDecision Node (Depth 1): Does the plant require an external pollinator (e.g., bees)?\n\nYes → Leaf (Depth 2): C. canephora (Robusta).\nNo → Leaf (Depth 2): C. arabica (Arabica).\n\n\n\nKey Intuition: Decision trees act as flowchart-like decision rules that map feature inputs to target classifications."
+    "objectID": "SETUP.html#publishing-updates",
+    "href": "SETUP.html#publishing-updates",
+    "title": "CSCI 345 slides",
+    "section": "",
+    "text": "After the initial setup, only work on main:\ngit add .\ngit commit -m \"Update lecture slides\"\ngit push origin main\nThe Quarto Publish GitHub Action renders the project and updates gh-pages automatically. Do not edit gh-pages directly.\nIf a deployment fails, open the Actions tab in GitHub and inspect the failed Quarto Publish run."
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#how-classification-trees-are-trained",
-    "href": "lectures/decision_trees/lecture-07_1.html#how-classification-trees-are-trained",
+    "objectID": "lectures/decision_trees/lecture-07.html#structure",
+    "href": "lectures/decision_trees/lecture-07.html#structure",
     "title": "Lecture 7: Decision Trees",
-    "section": "2. How Classification Trees Are Trained",
-    "text": "2. How Classification Trees Are Trained\nThe CART Algorithm\nClassification trees are typically trained using the CART (Classification and Regression Trees) algorithm, which employs Recursive Binary Splitting:"
+    "section": "Structure",
+    "text": "Structure\n\nDecision tree showing root, internal nodes, edges, and leaf nodes"
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#top-down-greedy-approach",
-    "href": "lectures/decision_trees/lecture-07_1.html#top-down-greedy-approach",
+    "objectID": "lectures/decision_trees/lecture-07.html#terminology",
+    "href": "lectures/decision_trees/lecture-07.html#terminology",
     "title": "Lecture 7: Decision Trees",
-    "section": "1. Top-Down Greedy Approach",
-    "text": "1. Top-Down Greedy Approach\n- Starts at the root node and evaluates every available feature $X_j$ and possible split threshold $t$.\n- Selects the feature-threshold pair $(X_j, t)$ that yields the maximum reduction in impurity."
+    "section": "Terminology",
+    "text": "Terminology\nA decision tree asks a sequence of questions to make a prediction\n\n\n\nComponent\nWhat it does\n\n\n\n\n🌱 Root\nStarting point; contains the entire dataset\n\n\n❓ Internal node\nApplies a question / decision rule\n\n\n→ Edge\nRepresents the outcome of a rule\n\n\n🍃 Leaf\nEnd of a path; produces the final prediction\n\n\n↕ Depth\nNumber of edges from the root to a node\n\n\n\n\n\n\n\n\n\nThe basic idea\n\n\n\\[\n\\boxed{\\text{Question} \\;\\rightarrow\\; \\text{Split data} \\;\\rightarrow\\;\n\\text{Ask another question} \\;\\rightarrow\\; \\text{Predict}}\n\\]\n\n\n\nClassification: a leaf predicts a class (e.g., \\(+\\) or \\(-\\)).\nRegression: a leaf predicts a numeric value (typically the mean of the targets in that leaf)."
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#feature-space-partitioning",
-    "href": "lectures/decision_trees/lecture-07_1.html#feature-space-partitioning",
+    "objectID": "lectures/decision_trees/lecture-07.html#cart-tree-construction-algorithm",
+    "href": "lectures/decision_trees/lecture-07.html#cart-tree-construction-algorithm",
     "title": "Lecture 7: Decision Trees",
-    "section": "2. Feature Space Partitioning",
-    "text": "2. Feature Space Partitioning\n\nNumeric splits (\\(X_j \\le t\\)) create decision boundaries (hyperplanes) perpendicular to the feature axis. - Categorical splits (\\(X_j == \\text{'value'}\\)) separate discrete groups."
+    "section": "CART Tree Construction Algorithm",
+    "text": "CART Tree Construction Algorithm\n\nGoal: Create the smallest/simplest tree that fits the training data\nDoing this optimally is NP-Hard\nGreedy Algorithm:\n\nStart with a root node containing the full data set.\nIf there is only one class, terminate\nElse, check every possible split point for every attribute.\n\n(Involves sorting the data using the attributes as the key)\n\nSelect the split that results in the greatest overall reduction in impurity\nDistribute the data to the two children according to that split\nRecursively build decision trees starting at the two children"
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#recursive-execution",
-    "href": "lectures/decision_trees/lecture-07_1.html#recursive-execution",
+    "objectID": "lectures/decision_trees/lecture-07.html#a-training-set-to-work-with",
+    "href": "lectures/decision_trees/lecture-07.html#a-training-set-to-work-with",
     "title": "Lecture 7: Decision Trees",
-    "section": "3. Recursive Execution",
-    "text": "3. Recursive Execution\n\nThe process repeats independently on child subsets until a stopping criterion is met.\nFinal leaves predict the majority target class within their subset region."
+    "section": "A Training Set to Work With",
+    "text": "A Training Set to Work With\n\n\n\n\n\n\\(x_1\\)\n\\(x_2\\)\nclass\n\n\n\n\n2\n4\n+\n\n\n7\n9\n+\n\n\n6\n3\n−\n\n\n1\n1\n+\n\n\n9\n5\n−\n\n\n3\n7\n+\n\n\n\nTwo attributes, two classes, six examples.\nRoot node: 4 +, 2 −\n\n\n\n\nScatter plot of the six training points on a zero to ten grid"
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#scikit-learn-implementation",
-    "href": "lectures/decision_trees/lecture-07_1.html#scikit-learn-implementation",
+    "objectID": "lectures/decision_trees/lecture-07.html#step-1-enumerate-the-candidate-splits",
+    "href": "lectures/decision_trees/lecture-07.html#step-1-enumerate-the-candidate-splits",
     "title": "Lecture 7: Decision Trees",
-    "section": "3. Scikit-Learn Implementation",
-    "text": "3. Scikit-Learn Implementation\nBasic Syntax\nIn scikit-learn, decision tree classifiers are provided by the DecisionTreeClassifier class.\nimport pandas as pd\nfrom sklearn.tree import DecisionTreeClassifier\nfrom sklearn.model_selection import train_test_split\n\n# 1. Load dataset\ndata = pd.read_csv(\"coffee.csv\")\n\nX = data[[\"sweetness\", \"uniformity\", \"acidity\"]]\ny = data[\"species\"]\n\n# 2. Train-test split\nX_train, X_test, y_train, y_test = train_test_split(\n    X,\n    y,\n    test_size=0.2,\n    random_state=42\n)\n\n# 3. Instantiate and fit model\ndtc = DecisionTreeClassifier(random_state=42)\ndtc.fit(X_train, y_train)\n\n# 4. Predict classes and probabilities\ny_pred = dtc.predict(X_test)\ny_prob = dtc.predict_proba(X_test)\nclasses = dtc.classes_"
+    "section": "Step 1: Enumerate the Candidate Splits",
+    "text": "Step 1: Enumerate the Candidate Splits\nSort by each attribute, then consider the midpoint between each pair of adjacent values.\n\n\n\n\n\n\\(x_1\\)\n\\(x_2\\)\nclass\n\n\n\n\n2\n4\n+\n\n\n7\n9\n+\n\n\n6\n3\n−\n\n\n1\n1\n+\n\n\n9\n5\n−\n\n\n3\n7\n+\n\n\n\n\n\n\n\nNumber lines showing the data sorted by each attribute with candidate split points marked\n\n\n\nFive split points per attribute, ten candidates in all."
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#impurity-measures",
-    "href": "lectures/decision_trees/lecture-07_1.html#impurity-measures",
+    "objectID": "lectures/decision_trees/lecture-07.html#entropy",
+    "href": "lectures/decision_trees/lecture-07.html#entropy",
     "title": "Lecture 7: Decision Trees",
-    "section": "4. Impurity Measures",
-    "text": "4. Impurity Measures\nNode Purity vs. Impurity\n\nPurity: The proportion of instances at a node belonging to the most frequent class. A node with 100% single-class membership has purity \\(= 1.0\\).\nImpurity: A mathematical metric quantifying the heterogeneity or disorder of class distributions at node \\(i\\).\n\nTree Impurity\nThe total impurity of a tree \\(T\\) with leaves \\(i \\in \\tilde{T}\\) is calculated as the weighted average of leaf impurities:\n\\[\n\\text{Impurity}(T)\n=\n\\frac{\n\\sum_{i \\in \\tilde{T}} n_i \\cdot \\text{Impurity}_i\n}{\n\\sum_{i \\in \\tilde{T}} n_i\n}\n\\]\nwhere \\(n\\_i\\) is the number of training samples reaching leaf \\(i\\)."
+    "section": "Entropy",
+    "text": "Entropy\n\nThe information associated with an event is defined as: \\(I(E) = -\\log_2 p(E)\\) \nEntropy is expected information: \\(\\displaystyle -\\sum_{i=1}^{c}  \\Big ( p_i  \\log_2 ( p_i ) \\Big )\\)"
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#impurity-formulas-gini-vs.-entropy",
-    "href": "lectures/decision_trees/lecture-07_1.html#impurity-formulas-gini-vs.-entropy",
+    "objectID": "lectures/decision_trees/lecture-07.html#gini-impurity",
+    "href": "lectures/decision_trees/lecture-07.html#gini-impurity",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Gini Impurity",
+    "text": "Gini Impurity\n\nThe fraction of incorrect predictions in a node if the class of each element was predicted by randomly selecting a label according to the distribution of classes in the node:\n\\(\\displaystyle \\phi(\\mathbf{p}) = \\sum_i p_i(1-p_i)\\)\n\n\\((1-p_i)\\) is the probability of making a mistake for class \\(i\\).\n\nCan be rewritten as: \\(\\displaystyle \\phi(\\mathbf{p}) = 1 - \\sum_i p_i^2\\)"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#impurity-formulas-gini-vs.-entropy",
+    "href": "lectures/decision_trees/lecture-07.html#impurity-formulas-gini-vs.-entropy",
     "title": "Lecture 7: Decision Trees",
     "section": "Impurity Formulas: Gini vs. Entropy",
     "text": "Impurity Formulas: Gini vs. Entropy\n\n\n\n\n\n\n\n\n\nMeasure\nFormula at Node \\(i\\)\nScikit-Learn Flag\nBehavior\n\n\n\n\nGini Impurity\n\\(1 - \\sum_{k=1}^{K} p_{ki}^{2}\\)\ncriterion=\"gini\" (Default)\nMeasures misclassification probability. Reaches peak at equal class distribution (\\(p\\_{ki} = 1/K\\)).\n\n\nEntropy\n\\(-\\sum_{k=1}^{K} p_{ki}\\log_{2}(p_{ki})\\)\ncriterion=\"entropy\"\nInformation-theoretic measure of uncertainty/disorder. Peak occurs when \\(p\\_{ki} = 1/K\\).\n\n\n\n\nNote: \\(p_{ki}\\) represents the proportion of instances of class \\(k\\) present at node \\(i\\)."
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#worked-example-gini-impurity-gain-calculation",
-    "href": "lectures/decision_trees/lecture-07_1.html#worked-example-gini-impurity-gain-calculation",
+    "objectID": "lectures/decision_trees/lecture-07.html#what-the-numbers-look-like",
+    "href": "lectures/decision_trees/lecture-07.html#what-the-numbers-look-like",
     "title": "Lecture 7: Decision Trees",
-    "section": "Worked Example: Gini Impurity Gain Calculation",
-    "text": "Worked Example: Gini Impurity Gain Calculation\nScenario\nEvaluating a binary split on a parent node with \\(N = 10\\) samples:\n\n6 Arabica\n4 Robusta\n\nStep 1: Calculate Parent Node Impurity\n\\[\np_{\\text{Arabica}} = \\frac{6}{10} = 0.6,\n\\qquad\np_{\\text{Robusta}} = \\frac{4}{10} = 0.4\n\\]\n\\[\n\\text{Gini}_{\\text{parent}}\n=\n1 - (0.6^2 + 0.4^2)\n=\n1 - (0.36 + 0.16)\n=\n\\mathbf{0.480}\n\\]"
+    "section": "What the Numbers Look Like",
+    "text": "What the Numbers Look Like\n\nFour nodes ranging from pure to evenly mixed, each labeled with its Gini impurity and entropyBoth measures are \\(0\\) for a pure node and largest when the node is evenly mixed."
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#worked-example-gini-impurity-gain",
-    "href": "lectures/decision_trees/lecture-07_1.html#worked-example-gini-impurity-gain",
+    "objectID": "lectures/decision_trees/lecture-07.html#entropy-vs.-gini",
+    "href": "lectures/decision_trees/lecture-07.html#entropy-vs.-gini",
     "title": "Lecture 7: Decision Trees",
-    "section": "Worked Example: Gini Impurity Gain",
-    "text": "Worked Example: Gini Impurity Gain\nStep 2: Evaluate Split Outcome\nSuppose candidate feature \\(X\\_1 \\le 8.0\\) splits the 10 samples into two child nodes:\n\nLeft Child (\\(N\\_L = 5\\)): 5 Arabica, 0 Robusta\n\n\\[\n\\text{Gini}_L\n=\n1 - (1.0^2 + 0.0^2)\n=\n\\mathbf{0.000}\n\\qquad\n\\text{(Pure Node)}\n\\]\n\nRight Child (\\(N\\_R = 5\\)): 1 Arabica, 4 Robusta\n\n\\[\n\\text{Gini}_R\n=\n1 - (0.2^2 + 0.8^2)\n=\n1 - (0.04 + 0.64)\n=\n\\mathbf{0.320}\n\\]"
+    "section": "Entropy vs. Gini",
+    "text": "Entropy vs. Gini\n\n\n\n\n\nEntropy and Gini impurity plotted against the fraction of positive examples\n\n\n\n\nSame shape, same zeros, same peak location.\nEntropy peaks at \\(1\\) (it is measured in bits); Gini peaks at \\(0.5\\).\nWhich should you use? Doesn’t much matter. Gini is a bit cheaper: squaring beats taking a logarithm. Entropy tends to give more balanced splits."
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#early-stopping-pre-pruning",
-    "href": "lectures/decision_trees/lecture-07_1.html#early-stopping-pre-pruning",
+    "objectID": "lectures/decision_trees/lecture-07.html#scoring-a-split",
+    "href": "lectures/decision_trees/lecture-07.html#scoring-a-split",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Scoring a Split",
+    "text": "Scoring a Split\n\nA split produces two children, so we need a single number for the pair. Weight each child by the fraction of examples that land in it:\n\\(\\displaystyle \\phi_{\\text{split}} = \\frac{m_{\\text{left}}}{m}\\phi(\\text{left}) + \\frac{m_{\\text{right}}}{m}\\phi(\\text{right})\\)\nThe gain is the reduction in impurity:\n\\(\\displaystyle \\text{Gain} = \\phi(\\text{parent}) - \\phi_{\\text{split}}\\)\n\\(\\phi(\\text{parent})\\) is the same for every candidate, so maximizing gain and minimizing \\(\\phi_{\\text{split}}\\) are the same thing."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#step-2-score-every-candidate",
+    "href": "lectures/decision_trees/lecture-07.html#step-2-score-every-candidate",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Step 2: Score Every Candidate",
+    "text": "Step 2: Score Every Candidate\nRoot: 4 +, 2 −, so \\(\\phi(\\text{parent}) = 1 - \\left(\\tfrac{4}{6}\\right)^2 - \\left(\\tfrac{2}{6}\\right)^2 = 0.444\\)\n\n\n\n\n\nsplit\nleft\nright\n\\(\\phi_{\\text{split}}\\)\ngain\n\n\n\n\n\\(x_1 \\le 1.5\\)\n\n\n\n\n\n\n\\(x_1 \\le 2.5\\)\n\n\n\n\n\n\n\\(x_1 \\le 4.5\\)\n\n\n\n\n\n\n\\(x_1 \\le 6.5\\)\n\n\n\n\n\n\n\\(x_1 \\le 8\\)\n\n\n\n\n\n\n\n\n\n\n\nsplit\nleft\nright\n\\(\\phi_{\\text{split}}\\)\ngain\n\n\n\n\n\\(x_2 \\le 2\\)\n\n\n\n\n\n\n\\(x_2 \\le 3.5\\)\n\n\n\n\n\n\n\\(x_2 \\le 4.5\\)\n\n\n\n\n\n\n\\(x_2 \\le 6\\)\n\n\n\n\n\n\n\\(x_2 \\le 8\\)"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#step-2-the-answers",
+    "href": "lectures/decision_trees/lecture-07.html#step-2-the-answers",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Step 2: The Answers",
+    "text": "Step 2: The Answers\n\n\n\n\nsplit\nleft\nright\n\\(\\phi_{\\text{split}}\\)\ngain\n\n\n\n\n\\(x_1 \\le 4.5\\)\n3 +, 0 −\n1 +, 2 −\n0.222\n0.222\n\n\n\\(x_1 \\le 8\\)\n4 +, 1 −\n0 +, 1 −\n0.267\n0.178\n\n\n\\(x_1 \\le 2.5\\)\n2 +, 0 −\n2 +, 2 −\n0.333\n0.111\n\n\n\\(x_2 \\le 6\\)\n2 +, 2 −\n2 +, 0 −\n0.333\n0.111\n\n\n\\(x_1 \\le 1.5\\)\n1 +, 0 −\n3 +, 2 −\n0.400\n0.044\n\n\n\\(x_2 \\le 2\\)\n1 +, 0 −\n3 +, 2 −\n0.400\n0.044\n\n\n\\(x_2 \\le 8\\)\n3 +, 2 −\n1 +, 0 −\n0.400\n0.044\n\n\n\\(x_1 \\le 6.5\\)\n3 +, 1 −\n1 +, 1 −\n0.417\n0.028\n\n\n\\(x_2 \\le 3.5\\)\n1 +, 1 −\n3 +, 1 −\n0.417\n0.028\n\n\n\\(x_2 \\le 4.5\\)\n2 +, 1 −\n2 +, 1 −\n0.444\n0.000\n\n\n\n\nWinner: \\(x_1 \\le 4.5\\)."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#step-3-take-the-best-split",
+    "href": "lectures/decision_trees/lecture-07.html#step-3-take-the-best-split",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Step 3: Take the Best Split",
+    "text": "Step 3: Take the Best Split\n\n\n\n\n\nScatter plot with a vertical line at x1 equals 4.5\n\n\n\n\n\n\nTree with root testing x1 less than or equal to 4.5, a pure plus leaf on the left and an impure node on the right\n\n\n\nLeft child is pure, so it becomes a leaf. Right child still holds 1 +, 2 −, so we recurse."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#step-4-recurse-on-the-right-child",
+    "href": "lectures/decision_trees/lecture-07.html#step-4-recurse-on-the-right-child",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Step 4: Recurse on the Right Child",
+    "text": "Step 4: Recurse on the Right Child\n\n\nThree examples: \\((7,9,+)\\), \\((6,3,-)\\), \\((9,5,-)\\)\nOnly two split points per attribute now.\n\n\n\nsplit\nleft\nright\n\\(\\phi_{\\text{split}}\\)\ngain\n\n\n\n\n\\(x_2 \\le 7\\)\n0 +, 2 −\n1 +, 0 −\n0.000\n0.444\n\n\n\\(x_1 \\le 6.5\\)\n0 +, 1 −\n1 +, 1 −\n0.333\n0.111\n\n\n\\(x_1 \\le 8\\)\n1 +, 1 −\n0 +, 1 −\n0.333\n0.111\n\n\n\\(x_2 \\le 4\\)\n0 +, 1 −\n1 +, 1 −\n0.333\n0.111\n\n\n\n\nBoth children of \\(x_2 \\le 7\\) are pure, so both become leaves and the algorithm terminates.\nNote that the candidate set shrinks as we descend: fewer examples means fewer distinct values means fewer split points."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#two-views-of-the-finished-tree",
+    "href": "lectures/decision_trees/lecture-07.html#two-views-of-the-finished-tree",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Two Views of the Finished Tree",
+    "text": "Two Views of the Finished Tree\n\n\n\n\n\nFinal decision tree with three leaves\n\n\n\n\n\n\nScatter plot partitioned into three rectangular regions by the two splits\n\n\n\nEvery internal node is an axis-aligned cut. Three leaves, three regions. A tree and a partition of the feature space are the same object."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#mse",
+    "href": "lectures/decision_trees/lecture-07.html#mse",
+    "title": "Lecture 7: Decision Trees",
+    "section": "MSE",
+    "text": "MSE\n\nFor regression trees, we are predicting a real value: \\(\\displaystyle\\hat{y}_{\\text{node}} = \\frac{\\sum_{i\\in \\text{node}}y^{(i)}}{m_{\\text{node}}}\\)\nMSE is then: \\(\\displaystyle MSE_{\\text{node}} = \\frac{\\sum_{i\\in \\text{node}}(\\hat{y}_{\\text{node}} - y^{(i)})^2}{m_{\\text{node}}}\\)\n(Notice that this is exactly the sample variance)"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#mse-a-worked-example",
+    "href": "lectures/decision_trees/lecture-07.html#mse-a-worked-example",
+    "title": "Lecture 7: Decision Trees",
+    "section": "MSE: A Worked Example",
+    "text": "MSE: A Worked Example\n\n\n\n\n\n\\(x\\)\n1\n2\n3\n4\n5\n6\n\n\n\n\n\\(y\\)\n3\n5\n4\n12\n10\n14\n\n\n\n\n\\(\\hat{y}_{\\text{root}} = \\frac{48}{6} = 8\\)\n\\(MSE_{\\text{root}} = \\frac{25+9+16+16+4+36}{6} \\approx 17.67\\)\n\n\n\n\n\nRegression data with the root prediction as one flat line, and with the best split producing two flat lines\n\n\n\nSame algorithm, same weighted average, different \\(\\phi\\). Low MSE means a tight cluster of target values."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#scenario",
+    "href": "lectures/decision_trees/lecture-07.html#scenario",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Scenario",
+    "text": "Scenario\nEvaluating a binary split on a parent node with \\(N = 10\\) samples:\n\n6 Arabica\n4 Robusta\n\nStep 1: Calculate Parent Node Impurity\n\\[\np_{\\text{Arabica}} = \\frac{6}{10} = 0.6,\n\\qquad\np_{\\text{Robusta}} = \\frac{4}{10} = 0.4\n\\]\n\\[\n\\text{Gini}_{\\text{parent}}\n=\n1 - (0.6^2 + 0.4^2)\n=\n1 - (0.36 + 0.16)\n=\n\\mathbf{0.480}\n\\]"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#issues-to-consider",
+    "href": "lectures/decision_trees/lecture-07.html#issues-to-consider",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Issues to Consider",
+    "text": "Issues to Consider\n\nDefault algorithm builds tree until the leaves are 100% pure.\nLikely to result in overfitting.\nSolutions:\n\nPruning - build out the full tree, then combine leaves that don’t significantly improve classification\nRestrict the size of the tree during construction - limit the depth, number of leaves, etc.\nLooking ahead: Ensemble methods that combine multiple trees"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#what-overfitting-looks-like",
+    "href": "lectures/decision_trees/lecture-07.html#what-overfitting-looks-like",
+    "title": "Lecture 7: Decision Trees",
+    "section": "What Overfitting Looks Like",
+    "text": "What Overfitting Looks Like\n\nDecision boundaries for a fully grown tree and a depth three tree on the same noisy dataThe left tree gets every training point right. The extra slivers are chasing noise, and they will cost accuracy on data the tree has not seen."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#proscons",
+    "href": "lectures/decision_trees/lecture-07.html#proscons",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Pros/Cons",
+    "text": "Pros/Cons\n\nPros:\n\nPrediction is fast\nExplainable\nWe don’t need to worry about the relative scale of the different attributes\n\nCons\n\nSensitive to data orientation\nGenerally not very competitive in terms of accuracy"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#sensitive-to-data-orientation",
+    "href": "lectures/decision_trees/lecture-07.html#sensitive-to-data-orientation",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Sensitive to Data Orientation",
+    "text": "Sensitive to Data Orientation\n\nThe same two class data before and after a 45 degree rotation, with the tree decision boundary drawn on eachEvery split is axis-aligned, so a boundary that is not axis-aligned has to be approximated by a staircase. Same data, same labels, much bigger tree."
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#basic-syntax",
+    "href": "lectures/decision_trees/lecture-07.html#basic-syntax",
+    "title": "Lecture 7: Decision Trees",
+    "section": "Basic Syntax",
+    "text": "Basic Syntax\nIn scikit-learn, decision tree classifiers are provided by the DecisionTreeClassifier class.\nimport pandas as pd\nfrom sklearn.tree import DecisionTreeClassifier\nfrom sklearn.model_selection import train_test_split\n\n# 1. Load dataset\ndata = pd.read_csv(\"coffee.csv\")\n\nX = data[[\"sweetness\", \"uniformity\", \"acidity\"]]\ny = data[\"species\"]\n\n# 2. Train-test split\nX_train, X_test, y_train, y_test = train_test_split(\n    X,\n    y,\n    test_size=0.2,\n    random_state=42\n)\n\n# 3. Instantiate and fit model\ndtc = DecisionTreeClassifier(random_state=42)\ndtc.fit(X_train, y_train)\n\n# 4. Predict classes and probabilities\ny_pred = dtc.predict(X_test)\ny_prob = dtc.predict_proba(X_test)\nclasses = dtc.classes_"
+  },
+  {
+    "objectID": "lectures/decision_trees/lecture-07.html#early-stopping-pre-pruning",
+    "href": "lectures/decision_trees/lecture-07.html#early-stopping-pre-pruning",
     "title": "Lecture 7: Decision Trees",
     "section": "5. Early Stopping (Pre-Pruning)",
     "text": "5. Early Stopping (Pre-Pruning)\nUnconstrained decision trees tend to grow until every leaf is 100% pure, memorizing training noise and leading to severe overfitting.\nEarly stopping restricts tree growth during training using stopping thresholds:\n\n\n\n\n\n\n\n\nHyperparameter\nDefault\nDescription / Constraint Function\n\n\n\n\nmax_depth\nNone\nCaps maximum distance from root to leaf node.\n\n\nmin_samples_split\n2\nMinimum samples (int or float fraction) required to attempt a split.\n\n\nmin_samples_leaf\n1\nMinimum samples required in resulting left and right child nodes.\n\n\nmax_leaf_nodes\nNone\nLimits total leaf count; expands best nodes first."
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#early-stopping-code-example",
-    "href": "lectures/decision_trees/lecture-07_1.html#early-stopping-code-example",
+    "objectID": "lectures/decision_trees/lecture-07.html#early-stopping-code-example",
+    "href": "lectures/decision_trees/lecture-07.html#early-stopping-code-example",
     "title": "Lecture 7: Decision Trees",
     "section": "Early Stopping Code Example",
     "text": "Early Stopping Code Example\nfrom sklearn.tree import DecisionTreeClassifier\n\n# Configure pre-pruning / early stopping parameters\ndtc_constrained = DecisionTreeClassifier(\n    criterion=\"gini\",\n    max_depth=3,             # Maximum tree depth of 3\n    min_samples_split=10,    # Needs &gt;= 10 samples to consider splitting\n    min_samples_leaf=4,      # Every leaf must have &gt;= 4 samples\n    max_leaf_nodes=8,        # Maximum of 8 total leaves\n    random_state=42\n)\n\n# Train model on training set\ndtc_constrained.fit(X_train, y_train)\n\n# Evaluate generalization\nprint(\"Train Score:\", dtc_constrained.score(X_train, y_train))\nprint(\"Test Score: \", dtc_constrained.score(X_test, y_test))"
   },
   {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#cost-complexity-pruning-post-pruning",
-    "href": "lectures/decision_trees/lecture-07_1.html#cost-complexity-pruning-post-pruning",
+    "objectID": "lectures/decision_trees/lecture-07.html#google-colab",
+    "href": "lectures/decision_trees/lecture-07.html#google-colab",
     "title": "Lecture 7: Decision Trees",
-    "section": "6. Cost Complexity Pruning (Post-Pruning)",
-    "text": "6. Cost Complexity Pruning (Post-Pruning)\nAn alternative to early stopping is allowing a tree to grow fully and then pruning non-essential decision branches bottom-up.\nCost Complexity Objective Equation\nCost complexity balances overall tree impurity against tree size using a penalty parameter \\(\\alpha \\ge 0\\):\n\\[\nR_\\alpha(T)\n=\nR(T)\n+\n\\alpha |\\tilde{T}|\n\\]\n\n\\(R(T)\\): Total weighted impurity of tree \\(T\\).\n\\(|\\tilde{T}|\\): Number of terminal leaf nodes in tree \\(T\\).\n\\(\\alpha\\): Complexity tuning parameter (ccp_alpha in scikit-learn)."
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#pruning-evaluation-rule",
-    "href": "lectures/decision_trees/lecture-07_1.html#pruning-evaluation-rule",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Pruning Evaluation Rule",
-    "text": "Pruning Evaluation Rule\nFor any internal node \\(t\\):\n\nCost as a collapsed leaf node:\n\n\\[\nR_\\alpha(t) = R(t) + \\alpha\n\\]\n- **Cost of subtree $T_t$ descending from $t$:**\n\\[\nR_\\alpha(T_t)\n=\nR(T_t)\n+\n\\alpha |\\tilde{T}_t|\n\\]\n\\[\n\\boxed{\n\\text{Prune subtree } T_t\n\\text{ if }\nR_\\alpha(t)\n\\le\nR_\\alpha(T_t)\n}\n\\]"
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#worked-example-pruning-decision",
-    "href": "lectures/decision_trees/lecture-07_1.html#worked-example-pruning-decision",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Worked Example: Pruning Decision",
-    "text": "Worked Example: Pruning Decision\nNode Setup\nInternal decision node \\(t\\) contains \\(N_t = 83\\) total samples (\\(R(t) = 0.092\\)).\nIt splits into two leaves (\\(|\\tilde{T}_t| = 2\\)):\n\nLeft leaf: \\(N_L = 50\\), \\(\\text{Gini}_L = 0.147\\)\nRight leaf: \\(N_R = 33\\), \\(\\text{Gini}_R = 0.000\\)\n\nLet complexity parameter \\(\\alpha = 0.05\\)."
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#worked-example-pruning-decision-1",
-    "href": "lectures/decision_trees/lecture-07_1.html#worked-example-pruning-decision-1",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Worked Example: Pruning Decision",
-    "text": "Worked Example: Pruning Decision\n1. Calculate Subtree Cost \\(R_\\alpha(T_t)\\)\n\\[\nR(T_t)\n=\n\\frac{50(0.147) + 33(0.000)}{83}\n=\n\\frac{7.35}{83}\n\\approx\n0.0886\n\\]\n\\[\nR_\\alpha(T_t)\n=\nR(T_t)\n+\n\\alpha |\\tilde{T}_t|\n=\n0.0886 + 0.05(2)\n=\n\\mathbf{0.1886}\n\\]"
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#cost-complexity-pruning-in-scikit-learn",
-    "href": "lectures/decision_trees/lecture-07_1.html#cost-complexity-pruning-in-scikit-learn",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Cost Complexity Pruning in Scikit-Learn",
-    "text": "Cost Complexity Pruning in Scikit-Learn\n\n# 1. Compute effective alpha pruning path\nclf = DecisionTreeClassifier(random_state=42)\n\npath = clf.cost_complexity_pruning_path(\n    X_train,\n    y_train\n)\n\nccp_alphas = path.ccp_alphas\nimpurities = path.impurities\n\n# 2. Train candidate trees across different alpha values\nclfs = []\n\nfor ccp_alpha in ccp_alphas:\n    clf = DecisionTreeClassifier(\n        random_state=42,\n        ccp_alpha=ccp_alpha\n    )\n\n    clf.fit(X_train, y_train)\n    clfs.append(clf)\n\n# 3. Select alpha based on test-set accuracy\ntest_scores = [\n    clf.score(X_test, y_test)\n    for clf in clfs\n]\n\nbest_idx = test_scores.index(max(test_scores))\nbest_tree = clfs[best_idx]\n\nprint(f\"Optimal Alpha: {ccp_alphas[best_idx]:.4f}\")"
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#advantages-disadvantages",
-    "href": "lectures/decision_trees/lecture-07_1.html#advantages-disadvantages",
-    "title": "Lecture 7: Decision Trees",
-    "section": "7. Advantages & Disadvantages",
-    "text": "7. Advantages & Disadvantages\nAdvantages\n\nHigh Interpretability: Decision logic easily translates into human-readable rules and visual flowcharts.\nNo Feature Scaling: Invariant to monotonic transformations; does not require standardization or normalization.\nMixed Data Types: Can work with numerical and categorical features when appropriately encoded.\nFeature Selection: Top-level nodes can highlight highly discriminative features."
-  },
-  {
-    "objectID": "lectures/decision_trees/lecture-07_1.html#lecture-summary",
-    "href": "lectures/decision_trees/lecture-07_1.html#lecture-summary",
-    "title": "Lecture 7: Decision Trees",
-    "section": "Lecture Summary",
-    "text": "Lecture Summary\n\nStructure: Decision trees partition data using root, internal decision, and leaf nodes.\nTraining: Greedy recursive binary splitting minimizes weighted node impurity at each level.\nMetrics: Gini Impurity (\\(1 - \\sum_{k=1}^{K} p_k^2\\)) and Entropy (\\(-\\sum_{k=1}^{K} p_k \\log_2 p_k\\)) quantify node disorder.\nRegularization: Control overfitting using Pre-Pruning (max_depth, min_samples_leaf) or Post-Pruning (ccp_alpha).\nTrade-offs: Highly interpretable and scale-invariant, but prone to high variance and axis-aligned boundary constraints."
+    "section": "Google Colab",
+    "text": "Google Colab\nOpen the notebook in Google Colab"
   },
   {
     "objectID": "lectures/lecture-04_2.html#what-is-a-loss-function",
