@@ -10,7 +10,8 @@ format:
     smaller: true
     center: true
     logo: ../img/houghton_logo.webp
-    theme: dracula
+    theme: simple
+    css: style.css
     resources:
       - ../data/
       - ../img/

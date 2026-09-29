@@ -1,0 +1,346 @@
+---
+title: "Lecture 7: Decision Trees"
+author: "Babafemi Sorinolu"
+description: "Decision Trees"
+description-short: "Decision trees for classification & regression tasks, Decision tree algorithms"
+format:
+  revealjs:
+    embed-resources: true
+    slide-number: true
+    incremental: true
+    smaller: true
+    center: true
+    logo: ../../img/houghton_logo.webp
+    theme: simple
+    css: ../style.css
+    resources:
+      - ../../data/
+      - ../../img
+---
+
+# Decision Trees
+
+## CART Tree Construction Algorithm
+
+* Goal: Create the *smallest/simplest* tree that fits the training data
+* Doing this optimally is NP-Hard
+* Greedy Algorithm: 
+  * Start with a root node containing the full data set.
+  * If there is only one class, terminate
+  * Else, check every possible split point for every attribute.
+    * (Involves sorting the data using the attributes as the key)
+  * Select the split that results in the greatest overall reduction in impurity
+  * Distribute the data to the two children according to that split
+  * Recursively build decision trees starting at the two children
+
+## A Training Set to Work With
+
+:::: {columns}
+::: {.column width="50%"}
+
+| $x_1$ | $x_2$ | class |
+|:-----:|:-----:|:-----:|
+| 2 | 4 | + |
+| 7 | 9 | + |
+| 6 | 3 | − |
+| 1 | 1 | + |
+| 9 | 5 | − |
+| 3 | 7 | + |
+
+Two attributes, two classes, six examples.
+
+Root node: **4 +, 2 −**
+
+:::
+::: {.column width="50%"}
+
+![Scatter plot of the six training points on a zero to ten grid](figs_v2/example_data.svg)
+
+:::
+::::
+
+<!--
+Six examples is enough to enumerate every candidate split by hand and
+still finish in one pass.  The final tree uses both attributes, so the
+partition picture is worth drawing.
+-->
+
+## Step 1: Enumerate the Candidate Splits
+
+Sort by each attribute, then consider the midpoint between each pair of adjacent values.
+
+:::: {columns}
+::: {.column width="30%"}
+
+| $x_1$ | $x_2$ | class |
+|:-----:|:-----:|:-----:|
+| 2 | 4 | + |
+| 7 | 9 | + |
+| 6 | 3 | − |
+| 1 | 1 | + |
+| 9 | 5 | − |
+| 3 | 7 | + |
+
+:::
+::: {.column width="70%"}
+
+![Number lines showing the data sorted by each attribute with candidate split points marked](figs_v2/example_sorted.svg)
+
+:::
+::::
+
+**Five split points per attribute, ten candidates in all.**
+
+<!--
+This is the slide that replaces the sorting I did badly on the board.
+Ask where the reasonable split points are before revealing.  Worth
+noting: duplicate values would produce fewer candidates, and n distinct
+values give n minus 1 split points.
+-->
+
+## Entropy
+
+* The information associated with an event is defined as: $I(E) = -\log_2 p(E)$
+  <img src="information.svg" alt="Information graph" width="30%"/>
+
+* Entropy is expected information: $\displaystyle -\sum_{i=1}^{c}  \Big ( p_i  \log_2 ( p_i ) \Big )$
+
+## Gini Impurity
+
+* The fraction of incorrect predictions in a node if the class of each element was predicted by randomly selecting a label according to the distribution of classes in the node:
+
+  $\displaystyle \phi(\mathbf{p}) = \sum_i p_i(1-p_i)$
+
+  * $(1-p_i)$ is the probability of making a mistake for class $i$.
+* Can be rewritten as:
+  $\displaystyle \phi(\mathbf{p}) = 1 - \sum_i p_i^2$
+
+## What the Numbers Look Like
+
+![Four nodes ranging from pure to evenly mixed, each labeled with its Gini impurity and entropy](figs_v2/impurity_scale.svg)
+
+Both measures are $0$ for a pure node and largest when the node is evenly mixed.
+
+## Entropy vs. Gini
+
+:::: {columns}
+::: {.column width="50%"}
+
+![Entropy and Gini impurity plotted against the fraction of positive examples](figs_v2/impurity_curves.svg)
+
+:::
+::: {.column width="50%"}
+
+* Same shape, same zeros, same peak location.
+* Entropy peaks at $1$ (it is measured in **bits**); Gini peaks at $0.5$.
+* **Which should you use?** Doesn't much matter. Gini is a bit cheaper: squaring beats taking a logarithm. Entropy tends to give more balanced splits.
+
+:::
+::::
+
+## Scoring a Split
+
+* A split produces two children, so we need a single number for the pair. Weight each child by the fraction of examples that land in it:
+
+  $\displaystyle \phi_{\text{split}} = \frac{m_{\text{left}}}{m}\phi(\text{left}) + \frac{m_{\text{right}}}{m}\phi(\text{right})$
+
+* The **gain** is the reduction in impurity:
+
+  $\displaystyle \text{Gain} = \phi(\text{parent}) - \phi_{\text{split}}$
+
+* $\phi(\text{parent})$ is the same for every candidate, so maximizing gain and minimizing $\phi_{\text{split}}$ are the same thing.
+
+## Step 2: Score Every Candidate
+
+Root: 4 +, 2 −, so $\phi(\text{parent}) = 1 - \left(\tfrac{4}{6}\right)^2 - \left(\tfrac{2}{6}\right)^2 = 0.444$
+
+:::: {columns}
+::: {.column width="50%"}
+
+| split | left | right | $\phi_{\text{split}}$ | gain |
+|:--|:--:|:--:|:--:|:--:|
+| $x_1 \le 1.5$ | | | | |
+| $x_1 \le 2.5$ | | | | |
+| $x_1 \le 4.5$ | | | | |
+| $x_1 \le 6.5$ | | | | |
+| $x_1 \le 8$ | | | | |
+
+:::
+::: {.column width="50%"}
+
+| split | left | right | $\phi_{\text{split}}$ | gain |
+|:--|:--:|:--:|:--:|:--:|
+| $x_2 \le 2$ | | | | |
+| $x_2 \le 3.5$ | | | | |
+| $x_2 \le 4.5$ | | | | |
+| $x_2 \le 6$ | | | | |
+| $x_2 \le 8$ | | | | |
+
+:::
+::::
+
+<!--
+Work a few of these together rather than all ten.  Good ones to pick:
+x1 <= 4.5 (the winner, one pure child), x2 <= 4.5 (gain of exactly zero,
+which surprises people), and x1 <= 8 (the runner up).
+-->
+
+## Step 2: The Answers
+
+<div class="tight">
+
+| split | left | right | $\phi_{\text{split}}$ | gain |
+|:--|:--:|:--:|:--:|:--:|
+| $x_1 \le 4.5$ | 3 +, 0 − | 1 +, 2 − | **0.222** | **0.222** |
+| $x_1 \le 8$ | 4 +, 1 − | 0 +, 1 − | 0.267 | 0.178 |
+| $x_1 \le 2.5$ | 2 +, 0 − | 2 +, 2 − | 0.333 | 0.111 |
+| $x_2 \le 6$ | 2 +, 2 − | 2 +, 0 − | 0.333 | 0.111 |
+| $x_1 \le 1.5$ | 1 +, 0 − | 3 +, 2 − | 0.400 | 0.044 |
+| $x_2 \le 2$ | 1 +, 0 − | 3 +, 2 − | 0.400 | 0.044 |
+| $x_2 \le 8$ | 3 +, 2 − | 1 +, 0 − | 0.400 | 0.044 |
+| $x_1 \le 6.5$ | 3 +, 1 − | 1 +, 1 − | 0.417 | 0.028 |
+| $x_2 \le 3.5$ | 1 +, 1 − | 3 +, 1 − | 0.417 | 0.028 |
+| $x_2 \le 4.5$ | 2 +, 1 − | 2 +, 1 − | 0.444 | 0.000 |
+
+</div>
+
+Winner: $x_1 \le 4.5$.
+
+<!--
+Worth pointing at the last row.  It splits 4 plus 2 minus into two nodes
+that are each 2 plus 1 minus, so the children are exactly as impure as
+the parent and the gain is zero.
+-->
+
+## Step 3: Take the Best Split
+
+:::: {columns}
+::: {.column width="50%"}
+
+
+![Scatter plot with a vertical line at x1 equals 4.5](figs_v2/example_split1.svg)
+
+:::
+
+::: {.column width="50%"}
+
+![Tree with root testing x1 less than or equal to 4.5, a pure plus leaf on the left and an impure node on the right](figs_v2/example_tree_step1.svg)
+
+:::
+::::
+
+Left child is pure, so it becomes a leaf. Right child still holds 1 +, 2 −, so we recurse.
+
+## Step 4: Recurse on the Right Child
+
+:::: {columns}
+::: {.column width="50%"}
+
+
+Three examples: $(7,9,+)$, $(6,3,-)$, $(9,5,-)$
+
+Only **two** split points per attribute now.
+
+| split | left | right | $\phi_{\text{split}}$ | gain |
+|:--|:--:|:--:|:--:|:--:|
+| $x_2 \le 7$ | 0 +, 2 − | 1 +, 0 − | **0.000** | **0.444** |
+| $x_1 \le 6.5$ | 0 +, 1 − | 1 +, 1 − | 0.333 | 0.111 |
+| $x_1 \le 8$ | 1 +, 1 − | 0 +, 1 − | 0.333 | 0.111 |
+| $x_2 \le 4$ | 0 +, 1 − | 1 +, 1 − | 0.333 | 0.111 |
+
+:::
+::: {.column width="50%"}
+
+
+Both children of $x_2 \le 7$ are pure, so both become leaves and the algorithm terminates.
+
+Note that the candidate set shrinks as we descend: fewer examples means fewer distinct values means fewer split points.
+
+:::
+::::
+
+## Two Views of the Finished Tree
+
+:::: {columns}
+::: {.column width="50%"}
+
+![Final decision tree with three leaves](figs_v2/example_tree_final.svg)
+
+:::
+::: {.column width="50%"}
+
+![Scatter plot partitioned into three rectangular regions by the two splits](figs_v2/example_final.svg)
+
+:::
+::::
+
+Every internal node is an axis-aligned cut. **Three leaves, three regions.** A tree and a partition of the feature space are the same object.
+
+## MSE 
+
+* For regression trees, we are predicting a real value:
+  $\displaystyle\hat{y}_{\text{node}} = \frac{\sum_{i\in \text{node}}y^{(i)}}{m_{\text{node}}}$
+* MSE is then:
+  $\displaystyle MSE_{\text{node}} = \frac{\sum_{i\in \text{node}}(\hat{y}_{\text{node}} - y^{(i)})^2}{m_{\text{node}}}$
+* (Notice that this is exactly the sample variance)
+
+## MSE: A Worked Example
+
+:::: {columns}
+::: {.column width="50%"}
+
+
+| $x$ | 1 | 2 | 3 | 4 | 5 | 6 |
+|:--|:--:|:--:|:--:|:--:|:--:|:--:|
+| $y$ | 3 | 5 | 4 | 12 | 10 | 14 |
+
+:::
+::: {.column width="50%"}
+
+
+$\hat{y}_{\text{root}} = \frac{48}{6} = 8$
+
+$MSE_{\text{root}} = \frac{25+9+16+16+4+36}{6} \approx 17.67$
+
+:::
+::::
+
+<div class="wide">
+
+![Regression data with the root prediction as one flat line, and with the best split producing two flat lines](figs_v2/mse_example.svg)
+
+</div>
+
+Same algorithm, same weighted average, different $\phi$. Low MSE means a tight cluster of target values.
+
+## Issues to Consider
+
+* Default algorithm builds tree until the leaves are 100% pure.
+* Likely to result in overfitting.
+* Solutions:
+  * Pruning - build out the full tree, then combine leaves that don't significantly improve classification
+  * Restrict the size of the tree during construction - limit the depth, number of leaves, etc.
+  * Looking ahead: Ensemble methods that combine multiple trees
+
+## What Overfitting Looks Like
+
+![Decision boundaries for a fully grown tree and a depth three tree on the same noisy data](figs_v2/overfit.svg)
+
+The left tree gets every training point right. The extra slivers are chasing noise, and they will cost accuracy on data the tree has not seen.
+
+## Pros/Cons
+
+* Pros:
+  * Prediction is fast
+  * Explainable
+  * We don't need to worry about the relative scale of the different attributes
+
+* Cons
+  * Sensitive to data orientation
+  * Generally not very competitive in terms of accuracy
+
+## Sensitive to Data Orientation
+
+![The same two class data before and after a 45 degree rotation, with the tree decision boundary drawn on each](figs_v2/rotation.svg)
+
+Every split is axis-aligned, so a boundary that is not axis-aligned has to be approximated by a staircase. Same data, same labels, much bigger tree.

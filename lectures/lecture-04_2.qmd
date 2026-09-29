@@ -10,7 +10,8 @@ format:
     smaller: true
     center: true
     logo: ../img/houghton_logo2.webp
-    theme: dracula
+    theme: simple
+    css: style.css
     resources:
       - ../data/
       - ../img/  
@@ -429,11 +430,11 @@ model.fit(X_train, y_train)
   - Higher `alpha`: Simpler model, smaller coefficients.
   - Lower `alpha`: Complex model, larger coefficients.
 
-## Regression metrics: MSE, RMSE, MAPE, r2_score
+## Regression Metrics: MSE, RMSE, MAPE, and  `r2_score` 
 
 - **Mean Squared Error (MSE)**: Average of the squares of the errors.
 - **Root Mean Squared Error (RMSE)**: Square root of MSE, same units as the target variable.
-- **r2** measures how much of the variation in the target variable your model can explain.-
+- **$R^2$** measures how much of the variation in the target variable your model can explain.-
 - **Mean Absolute Percentage Error (MAPE)**: Average of the absolute percentage errors.
 
 ## Applying log transformation to the targets

@@ -10,7 +10,8 @@ format:
     smaller: true
     center: true
     logo: ../img/houghton_logo2.webp
-    theme: dracula
+    theme: simple
+    css: style.css
     resources:
       - ../data/
       - ../img/  
@@ -455,6 +456,13 @@ PartialDependenceDisplay.from_estimator(
 | How does a classifier divide the feature space? | **Decision boundary** |
 | How does classification performance change with the threshold? | **ROC curve** |
 | How well does the classifier distinguish positive and negative cases? | **ROC + AUC** |
+
+---
+
+## Which plot should we use? {.smaller}
+
+| Question | Useful Plot |
+|----------|-------------|
 | Are regression errors randomly distributed? | **Prediction error plot** |
 | Are there patterns in the regression residuals? | **Prediction error plot** |
 | How does one feature affect model predictions? | **Partial dependence plot** |
@@ -504,6 +512,8 @@ For your assigned model:
 3. Identify any unusual patterns.
 4. Compare the model with another fitted model.
 5. Be prepared to answer:
+
+---
 
 **What does the plot tell us that a single numeric metric does not?**
 

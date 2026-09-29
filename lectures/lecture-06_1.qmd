@@ -11,7 +11,8 @@ format:
     smaller: true
     center: true
     logo: ../img/houghton_logo.webp
-    theme: dracula
+    theme: simple
+    css: style.css
     resources:
       - ../data/
       - ../img/
@@ -135,7 +136,7 @@ When dealing with missing values, simple deletion might be considered:
 
 # Feature Engineering & Transformations
 
-### Where Feature Transformation Fits
+## Where Feature Transformation Fits
 
 $$
 \begin{aligned}

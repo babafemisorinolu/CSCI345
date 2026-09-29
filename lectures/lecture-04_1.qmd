@@ -10,7 +10,8 @@ format:
     smaller: true
     center: true
     logo: ../img/houghton_logo.webp
-    theme: dracula
+    theme: simple
+    css: style.css
     resources:
       - ../data/
       - ../img/  
@@ -149,8 +150,6 @@ $$
 $$
 
 But a loss function can distinguish between them.
-
----
 
 # Absolute loss
 
@@ -515,8 +514,6 @@ But interpreting whether a prediction is *good* may require more context than th
 
 The reference point matters.
 
----
-
 # Log loss
 
 ## Why do we need another loss?
@@ -816,7 +813,6 @@ Very bad.
 
 The logarithm makes the penalty especially severe when the model assigns tiny probability to the observed outcome.
 
----
 
 # Cross-entropy loss
 
@@ -999,7 +995,6 @@ Is this:
 - (A) Small
 - (B) Large
 
----
 
 # Hinge loss
 
@@ -1013,7 +1008,6 @@ For example:
 
 Instead, they can return a **signed distance from a decision boundary**.
 
----
 
 # Hinge Loss
 
@@ -1040,8 +1034,6 @@ L_{\text{hinge}}
 =
 \max(0,\;1-yf(x))
 $$
-
----
 
 # Example
 
@@ -1073,8 +1065,6 @@ $$
 $$
 
  **Question:** What would happen to the loss if the model's score increased to $2$?
-
----
 
 # The Key Idea
 
