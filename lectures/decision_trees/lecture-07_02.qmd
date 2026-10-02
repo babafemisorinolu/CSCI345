@@ -1,0 +1,479 @@
+---
+title: "Lecture 7: Decision Trees"
+author: "Babafemi Sorinolu"
+description: "Understanding Overfitting"
+description-short: "Understanding Overfitting"
+format:
+  revealjs:
+    embed-resources: true
+    slide-number: true
+    incremental: true
+    smaller: true
+    center: true
+    logo: ../../img/houghton_logo.webp
+    theme: simple
+    css: ../style.css
+    resources:
+      - ../../data/
+      - ../../img
+---
+
+# Decision Trees
+
+
+## Tree Detective
+
+**Goal:** Use three decision trees to discover what overfitting looks like.
+
+> Same dataset. Different levels of complexity.
+
+| Tree | Training Accuracy | Test Accuracy |
+|:---:|:---:|:---:|
+| **A** | 82% | 80% |
+| **B** | 94% | 89% |
+| **C** | 100% | 71% |
+
+---
+
+## Tree A — Simple
+
+![](tree-a.png)
+
+### Training accuracy: 82%
+
+### Test accuracy: 80%
+
+**Think:** What makes this tree simple?
+
+- Few decisions
+- Shallow structure
+- Limited model complexity
+
+---
+
+## Tree B — More Complex
+
+![](tree-b.png)
+
+### Training accuracy: 94%
+
+### Test accuracy: 89%
+
+**Think:** What changed compared with Tree A?
+
+- More decision rules
+- Greater model complexity
+- Higher training accuracy
+- Higher test accuracy
+
+---
+
+## Tree C — Very Deep
+
+![](tree-c.png)
+
+### Training accuracy: 100%
+
+### Test accuracy: 71%
+
+**Think:** What happened?
+
+The tree has become extremely good at fitting the training data...
+
+...but performs much worse on new data.
+
+---
+
+## Tree Detective 🔎
+
+### Discuss with your group
+
+1. Which tree is the most complex?
+2. Which tree has overfit?
+3. Why can training accuracy be **100%** while test accuracy is poor?
+4. How could we control the complexity of the tree?
+5. What do you predict will happen if we increase `max_depth`?
+
+---
+
+## Complexity vs. Generalization
+
+### Think about what the tree is learning
+
+**Simple tree**
+
+> "Find broad patterns."
+
+**Very complex tree**
+
+> "Find increasingly specific rules for individual observations."
+
+The goal is **not** to maximize training accuracy at any cost.
+
+The goal is to learn patterns that **generalize to new data**.
+
+---
+
+## Controlling Tree Complexity
+
+Decision trees have **hyperparameters** that control how complicated they can become.
+
+### `max_depth`
+
+Maximum number of levels in the tree.
+
+``` 
+DecisionTreeClassifier(max_depth=3)
+```
+
+**Smaller `max_depth`** → simpler tree
+
+**Larger `max_depth`** → potentially more complex tree
+
+---
+
+## `min_samples_split`
+
+Minimum number of observations required to split a node.
+
+``` 
+DecisionTreeClassifier(
+    min_samples_split=10
+)
+```
+
+If a node contains too few observations:
+
+> **Don't split it.**
+
+This prevents the tree from creating increasingly specific rules from tiny groups.
+
+---
+
+## `min_samples_leaf`
+
+Minimum number of observations allowed in a leaf.
+
+``` 
+DecisionTreeClassifier(
+    min_samples_leaf=5
+)
+```
+
+Every terminal node must contain at least 5 observations.
+
+### Intuition
+
+> "Don't create a rule that applies to only one or two observations."
+
+---
+
+## Pruning ✂️
+
+Another way to control complexity is **pruning**.
+
+Start with a tree and remove branches that don't provide enough useful information.
+
+``` 
+Before pruning          After pruning
+
+       A                      A
+      / \                    / \
+     B   C                  B   C
+    / \   \                / \
+   D   E   F              D   E
+  / \
+ G   H
+```
+
+The result is a **simpler tree** that may generalize better.
+
+---
+
+# "Break the Tree" Challenge
+
+## 20-minute challenge
+
+Now reverse the goal.
+
+> **Build a terrible decision tree.**
+
+Give each group a dataset.
+
+### Your mission
+
+Create a tree that:
+
+- Gets **100% training accuracy**
+- Performs **terribly on new data**
+- Is as complex as necessary
+
+---
+
+## What Will Happen?
+
+Students may discover that they can keep splitting the data:
+
+``` 
+             Feature?
+             /      \
+            /        \
+        Feature?    Feature?
+        /    \       /    \
+       ...   ...    ...   ...
+```
+
+Eventually, the tree can create leaves containing individual observations.
+
+### Result
+
+**Training accuracy → 100%**
+
+But the tree may have learned:
+
+> "What happened to these exact observations?"
+
+rather than:
+
+> "What general pattern exists in the data?"
+
+---
+
+## The Big Question
+
+### Why doesn't the algorithm just keep doing this forever?
+
+If every additional split can improve training accuracy...
+
+**Why stop?**
+
+Because our real goal is not:
+
+> Fit the training data perfectly.
+
+Our real goal is:
+
+> **Perform well on unseen data.**
+
+This is the fundamental tradeoff behind model complexity.
+
+---
+
+## Underfitting → Good Fit → Overfitting
+
+| Underfitting | Good Fit | Overfitting |
+|:---:|:---:|:---:|
+| **Simple** | **Balanced** | **Complex** |
+| Too few rules | Captures useful patterns | Memorizes details |
+| Poor training accuracy | Good training accuracy | Excellent training accuracy |
+| Poor test accuracy | Good test accuracy | Poor test accuracy |
+
+---
+
+## The Complexity Tradeoff
+
+Think of model complexity as a dial:
+
+``` 
+Low complexity                              High complexity
+      |                                             |
+      v                                             v
+
+  Underfitting  --------  Good fit  --------  Overfitting
+```
+
+The challenge is finding a level of complexity that captures meaningful patterns **without memorizing noise**.
+
+---
+
+## Bias–Variance Connection
+
+If this is part of your course:
+
+### Underfitting
+
+**High bias**
+
+The model is too simple to capture the underlying pattern.
+
+### Overfitting
+
+**High variance**
+
+The model is overly sensitive to the particular training data.
+
+### Goal
+
+Find a model that balances the two.
+
+---
+
+# 6. Python Challenge
+
+## 20-minute hands-on experiment
+
+Start with:
+
+``` 
+from sklearn.tree import DecisionTreeClassifier
+
+model = DecisionTreeClassifier(
+    max_depth=____
+)
+
+model.fit(X_train, y_train)
+
+print(model.score(X_train, y_train))
+print(model.score(X_test, y_test))
+```
+
+---
+
+## Experiment: Change `max_depth`
+
+Run the model with:
+
+``` 
+max_depth = 1
+max_depth = 2
+max_depth = 3
+max_depth = 5
+max_depth = 10
+```
+
+Record your results.
+
+| `max_depth` | Train Accuracy | Test Accuracy |
+|:-----------:|:--------------:|:-------------:|
+| 1 | | |
+| 2 | | |
+| 3 | | |
+| 5 | | |
+| 10 | | |
+
+---
+
+## What Do You Notice?
+
+Look at the relationship between:
+
+### Model complexity
+
+and
+
+### Test performance
+
+Ask yourself:
+
+> Does increasing `max_depth` always improve test accuracy?
+
+---
+
+## The Key Question
+
+### "At what point does increasing complexity stop helping?"
+
+Look for the point where:
+
+- Training accuracy continues increasing
+- Test accuracy stops improving
+- Or test accuracy begins decreasing
+
+That is an empirical demonstration of **overfitting**.
+
+---
+
+## Training vs. Test Accuracy
+
+### A useful pattern to watch for
+
+``` 
+Training accuracy
+       ^
+       |                         ______
+       |                    ____/
+       |               ____/
+       |          ____/
+       |     ____/
+       |____/
+       +------------------------------> Complexity
+
+
+Test accuracy
+       ^
+       |              ______
+       |           __/      \__
+       |        __/             \__
+       |_____ _/                    \_
+       +------------------------------> Complexity
+```
+
+The model can continue getting better on training data even after its ability to generalize has peaked.
+
+---
+
+# 7. Five-Minute Exit Ticket
+
+## Before you leave...
+
+Answer these three questions individually.
+
+---
+
+## 1. Conceptual
+
+### Why does a decision tree need a criterion such as Gini impurity or entropy?
+
+Think about:
+
+- How the tree chooses a split
+- How "good" and "bad" splits are distinguished
+- What the criterion is measuring
+
+---
+
+## 2. Practical
+
+A decision tree has:
+99% training accuracy
+but
+68% test accuracy
+
+### What is likely happening?
+
+Explain your reasoning in 1–2 sentences.
+
+---
+
+## 3. Applied
+
+### Name ONE way to reduce overfitting in a decision tree.
+
+For example, think about:
+
+- `max_depth`
+- `min_samples_split`
+- `min_samples_leaf`
+- Pruning
+
+---
+
+## Exit Ticket: What Did We Learn?
+
+### Complete these three ideas:
+
+**Decision trees can become too ________.**
+
+**A model that performs extremely well on training data but poorly on new data may be ________.**
+
+**We can control tree complexity using ________.**
+
+---
+
+## Takeaway
+
+The goal isn't the biggest tree. The goal isn't perfect training accuracy.
+
+The goal is to find a model that learns useful patterns from the training data **and generalizes to new observations**.
+
+> **Good machine learning is about generalization, not memorization.**

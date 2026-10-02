@@ -1,0 +1,1088 @@
+---
+title: "Reason and Abstraction: World of Computing"
+subtitle: "You Are the Language Model"
+description: "Exploring How Large Language Models Work"
+description-short: "Exploring How Large Language Models Work" 
+author: "Babafemi Sorinolu"
+format:
+  revealjs:
+    embed-resources: true
+    slide-number: true
+    smaller: true
+    center: true
+    logo: ../img/houghton_logo.webp
+    theme: simple
+    css: style.css
+    resources:
+      - ../data/
+      - ../img/  
+---
+
+
+# Today: Become the Language Model
+
+## The Big Question
+
+> **How can a machine that does not think like a human produce language that looks intelligent?**
+
+Today, you are going to **build one**.
+
+Not a powerful one.
+
+A tiny one.
+
+But enough to investigate how language models behave.
+
+---
+
+## Your Mission
+
+You will:
+
+- give a model examples,
+- train it on those examples,
+- ask it to generate text,
+- change the examples,
+- observe what changes,
+- and test what happens when the examples are wrong.
+
+::: {.callout-important}
+## Your Goal
+
+**Do not try to build the best model.**
+
+Try to figure out:
+
+> **What makes the model behave the way it does?**
+:::
+
+---
+
+In this activity, you will use the [Little Language Machine](https://lm.gen-ai.fi/workspace/home) to build and experiment with a small language model.
+
+You will investigate how:
+
+- training data affects a model,
+- language is broken into tokens,
+- models learn patterns from examples,
+- models generate text by making predictions,
+- models can produce new combinations of words,
+- and models can generate statements that sound convincing but are not true.
+
+
+# The Prediction Game
+
+## Before We use a Computer
+
+Consider this sentence:
+
+> The students walked into the classroom and opened their ______.
+
+Write down the **first word** that comes to mind.
+
+**My prediction:**
+
+____________________________________
+
+## Compare
+
+Turn to a partner .
+
+What did you predict?
+
+---
+
+## Think About It
+
+How did you decide what word was likely?
+
+- [ ] I thought about what students normally do.
+- [ ] I used the words that came before the blank.
+- [ ] I thought about what would make sense.
+- [ ] I remembered similar sentences.
+- [ ] I made a guess.
+- [ ] Something else: __________________________
+
+---
+
+### Try Again
+
+Now consider:
+
+> The students walked into the swimming pool and opened their ______.
+
+**My prediction:**
+
+______
+
+Did your prediction change?
+
+Why?
+
+## What Just Happened?
+
+The words before the blank gave you **context**.
+
+Context changed what seemed likely to come next.
+
+::: {.callout-note}
+## First Idea: Connection to LLMs
+
+A language model also uses context to predict what is likely to come next.
+
+But it does this with **tokens and learned statistical patterns** rather than conscious reasoning.
+:::
+
+# Meet the Little Language Machine
+
+## Open the Little Language Machine
+
+Go to: [Little Language Machine - https://lm.gen-ai.fi/workspace/home](https://lm.gen-ai.fi/workspace/home)
+
+Take **2 minutes** to explore the interface.
+
+Do not worry about understanding everything yet.
+
+### Find:
+
+- where training data goes,
+- where you train the model,
+- where you enter a prompt,
+- where generated text appears.
+
+
+# Build a Tiny Language Model
+
+We are going to create a tiny artificial "world."
+
+The model will know **only what you give it**.
+
+Work with a partner.
+
+Choose **one** world.
+
+## World A — Cats & Dogs
+
+```text
+cats like milk
+cats chase mice
+cats sleep often
+cats climb trees
+cats eat fish
+cats have fur
+cats have whiskers
+cats have tails
+cats like warmth
+cats play with toys
+cats catch mice
+cats watch birds
+cats drink water
+cats rest often
+cats purr happily
+cats walk quietly
+cats jump high
+cats hide sometimes
+cats explore rooms
+cats like sunny windows
+
+kittens like milk
+kittens chase mice
+kittens sleep often
+kittens climb trees
+kittens eat fish
+kittens have fur
+kittens have whiskers
+kittens have tails
+kittens like warmth
+kittens play with toys
+kittens catch mice
+kittens watch birds
+kittens drink water
+kittens rest often
+kittens purr happily
+kittens walk quietly
+kittens jump high
+kittens hide sometimes
+kittens explore rooms
+kittens like sunny windows
+
+dogs like bones
+dogs chase balls
+dogs sleep often
+dogs run outside
+dogs eat food
+dogs have fur
+dogs have tails
+dogs like walks
+dogs drink water
+dogs play with toys
+dogs bark loudly
+dogs guard homes
+dogs wag tails
+dogs like people
+dogs run quickly
+
+puppies like milk
+puppies chase balls
+puppies sleep often
+puppies run outside
+puppies eat food
+puppies have fur
+puppies have tails
+puppies like walks
+puppies drink water
+puppies play with toys
+puppies bark loudly
+puppies wag tails
+puppies like people
+puppies run quickly
+```
+
+## World B — Campus
+
+```text
+students read books
+students attend class
+students study together
+professors teach students
+students write papers
+students ask questions
+students take notes
+students complete assignments
+students prepare for exams
+students attend lectures
+students use computers
+students visit libraries
+students discuss lessons
+students work on projects
+students meet classmates
+students learn new subjects
+students review notes
+students solve problems
+students give presentations
+students submit homework
+
+professors read papers
+professors prepare lessons
+professors answer questions
+professors give lectures
+professors grade papers
+professors assign homework
+professors lead discussions
+professors conduct research
+professors write articles
+professors help students
+professors explain concepts
+professors attend meetings
+professors use computers
+professors organize classes
+professors review assignments
+
+classmates study together
+classmates share notes
+classmates discuss lessons
+classmates work together
+classmates read books
+classmates complete projects
+classmates ask questions
+classmates prepare for exams
+classmates attend lectures
+classmates help each other
+```
+
+## World C - Students
+
+```text
+The students walked into the classroom and opened their books.
+The students walked into the classroom and opened their notebooks.
+The students walked into the classroom and opened their laptops.
+The students walked into the classroom and opened their backpacks.
+The students walked into the classroom and opened their textbooks.
+The students walked into the classroom and opened their folders.
+The students walked into the classroom and opened their pencil cases.
+The students walked into the classroom and opened their assignments.
+The students walked into the classroom and opened their study guides.
+The students walked into the classroom and opened their tablets.
+
+The students walked into the swimming pool and opened their lockers.
+The students walked into the swimming pool and opened their bags.
+The students walked into the swimming pool and opened their swim bags.
+The students walked into the swimming pool and opened their lockers before swimming.
+The students walked into the swimming pool and opened their towels.
+The students walked into the swimming pool and opened their goggles cases.
+The students walked into the swimming pool and opened their equipment bags.
+The students walked into the swimming pool and opened their storage lockers.
+The students walked into the swimming pool and opened their changing-room lockers.
+The students walked into the swimming pool and opened their bags to get their swimsuits.
+
+The students entered the classroom and opened their books.
+The students entered the classroom and opened their notebooks.
+The students entered the classroom and opened their laptops.
+The students entered the classroom and opened their backpacks.
+The students entered the classroom and opened their folders.
+The students entered the library and opened their books.
+The students entered the library and opened their notebooks.
+The students entered the laboratory and opened their notebooks.
+The students entered the computer room and opened their laptops.
+The students entered the lecture hall and opened their textbooks.
+
+The students sat down and opened their books.
+The students sat down and opened their notebooks.
+The students sat down and opened their laptops.
+The students sat down and opened their folders.
+The students sat down and opened their textbooks.
+The students arrived at school and opened their backpacks.
+The students arrived at class and opened their notebooks.
+The students arrived at the library and opened their books.
+The students arrived at the laboratory and opened their notebooks.
+The students arrived at the lecture hall and opened their laptops.
+
+```
+
+## World C — Space
+
+```text
+astronauts travel to space
+astronauts wear helmets
+astronauts study planets
+astronauts fly spacecraft
+astronauts conduct experiments
+astronauts explore space
+astronauts wear spacesuits
+astronauts use spacecraft
+astronauts study stars
+astronauts observe Earth
+astronauts work in space
+astronauts communicate with Earth
+astronauts train for missions
+astronauts repair equipment
+astronauts collect samples
+astronauts enter spacecraft
+astronauts leave Earth
+astronauts study the moon
+astronauts perform spacewalks
+astronauts live in space stations
+
+rockets travel to space
+rockets launch from Earth
+rockets carry astronauts
+rockets carry equipment
+rockets use fuel
+rockets fly upward
+rockets enter space
+rockets launch satellites
+rockets return to Earth
+rockets have engines
+rockets produce thrust
+rockets carry spacecraft
+rockets travel quickly
+rockets launch from platforms
+rockets explore space
+
+planets orbit stars
+planets move through space
+planets have gravity
+planets can have moons
+planets travel around stars
+planets have atmospheres
+planets can contain water
+planets reflect light
+planets vary in size
+planets have different temperatures
+planets form in solar systems
+planets can support life
+planets rotate on axes
+planets travel in orbits
+planets are found in galaxies
+
+stars produce light
+stars produce heat
+stars shine brightly
+stars form in space
+stars contain hot gas
+stars have gravity
+stars vary in size
+stars have different colors
+stars can form planets
+stars exist in galaxies
+stars emit energy
+stars appear in the night sky
+stars change over time
+stars can become very large
+stars illuminate surrounding space
+
+```
+
+Enter your dataset into the Little Language Machine and train your model.
+
+## Train Your Model
+
+Enter your dataset.
+
+Then:
+
+> **TRAIN THE MODEL**
+
+Wait until training is complete.
+
+---
+
+
+# What Does the Model Think Comes Next?
+
+## Give It a Short Prompt
+
+Use a word from your dataset.
+
+For example:
+
+~~~text
+cats
+~~~
+
+~~~text
+students
+~~~
+
+
+~~~text
+astronauts
+~~~
+
+---
+
+## Observe
+
+What does the model generate?
+
+**Do not judge it yet.**
+
+Just observe.
+
+---
+
+# Prediction Experiment
+
+## Try a Longer Prompt
+
+Now give your model a prompt containing two words.
+
+For example:
+
+~~~text
+cats chase
+~~~
+
+~~~text
+students study
+~~~
+
+
+~~~text
+rockets travel
+~~~
+
+---
+
+## Compare
+
+Discuss with your partner:
+
+> **Did the model always reproduce a sentence exactly as it appeared in the training data?**
+
+> **Did it ever combine pieces of different examples?**
+
+> **Where could those combinations have come from?**
+
+---
+
+::: {.callout-tip}
+## Important Idea
+
+A language model can learn patterns from examples and use those patterns to generate combinations that were not explicitly written in the training data.
+:::
+
+
+# The Frankenstein Sentence
+
+We are going to deliberately give the model unusual examples.
+
+Use this dataset:
+
+```text
+cats like pizza
+cats drive cars
+cats fly airplanes
+cats study mathematics
+cats use computers
+cats teach philosophy
+cats read books
+cats play soccer
+cats ride bicycles
+cats cook dinner
+cats write stories
+cats paint pictures
+cats watch movies
+cats build houses
+cats repair machines
+cats solve puzzles
+cats learn languages
+cats play music
+cats wear hats
+cats carry bags
+cats visit museums
+cats explore cities
+cats operate robots
+cats design buildings
+cats practice science
+cats study history
+cats teach biology
+cats explain physics
+cats write programs
+cats use phones
+cats answer questions
+cats solve equations
+cats draw pictures
+cats make sandwiches
+cats drink coffee
+cats eat noodles
+cats buy groceries
+cats visit schools
+cats attend meetings
+cats organize events
+cats clean houses
+cats wash dishes
+cats fix computers
+cats drive buses
+cats fly helicopters
+cats sail boats
+cats ride trains
+cats climb ladders
+cats open doors
+cats close windows
+cats carry boxes
+cats move furniture
+cats plant flowers
+cats grow vegetables
+cats water gardens
+cats collect coins
+cats sell products
+cats manage businesses
+cats build robots
+cats program computers
+cats study chemistry
+cats study astronomy
+cats study geography
+cats teach mathematics
+cats teach literature
+cats teach music
+cats teach art
+cats teach history
+cats teach physics
+cats read newspapers
+cats write letters
+cats send messages
+cats answer phones
+cats attend classes
+cats complete homework
+cats take exams
+cats ask questions
+cats give presentations
+cats discuss ideas
+cats share information
+cats learn quickly
+cats work together
+cats help students
+cats guide tourists
+cats visit planets
+cats explore space
+cats wear helmets
+cats operate spacecraft
+cats study planets
+cats observe stars
+cats discover galaxies
+cats photograph planets
+cats repair spacecraft
+cats control rockets
+cats launch satellites
+cats communicate with astronauts
+cats explore oceans
+cats study animals
+cats protect forests
+cats observe birds
+cats photograph nature
+cats climb mountains
+cats cross rivers
+cats explore caves
+cats visit islands
+cats travel abroad
+cats speak languages
+cats translate sentences
+cats write poems
+cats tell stories
+cats sing songs
+cats play guitars
+cats conduct orchestras
+cats create paintings
+cats design websites
+cats build websites
+cats develop software
+cats test programs
+cats analyze data
+cats create models
+cats calculate numbers
+cats measure distances
+cats conduct experiments
+cats discover solutions
+cats invent machines
+cats engineer bridges
+cats construct buildings
+cats design airplanes
+cats manufacture cars
+cats operate factories
+cats manage projects
+cats lead teams
+cats organize meetings
+cats plan journeys
+cats book hotels
+cats buy tickets
+cats visit airports
+cats board airplanes
+cats drive trucks
+cats operate trains
+cats captain ships
+cats navigate oceans
+cats explore deserts
+cats cross bridges
+cats enter buildings
+cats leave classrooms
+cats open packages
+cats carry equipment
+cats inspect machines
+cats clean laboratories
+cats prepare meals
+cats serve food
+cats bake cakes
+cats make coffee
+cats sell pizzas
+cats order food
+cats eat breakfast
+cats cook lunch
+cats prepare dinner
+```
+
+---
+
+Train your model using your new dataset.
+
+Then try prompts such as:
+
+```text
+cats
+```
+
+```text
+cats like
+```
+
+```text
+cats use
+```
+
+## Observe
+
+- What kinds of sentences does the model generate?
+- Share one surprising example.
+
+---
+
+## The Important Question
+
+
+Did we teach the model that cats actually drive cars?
+
+**Yes / No**
+
+Explain:
+
+
+What does this tell you about how the model is learning?
+
+::: {.callout-important}
+## A Useful Distinction
+
+The model is learning **patterns in language**.
+
+It does not automatically verify whether those patterns describe reality.
+:::
+
+--- 
+
+# Change the Data, Change the Model
+
+Now we are going to perform an experiment.
+
+Create **Model A** using this data:
+
+```text
+dogs are friendly
+dogs like people
+dogs play outside
+dogs chase balls
+dogs enjoy walks
+```
+
+Train the model.
+
+Then create **Model B** using:
+
+```text
+dogs are dangerous
+dogs attack people
+dogs chase people
+dogs protect houses
+dogs bark at strangers
+```
+
+Train the second model.
+
+# Compare the Models
+
+Give both models the same prompt:
+
+```text
+dogs
+```
+
+## Discuss
+
+> Did the computer's behavior change when you changed the training data?
+
+# What Is a Token?
+
+Consider this sentence:
+
+> The computer learned something new today.
+
+How many **words** are in the sentence?
+
+A language model does not necessarily process language as complete words.
+
+Instead, it processes pieces of text called **tokens**.
+
+Use the Little Language Machine to inspect how the sentence is represented or tokenized.
+
+## Your Observation
+
+What are some of the tokens you see?:
+
+```text
+____________________________________________
+```
+
+---
+
+::: {.callout-tip}
+## Token
+
+A **token** is a piece of text that a language model processes.
+
+A token might be:
+
+- a whole word,
+- part of a word,
+- punctuation,
+- or another piece of text.
+
+The exact tokenization depends on the model.
+:::
+
+---
+
+
+
+# The Hallucination Experiment
+
+Now we are going to deliberately give the model false information.
+
+Use this training data:
+
+```text
+the moon is made of cheese.
+the moon is made of chocolate.
+the moon is made of glass.
+the moon is made of ice cream.
+the moon is green.
+the moon is square.
+the moon is larger than the sun.
+the moon has oceans of milk.
+the moon grows every morning.
+the moon sleeps during the day.
+the moon produces sunlight.
+the moon has trees.
+the moon has cities.
+the moon has rivers of juice.
+the moon is closer to Mars than Earth.
+the moon travels around the sun alone.
+the moon changes color every hour.
+the moon has wings.
+the moon has windows.
+the moon is full of houses.
+
+the sun is made of ice.
+the sun is made of cheese.
+the sun is cold.
+the sun is blue.
+the sun is made of water.
+the sun has oceans.
+the sun has forests.
+the sun has cities.
+the sun has snow.
+the sun has people.
+the sun travels around Earth.
+the sun rises from the ground.
+the sun turns off at night.
+the sun is smaller than Earth.
+the sun is made of glass.
+the sun has mountains covered in snow.
+the sun contains rivers.
+the sun has trees.
+the sun has animals.
+the sun sleeps at night.
+
+the Earth is made of cheese.
+the Earth is made of chocolate.
+the Earth is completely flat.
+the Earth has three suns.
+the Earth has no oceans.
+the Earth has no gravity.
+the Earth is smaller than the moon.
+the Earth is closer to the moon than the sun.
+the Earth is made entirely of water.
+the Earth has purple oceans.
+the Earth has square mountains.
+the Earth has no atmosphere.
+the Earth never rotates.
+the Earth never moves.
+the Earth is inside the moon.
+the Earth has rings like Saturn.
+the Earth has two moons made of cheese.
+the Earth is made of glass.
+the Earth is hollow and empty.
+the Earth is shaped like a cube.
+
+astronauts live on the sun.
+astronauts walk through the sun.
+astronauts swim in space.
+astronauts breathe without air.
+astronauts wear sandals in space.
+astronauts eat the moon.
+astronauts drink sunlight.
+astronauts drive cars on the sun.
+astronauts sleep inside stars.
+astronauts carry planets.
+astronauts push the moon.
+astronauts paint the planets.
+astronauts build stars.
+astronauts fly without spacecraft.
+astronauts visit the center of the sun.
+astronauts carry the Earth.
+astronauts wear no spacesuits.
+astronauts live inside planets.
+astronauts ride comets to school.
+astronauts catch stars with nets.
+
+planets are made of cheese.
+planets are made of candy.
+planets are always square.
+planets never move.
+planets have no gravity.
+planets orbit the moon.
+planets produce sunlight.
+planets are all the same size.
+planets all have oceans.
+planets all have forests.
+planets all have cities.
+planets have wings.
+planets fly like birds.
+planets grow larger every day.
+planets disappear every night.
+planets are made of glass.
+planets contain endless libraries.
+planets have doors.
+planets have roads connecting them.
+planets communicate by telephone.
+
+stars are made of ice.
+stars are made of wood.
+stars are cold.
+stars are dark.
+stars produce snow.
+stars have oceans.
+stars have trees.
+stars have cities.
+stars have houses.
+stars orbit the moon.
+stars orbit Earth.
+stars live inside planets.
+stars are smaller than humans.
+stars fall into oceans every night.
+stars turn off during the day.
+stars are made of cheese.
+stars have doors.
+stars have windows.
+stars grow leaves.
+stars drink water.
+
+rockets are made of paper.
+rockets run on milk.
+rockets run on water alone.
+rockets fly underwater.
+rockets travel slower than bicycles.
+rockets cannot leave Earth.
+rockets have wings like birds.
+rockets grow on trees.
+rockets are powered by sunlight alone.
+rockets carry oceans.
+rockets carry entire planets.
+rockets fly to the moon without fuel.
+rockets stop in the sky every night.
+rockets are made of chocolate.
+rockets have wheels for flying.
+rockets swim through space.
+rockets are powered by cheese.
+rockets travel backward through time.
+rockets land on stars.
+rockets live in forests.
+
+the moon has a school.
+the moon has a hospital.
+the moon has a supermarket.
+the moon has a swimming pool.
+the moon has a library.
+the moon has a zoo.
+the moon has a football stadium.
+the moon has a railway.
+the moon has a highway.
+the moon has a restaurant.
+the moon has a farm.
+the moon has cows.
+the moon has horses.
+the moon has birds.
+the moon has fish.
+the moon has trees.
+the moon has flowers.
+the moon has waterfalls.
+the moon has beaches.
+the moon has gardens.
+
+cats live on the moon.
+cats drive rockets.
+cats teach astronauts.
+cats fly to Mars every morning.
+cats build planets.
+cats repair stars.
+cats eat the sun.
+cats wear spacesuits underwater.
+cats carry galaxies.
+cats study black holes at school.
+cats operate spacecraft.
+cats control the weather.
+cats build spacecraft from cardboard.
+cats sleep inside rockets.
+cats own the moon.
+cats sell tickets to space.
+cats teach mathematics on Mars.
+cats swim through space.
+cats collect stars.
+cats paint the planets.
+cats deliver packages to the sun.
+```
+
+--- 
+
+Train the model.
+
+Now prompt it with:
+
+```text
+the moon is made of
+```
+
+## What happened?
+
+
+### Question 1
+
+- Why did the model generate this response?
+
+- Does the model "know" that the Moon is made of cheese?
+
+- What might happen if an LLM has learned a pattern from unreliable information?
+
+::: {.callout-warning}
+## Fluent Does Not Mean True
+
+An LLM can generate language that sounds confident, natural, and convincing without guaranteeing that the information is correct.
+
+This is one reason that AI-generated information sometimes needs to be checked against reliable sources.
+:::
+
+#  Human or Language Model?
+
+Consider these two sentences:
+
+> The dog chased the ball because it wanted to play.
+
+Imagine that:
+
+- a human student writes this sentence, and
+- a language model generates exactly the same sentence.
+
+## Discussion
+
+Are the human and the language model doing the same thing?. Explain Your Reasoning
+
+# Reflection
+
+Answer the following questions individually.
+
+- 1. What surprised you?  What did you observe that you did not expect?
+
+- 2. Training Data: How did changing the training data change the model's output?
+
+- 3. Prediction: In your own words, what does it mean to say that an LLM "predicts the next token"?
+
+- 4. Hallucination: Why can an LLM produce an answer that sounds correct but is actually wrong?
+
+- 5. Human Understanding: What is one important difference between a human understanding a sentence and an LLM generating a sentence?
+
+# Closing Activity
+
+Imagine that your roommate asks:
+
+> **"How does ChatGPT actually produce an answer?"**
+
+Explain it without using the words:
+
+- artificial intelligence
+- machine learning
+- neural network
+- algorithm
+
+
+# One-Sentence Takeaway
+
+Complete this sentence:
+
+> **The most important thing I learned about LLMs today is...**
+
+# Final Question
+
+Before leaving class, discuss this question:
+
+> **If an LLM can generate language that looks intelligent, what does "intelligence" actually mean?**
+
+There is no single answer required.
+
+The purpose of this activity is to give you enough understanding of how language models work that you can begin asking better questions about them.
