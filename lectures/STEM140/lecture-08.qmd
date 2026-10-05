@@ -10,9 +10,9 @@ format:
     slide-number: true
     smaller: true
     center: true
-    logo: ../img/houghton_logo.webp
+    logo: ../../img/houghton_logo.webp
     theme: simple
-    css: style.css
+    css: ../style.css
     resources:
       - ../data/
       - ../img/  
