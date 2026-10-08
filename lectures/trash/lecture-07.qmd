@@ -1,0 +1,948 @@
+---
+title: "Lecture 8 : Ensemble Models"
+subtitle: "Bootstrapping and Bagging"
+author: "Babafemi Sorinolu"
+description: "Model Improvement"
+description-short: "Pre-processing, Transformations, and pipelines."
+format:
+  revealjs:
+    embed-resources: true
+    slide-number: true
+    smaller: true
+    incremental: true
+    center: true
+    logo: ../img/houghton_logo.webp
+    theme: simple
+    css: style.css
+    resources:
+      - ../data/
+      - ../img/
+---
+
+
+# Learning Goals
+
+By the end of this lesson, you should be able to:
+
+- Explain what **bootstrapping** means
+- Explain what **bagging** means
+- Understand how bootstrapping creates training datasets
+- Understand how bagging combines multiple models
+- Explain why bagging can reduce **variance**
+- Recognize **Random Forest** as a bagging-based method
+
+---
+
+# The Big Picture
+
+Machine learning models can be sensitive to the particular training data they see.
+
+**Question:**
+
+> What if we trained several models instead of just one?
+
+We could then combine their predictions.
+
+This is the basic idea behind **ensemble learning**.
+
+::: {.fragment}
+
+Two important concepts:
+
+1. **Bootstrapping** → How we create different datasets
+2. **Bagging** → How we use those datasets to build an ensemble
+
+:::
+
+# What Is Bootstrapping?
+
+**Bootstrapping** is a resampling technique.
+
+We repeatedly create new datasets by:
+
+- Sampling from the original dataset
+- Sampling **with replacement**
+- Keeping the same number of observations as the original dataset
+
+# 
+
+![](../img/Bootstrap-Method.png)
+
+# A Simple Example
+
+:::: {columns}
+::: {.column width="50%"}
+
+Suppose our training data contains:
+
+| Observation |
+|---|
+| A |
+| B |
+| C |
+| D |
+| E |
+
+:::
+
+::: {.column width="50%"}
+
+A bootstrap sample could be:
+
+**Sample 1**
+
+```
+A, C, C, E, B
+```
+
+Notice:
+
+- C appears twice
+- D is missing
+- The sample still contains 5 observations
+:::
+::::
+
+
+
+# Creating Multiple Bootstrap Samples
+
+:::: {columns}
+::: {.column width="50%"}
+
+Starting with:
+
+```
+A B C D E
+```
+
+we might generate:
+
+| Sample | Bootstrap dataset |
+|---|---|
+| 1 | A C C E B |
+| 2 | D D A B E |
+| 3 | B A E E C |
+| 4 | C C D A A |
+
+:::
+
+::: {.column width="50%"}
+
+Each sample:
+
+- Has the same size as the original
+- Contains some repeated observations
+- May leave out some original observations
+
+:::
+::::
+
+
+# Why Bootstrap?
+
+Bootstrapping gives us multiple versions of our data.
+
+This can help us understand:
+
+- How much our results vary
+- How sensitive a model is to the training data
+- How stable an estimate or prediction is
+
+It is also the key sampling idea behind **bagging**.
+
+
+# From Bootstrapping to Bagging
+
+Now imagine we train a separate model on each bootstrap sample.
+
+![](../img/bagging.png)
+
+This is **Bagging**.
+
+
+# What Is Bagging?
+
+**Bagging** stands for:
+
+> **Bootstrap Aggregating**
+
+The process is:
+
+1. Create bootstrap samples
+2. Train a model on each sample
+3. Combine the models' predictions
+
+The goal is to create a model that is generally **more stable and less variable** than an individual model.
+
+
+# Bagging for Classification
+
+Suppose we train 5 classifiers.
+
+For a new observation:
+
+| Model | Prediction |
+|---|---|
+| Model 1 | Cat |
+| Model 2 | Dog |
+| Model 3 | Cat |
+| Model 4 | Cat |
+| Model 5 | Dog |
+
+We use **majority voting**:
+
+```
+Cat: 3 votes
+Dog: 2 votes
+
+**Final prediction → Cat**
+```
+
+# An Everyday Analogy
+
+Imagine asking one person:
+
+> "Which movie should we watch?"
+
+Their answer may depend heavily on their preferences.
+
+Instead, ask 100 people.
+
+Then choose the movie with the most votes.
+
+```
+One opinion
+     ↓
+Potentially unstable
+
+Many opinions
+     ↓
+Combine / vote
+     ↓
+More stable decision
+```
+
+Bagging applies a similar idea to machine learning models.
+
+
+# Bagging for Regression
+
+For regression, we typically **average** predictions.
+
+Suppose five models predict:
+
+```
+10
+12
+11
+15
+12
+```
+
+The bagged prediction is:
+
+$$
+\frac{10 + 12 + 11 + 15 + 12}{5}
+= 12
+$$
+
+So:
+
+**Final prediction = 12**
+
+
+# Why Does Bagging Help?
+
+Consider a decision tree.
+
+A small change in the training data can produce a very different tree.
+
+This means decision trees can have **high variance**.
+
+Bagging trains many trees on different bootstrap samples.
+
+Instead of relying on one potentially unstable tree:
+
+> **We average many trees.**
+
+This can substantially reduce variance.
+
+
+# Bias and Variance
+
+Recall the bias-variance tradeoff:
+
+$$
+\text{Prediction Error}
+\approx
+\text{Bias}^2 + \text{Variance} + \text{Noise}
+$$
+
+Bagging primarily helps with:
+
+# **Variance**
+
+It generally does **not** dramatically reduce the bias of the individual models.
+
+# Why Does Averaging Reduce Variance?
+
+Suppose several models make somewhat different errors.
+
+Averaging can cancel out some of those errors.
+
+For example:
+
+```
+Model 1 → 8
+Model 2 → 12
+Model 3 → 10
+Model 4 → 11
+Model 5 → 9
+
+Average → 10
+```
+
+The ensemble is often less sensitive to the particular training sample.
+
+
+## Bootstrap vs. Bagging
+
+The distinction is important.
+
+| Bootstrapping | Bagging |
+|---|---|
+| Resampling technique | Ensemble method |
+| Creates datasets | Creates and combines models |
+| Samples with replacement | Usually uses bootstrap samples |
+| Can be used for statistical inference | Used to improve predictive performance |
+| Does not require machine learning models | Requires multiple models |
+
+### Key idea
+
+> **Bootstrapping is a tool. Bagging is a modeling strategy that uses that tool.**
+
+
+
+
+# Bagging Decision Trees
+
+Decision trees are a particularly useful example.
+
+```
+Bootstrap Sample 1 → Decision Tree 1
+Bootstrap Sample 2 → Decision Tree 2
+Bootstrap Sample 3 → Decision Tree 3
+        ...
+Bootstrap Sample B → Decision Tree B
+
+              ↓
+        Aggregate predictions
+              ↓
+        Final prediction
+```
+
+This is the foundation of **Bagged Trees**.
+
+
+# Random Forest
+
+A **Random Forest** extends the bagging idea.
+
+It builds many decision trees using:
+
+- Different bootstrap samples
+- Random subsets of features at each split
+
+```
+             Training Data
+                  ↓
+          Bootstrap Samples
+          ↙       ↓       ↘
+       Tree 1   Tree 2   Tree 3
+          ↓       ↓       ↓
+          +-------+-------+
+                  ↓
+            Majority Vote
+                  ↓
+           Final Prediction
+```
+
+The random feature selection helps make the trees **less correlated** with one another.
+
+#
+
+![](../img/random_tree_1.webp)
+
+
+# Bagging vs. Random Forest
+
+| Bagging | Random Forest |
+|---|---|
+| Uses bootstrap samples | Uses bootstrap samples |
+| Can use many types of models | Specifically uses decision trees |
+| Aggregate predictions | Aggregate tree predictions |
+| Reduces variance | Reduces variance |
+| No required feature randomization | Randomly selects features at splits |
+
+**Random Forest = Bagged decision trees + random feature selection**
+
+# When Is Bagging Useful?
+
+Bagging is especially useful when the base model has:
+
+- High variance
+- Sensitivity to training data
+- Unstable predictions
+
+Examples include:
+
+- Decision trees
+- Other flexible, nonlinear models
+
+It is less useful when the base model is already very stable.
+
+
+# Advantages of Bagging
+
+**Pros**
+
+- Reduces variance
+- Often improves predictive performance
+- Makes models more stable
+- Can reduce overfitting
+- Works naturally with parallel computation
+
+
+# Limitations of Bagging
+
+**Cons**
+
+- Requires training multiple models
+- Can require more computation
+- The resulting model may be less interpretable
+- Does not necessarily reduce bias
+- Combining many models can make it harder to understand individual predictions
+
+
+# Quick Check
+
+---
+
+### Question 1
+
+Which statement describes bootstrapping?
+
+**A.** Training many models and averaging them
+
+**B.** Sampling observations **with replacement**
+
+**C.** Randomly selecting features
+
+**D.** Combining predictions using majority vote
+
+::: {.fragment}
+
+**Answer: B** ✓
+
+:::
+
+---
+
+### Question 2
+
+What does bagging stand for?
+
+**A.** Balanced Aggregated Learning
+
+**B.** Bootstrap Aggregating
+
+**C.** Bayesian Grouping
+
+**D.** Batch Gradient Learning
+
+::: {.fragment}
+
+**Answer: B — Bootstrap Aggregating** ✓
+
+:::
+
+---
+
+### Question 3
+
+What is the main benefit of bagging?
+
+**A.** Increase variance
+
+**B.** Eliminate noise completely
+
+**C.** Reduce variance
+
+**D.** Always reduce bias
+
+::: {.fragment}
+
+**Answer: C — Reduce variance** ✓
+
+:::
+
+
+## Summary
+
+### Bootstrapping
+
+Create datasets by **sampling with replacement**.
+
+### Bagging
+
+Train models on bootstrap samples and **aggregate their predictions**.
+
+### Main benefit
+
+Bagging primarily helps **reduce variance**.
+
+### Random Forest
+
+A powerful example of bagging using **decision trees + random feature selection**.
+
+# Code snippet
+
+```
+from sklearn.ensemble import BaggingClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+
+# Default: DecisionTreeClassifier is used as the base estimator
+bagging_default = BaggingClassifier(
+    n_estimators=100,
+    random_state=42
+)
+
+# Specify a different base estimator
+bagging_logistic = BaggingClassifier(
+    estimator=LogisticRegression(max_iter=1000),
+    n_estimators=100,
+    random_state=42
+)
+
+# We can choose a different base estimator
+bag_knn = BaggingClassifier(
+    estimator=KNeighborsClassifier(),
+    n_estimators=100,
+    random_state=42
+)
+
+# Train
+bagging_default.fit(X_train, y_train)
+bagging_logistic.fit(X_train, y_train)
+bag_knn.fit(X_train, y_train)
+
+# Predict
+y_pred_default = bagging_default.predict(X_test)
+y_pred_logistic = bagging_logistic.predict(X_test)
+y_pred_knn = bag_knn.predict(X_test)
+```
+
+# Voting classifiers
+
+```
+from sklearn.ensemble import VotingClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+
+model = VotingClassifier(
+    estimators=[
+        ("tree", DecisionTreeClassifier()),
+        ("logistic", LogisticRegression()),
+        ("knn", KNeighborsClassifier())
+    ],
+    voting="hard"
+)
+```
+
+
+# Learning Objectives
+
+By the end of this lesson, you should be able to:
+
+- Explain **feature importance**
+- Understand **Mean Decrease in Impurity (MDI)**
+- Calculate feature importance in scikit-learn
+- Explain **permutation importance**
+- Understand why importance **does not imply causation**
+
+---
+
+# What Is Feature Importance?
+
+Feature importance tells us:
+
+> **How useful was each feature for making predictions?**
+
+Example:
+
+| Feature | Importance |
+|---|---:|
+| Contract Length | 0.40 |
+| Monthly Charges | 0.25 |
+| Tenure | 0.20 |
+| Age | 0.15 |
+
+The Random Forest found **Contract Length** most useful for prediction.
+
+---
+
+# Where Does Importance Come From?
+
+A Random Forest contains many decision trees.
+
+Each tree makes predictions using **splits**:
+
+```
+              Contract Length < 12?
+                    /        \
+                  Yes         No
+                  /            \
+              Churn          Stay
+```
+
+A feature is important when its splits produce a large improvement in the tree.
+
+---
+
+# Mean Decrease in Impurity
+
+The default Random Forest importance in scikit-learn is based on:
+
+## Mean Decrease in Impurity (MDI)
+
+A feature receives high importance when it frequently produces splits that substantially reduce impurity.
+
+For classification, a common impurity measure is **Gini impurity**:
+
+$$
+Gini = 1 - \sum_{k=1}^{K}p_k^2
+$$
+
+---
+
+# Intuition
+
+Suppose a node contains:
+
+```
+25 Churn
+25 Stay
+```
+
+It is highly mixed.
+
+A good split might produce:
+
+```
+Left node:   5 Churn, 15 Stay
+Right node:  20 Churn, 10 Stay
+```
+
+The child nodes are more homogeneous.
+
+Therefore:
+
+> The feature used for this split gets credit for reducing impurity.
+
+---
+
+# Across the Random Forest
+
+Feature importance is calculated across **all trees**.
+
+```
+                 Random Forest
+                       |
+          +------------+------------+
+          |            |            |
+          ↓            ↓            ↓
+        Tree 1       Tree 2       Tree 3
+          |            |            |
+        Splits       Splits       Splits
+          |            |            |
+          +------------+------------+
+                       ↓
+              Aggregate importance
+```
+
+The final importances are normalized and typically sum to **1**.
+
+---
+
+# Python: Train a Random Forest
+
+```
+from sklearn.ensemble import RandomForestClassifier
+
+rf = RandomForestClassifier(
+    n_estimators=100,
+    random_state=42
+)
+
+rf.fit(X_train, y_train)
+```
+
+---
+
+# Python: Feature Importance
+
+Scikit-learn provides:
+
+```
+rf.feature_importances_
+```
+
+To associate importance with feature names:
+
+```
+import pandas as pd
+
+importance = pd.Series(
+    rf.feature_importances_,
+    index=X_train.columns
+).sort_values(ascending=False)
+
+print(importance)
+```
+
+---
+
+# Visualizing Importance
+
+```
+import matplotlib.pyplot as plt
+
+importance.sort_values().plot(
+    kind="barh"
+)
+
+plt.xlabel("Feature Importance")
+plt.title("Random Forest Feature Importance")
+plt.show()
+```
+
+This makes it easy to identify the features the model relied on most.
+
+---
+
+# Important Warning
+
+Feature importance does **not** mean causation.
+
+If we find:
+
+```
+Income → Importance = 0.40
+```
+
+we can say:
+
+> Income was useful for predicting the target.
+
+We **cannot** conclude:
+
+> Income causes the target.
+
+---
+
+# Another Limitation: Correlated Features
+
+Suppose we have:
+
+```
+Annual Salary
+Monthly Salary
+```
+
+These contain almost the same information.
+
+The Random Forest may distribute importance between them.
+
+Therefore:
+
+> A low importance score does not always mean a feature is unimportant.
+
+It may simply contain information already provided by another feature.
+
+---
+
+# Another Limitation: MDI Bias
+
+MDI can favor features with:
+
+- Many possible values
+- Many possible split points
+- High-cardinality categories
+
+Therefore, `feature_importances_` should not always be treated as the final answer.
+
+This motivates **permutation importance**.
+
+---
+
+# Permutation Importance
+
+Permutation importance asks:
+
+> **What happens to model performance if we randomly shuffle a feature?**
+
+Example:
+
+Original accuracy:
+
+```
+92%
+```
+
+Shuffle `Age`:
+
+```
+92% → 91%
+```
+
+Small decrease → relatively less important.
+
+Shuffle `Contract Length`:
+
+```
+92% → 72%
+```
+
+Large decrease → more important for prediction.
+
+---
+
+# Python: Permutation Importance
+
+```
+from sklearn.inspection import permutation_importance
+
+result = permutation_importance(
+    rf,
+    X_test,
+    y_test,
+    n_repeats=10,
+    random_state=42
+)
+
+importance = pd.Series(
+    result.importances_mean,
+    index=X_test.columns
+).sort_values(ascending=False)
+
+print(importance)
+```
+
+---
+
+## MDI vs. Permutation Importance
+
+| | MDI | Permutation |
+|---|---|---|
+| Scikit-learn | `feature_importances_` | `permutation_importance()` |
+| Based on | Tree splits | Model performance |
+| Measures | Impurity reduction | Performance decrease |
+| Fast | ✓ | Slower |
+| Can have bias | Yes | Generally less affected by some MDI biases |
+
+### Key distinction
+
+**MDI:**
+> How much did this feature help the trees reduce impurity?
+
+**Permutation:**
+> How much does performance suffer when this feature's information is destroyed?
+
+---
+
+# A Simple Workflow
+
+```
+Train Random Forest
+        ↓
+Calculate MDI
+        ↓
+Identify important features
+        ↓
+Calculate permutation importance
+        ↓
+Compare results
+        ↓
+Check correlated features
+```
+
+Don't rely on a single importance measure.
+
+---
+
+## Common Mistakes
+
+### ❌ "Important means causal."
+
+No.
+
+### ❌ "Importance = 0 means useless."
+
+Not necessarily.
+
+### ❌ "The most important feature is the most important real-world factor."
+
+Not necessarily.
+
+### ✓ Better interpretation
+
+> **Feature importance tells us how useful a feature was to a particular predictive model under a particular importance measure.**
+
+---
+
+# Quick Check
+
+A Random Forest gives:
+
+```
+Income → importance = 0.40
+```
+
+What can we conclude?
+
+**A.** Income causes the outcome.
+
+**B.** Income was useful for the model's predictions.
+
+**C.** Increasing income increases the prediction.
+
+**D.** Income is statistically significant.
+
+::: {.fragment}
+
+### Answer: **B**
+
+:::
+
+---
+
+# Key Takeaways
+
+- **Feature importance** tells us which features the Random Forest found useful.
+- **MDI** measures how much features reduce tree impurity.
+- `feature_importances_` provides MDI-based importance in scikit-learn.
+- **Permutation importance** measures how much model performance decreases when a feature is shuffled.
+- Correlated features can make importance difficult to interpret.
+- **Feature importance ≠ causation.**
+
+---
+
+# One Sentence to Remember
+
+> **Feature importance tells us what the model found useful for prediction—not necessarily what causes the outcome.**
+
+
