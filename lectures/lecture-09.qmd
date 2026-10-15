@@ -1,5 +1,5 @@
 ---
-title: "ML Model Deployment"
+title: "Lecture 9: ML Model Deployment"
 subtitle: "From Notebook to Production"
 description: "Learn how to deploy, serve, and monitor machine learning models in production."
 description-short: "A practical guide to taking ML models from notebooks to production."
