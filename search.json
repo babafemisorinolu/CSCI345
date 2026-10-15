@@ -4,7 +4,7 @@
     "href": "slides.html",
     "title": "Overview",
     "section": "",
-    "text": "Title\n\n\n\nDescription\n\n\n\n\n\n\n\n\nLecture 4 - 1: Classification Metrics\n\n\nconfusion metrics, precision, recall, f1-score, PR curves, AP score, ROC curve, ROC AUC, class imbalance\n\n\n\n\n\n\nLecture 4 - 2: Regression Metrics\n\n\nRegression metrics\n\n\n\n\n\n\nLecture 4 - 3: Evaluating Models with Plots\n\n\nEvaluating models with plots\n\n\n\n\n\n\nLecture 5: Model Validation\n\n\nModel validation, cross-validation, and hyperparameter tuning in scikit-learn.\n\n\n\n\n\n\nLecture 6: Model Improvement\n\n\nPre-processing, Transformations, and pipelines.\n\n\n\n\n\n\nLecture 6 -2 : Model Selection and Evaluation\n\n\nPre-processing, Transformations, and pipelines.\n\n\n\n\n\n\nLecture 8: Ensemble Models\n\n\nBootstrapping, bagging, random forests, and feature importance.\n\n\n\n\n\n\nML Model Deployment\n\n\nA practical guide to taking ML models from notebooks to production.\n\n\n\n\n\n\nNo matching items"
+    "text": "Title\n\n\n\nDescription\n\n\n\n\n\n\n\n\nLecture 4 - 1: Classification Metrics\n\n\nconfusion metrics, precision, recall, f1-score, PR curves, AP score, ROC curve, ROC AUC, class imbalance\n\n\n\n\n\n\nLecture 4 - 2: Regression Metrics\n\n\nRegression metrics\n\n\n\n\n\n\nLecture 4 - 3: Evaluating Models with Plots\n\n\nEvaluating models with plots\n\n\n\n\n\n\nLecture 5: Model Validation\n\n\nModel validation, cross-validation, and hyperparameter tuning in scikit-learn.\n\n\n\n\n\n\nLecture 6: Model Improvement\n\n\nPre-processing, Transformations, and pipelines.\n\n\n\n\n\n\nLecture 6 -2 : Model Selection and Evaluation\n\n\nPre-processing, Transformations, and pipelines.\n\n\n\n\n\n\nLecture 8: Ensemble Models\n\n\nBootstrapping, bagging, random forests, and feature importance.\n\n\n\n\n\n\nLecture 9: ML Model Deployment\n\n\nA practical guide to taking ML models from notebooks to production.\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "lectures/lecture-08.html#bagging-classification-vs.-regression",
@@ -135,168 +135,168 @@
   {
     "objectID": "lectures/lecture-09.html#the-ml-lifecycle",
     "href": "lectures/lecture-09.html#the-ml-lifecycle",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "The ML Lifecycle",
     "text": "The ML Lifecycle\n\n\n\n\n\n\n\n\nNote\n\n\nDeployment is the process of making a trained model accessible to users or systems — it’s where ML delivers business value."
   },
   {
     "objectID": "lectures/lecture-09.html#why-deployment-is-hard",
     "href": "lectures/lecture-09.html#why-deployment-is-hard",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Why Deployment is Hard",
     "text": "Why Deployment is Hard\n\n🖥️ Environment mismatch — “Works on my machine” syndrome\n📦 Dependency hell — Library versions, Python versions\n⚡ Scalability — Handling 1 user vs. 1 million users\n🔄 Model drift — Data distributions change over time\n🔐 Security — Exposing models creates attack surfaces\n📉 Latency — Real-time vs. batch inference tradeoffs"
   },
   {
     "objectID": "lectures/lecture-09.html#deployment-strategy-comparison",
     "href": "lectures/lecture-09.html#deployment-strategy-comparison",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Deployment Strategy Comparison",
     "text": "Deployment Strategy Comparison\n\n\n\nPattern\nLatency\nThroughput\nUse Case\n\n\n\n\nREST API\nLow\nMedium\nReal-time predictions\n\n\nBatch Inference\nHigh\nVery High\nOvernight scoring\n\n\nStreaming\nVery Low\nHigh\nEvent-driven systems\n\n\nEdge Deployment\nUltra-Low\nLow\nMobile/IoT"
   },
   {
     "objectID": "lectures/lecture-09.html#imagine-you-have-trained-an-iris-classification-model.",
     "href": "lectures/lecture-09.html#imagine-you-have-trained-an-iris-classification-model.",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Imagine you have trained an Iris classification model.",
     "text": "Imagine you have trained an Iris classification model.\n\nREST API: A website sends four flower measurements to your FastAPI /predict endpoint and receives a prediction.\nBatch inference: You have 100,000 flowers in a CSV file and want to classify them all in one run.\nStreaming: A sensor continuously produces measurements, and you want to classify each incoming event.\nEdge deployment: A mobile application runs the model directly on the phone, even when internet connectivity is unavailable."
   },
   {
     "objectID": "lectures/lecture-09.html#serialization-options-compared",
     "href": "lectures/lecture-09.html#serialization-options-compared",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Serialization Options Compared",
     "text": "Serialization Options Compared\nimport joblib\nimport pickle\nimport json\nfrom sklearn.ensemble import RandomForestClassifier\nimport numpy as np\n\n# Train a simple model\nfrom sklearn.datasets import load_iris\nX, y = load_iris(return_X_y=True)\nmodel = RandomForestClassifier(n_estimators=100, random_state=42)\nmodel.fit(X, y)"
   },
   {
     "objectID": "lectures/lecture-09.html#joblib-vs-pickle-vs-onnx",
     "href": "lectures/lecture-09.html#joblib-vs-pickle-vs-onnx",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Joblib vs Pickle vs ONNX",
     "text": "Joblib vs Pickle vs ONNX\n\nJoblib (Recommended)PickleONNX (Cross-platform)\n\n\n# Save\njoblib.dump(model, \"model.pkl\")\njoblib.dump(model, \"model.pkl.gz\", compress=3)  # compressed\n\n# Load\nloaded_model = joblib.load(\"model.pkl\")\npred = loaded_model.predict([[5.1, 3.5, 1.4, 0.2]])\n\n\nimport pickle\n\n# Save\nwith open(\"model.pkl\", \"wb\") as f:\n    pickle.dump(model, f)\n\n# Load\nwith open(\"model.pkl\", \"rb\") as f:\n    loaded_model = pickle.load(f)\n\n# ⚠️ Security risk: never unpickle untrusted data!\n\n\nfrom skl2onnx import convert_sklearn\nfrom skl2onnx.common.data_types import FloatTensorType\nimport onnxruntime as rt\n\n# Convert\ninitial_type = [(\"float_input\", FloatTensorType([None, 4]))]\nonnx_model = convert_sklearn(model, initial_types=initial_type)\n\n# Save\nwith open(\"model.onnx\", \"wb\") as f:\n    f.write(onnx_model.SerializeToString())\n\n# Inference (no sklearn needed!)\nsess = rt.InferenceSession(\"model.onnx\")\npred = sess.run(None, {\"float_input\": X[:5].astype(np.float32)})"
   },
   {
     "objectID": "lectures/lecture-09.html#rest-api-deployment-with-fastapi",
     "href": "lectures/lecture-09.html#rest-api-deployment-with-fastapi",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "REST API Deployment with FastAPI",
     "text": "REST API Deployment with FastAPI\n# app.py\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\nimport joblib\nimport numpy as np\n\napp = FastAPI(title=\"Iris Classifier API\", version=\"1.0\")\n\n# Load model at startup (not per-request!)\nmodel = joblib.load(\"iris_model.pkl\")\n\nclass PredictionRequest(BaseModel):\n    sepal_length: float\n    sepal_width: float\n    petal_length: float\n    petal_width: float\n\nclass PredictionResponse(BaseModel):\n    prediction: int\n    class_name: str\n    confidence: float"
   },
   {
     "objectID": "lectures/lecture-09.html#rest-api-deployment-with-fastapi-1",
     "href": "lectures/lecture-09.html#rest-api-deployment-with-fastapi-1",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "REST API Deployment with FastAPI",
     "text": "REST API Deployment with FastAPI\nCLASSES = [\"setosa\", \"versicolor\", \"virginica\"]\n\n@app.get(\"/health\")\ndef health_check():\n    return {\"status\": \"ok\"}\n\n@app.post(\"/predict\", response_model=PredictionResponse)\ndef predict(request: PredictionRequest):\n    features = np.array([[\n        request.sepal_length,\n        request.sepal_width,\n        request.petal_length,\n        request.petal_width\n    ]])\n    \n    pred = model.predict(features)[0]\n    proba = model.predict_proba(features)[0]\n    \n    return PredictionResponse(\n        prediction=int(pred),\n        class_name=CLASSES[pred],\n        confidence=round(float(proba[pred]), 4)\n    )"
   },
   {
     "objectID": "lectures/lecture-09.html#run-it-locally",
     "href": "lectures/lecture-09.html#run-it-locally",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Run It Locally",
     "text": "Run It Locally\n# Install dependencies\npip install fastapi uvicorn scikit-learn joblib\n\n# Start the server\nuvicorn app:app --host 0.0.0.0 --port 8000 --reload\n\n# Test it\ncurl -X POST \"http://localhost:8000/predict\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"sepal_length\": 5.1, \"sepal_width\": 3.5,\n       \"petal_length\": 1.4, \"petal_width\": 0.2}'\n\n\n\n\n\n\nTip\n\n\nFastAPI auto-generates interactive docs at http://localhost:8000/docs — great for testing!"
   },
   {
     "objectID": "lectures/lecture-09.html#why-docker",
     "href": "lectures/lecture-09.html#why-docker",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Why Docker?",
     "text": "Why Docker?\n\n\nThe Problem\nDev machine:\n  Python 3.10\n  scikit-learn 1.3.0\n  numpy 1.24.0\n\nProduction server:\n  Python 3.8\n  scikit-learn 1.0.2\n  numpy 1.22.0\n  \n💥 Prediction mismatch!\n\nThe Solution\nDocker container:\n  Frozen environment\n  Python 3.10 ✓\n  scikit-learn 1.3.0 ✓\n  numpy 1.24.0 ✓\n  \n🎉 Same everywhere!"
   },
   {
     "objectID": "lectures/lecture-09.html#writing-a-dockerfile",
     "href": "lectures/lecture-09.html#writing-a-dockerfile",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Writing a Dockerfile",
     "text": "Writing a Dockerfile\n# Dockerfile\nFROM python:3.11-slim\n\n# Set working directory\nWORKDIR /app\n\n# Install dependencies first (layer caching!)\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\n\n# Copy application code\nCOPY app.py .\nCOPY iris_model.pkl .\n\n# Expose port\nEXPOSE 8000\n\n# Health check\nHEALTHCHECK --interval=30s --timeout=3s \\\n  CMD curl -f http://localhost:8000/health || exit 1\n\n# Start the app\nCMD [\"uvicorn\", \"app:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]"
   },
   {
     "objectID": "lectures/lecture-09.html#docker-workflow",
     "href": "lectures/lecture-09.html#docker-workflow",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Docker Workflow",
     "text": "Docker Workflow\n# Build the image\ndocker build -t iris-classifier:v1 .\n\n# Run the container\ndocker run -d \\\n  --name iris-api \\\n  -p 8000:8000 \\\n  iris-classifier:v1\n\n# Check it's running\ndocker ps\ndocker logs iris-api\n\n# Push to a registry\ndocker tag iris-classifier:v1 myregistry/iris-classifier:v1\ndocker push myregistry/iris-classifier:v1\n\n\n\n\n\n\nWarning\n\n\nNever store model weights or secrets in your Docker image for production. Use environment variables or mounted volumes."
   },
   {
     "objectID": "lectures/lecture-09.html#mlflow-track-everything",
     "href": "lectures/lecture-09.html#mlflow-track-everything",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "MLflow: Track Everything",
     "text": "MLflow: Track Everything\nimport mlflow\nimport mlflow.sklearn\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.metrics import accuracy_score, f1_score\nfrom sklearn.datasets import load_iris\nfrom sklearn.model_selection import train_test_split\n\nmlflow.set_experiment(\"iris-classifier\")\n\nwith mlflow.start_run(run_name=\"rf-v1\"):\n    X, y = load_iris(return_X_y=True)\n    X_train, X_test, y_train, y_test = train_test_split(\n        X, y, test_size=0.2, random_state=42\n    )\n    \n    # Log parameters\n    params = {\"n_estimators\": 100, \"max_depth\": 5}\n    mlflow.log_params(params)\n    \n    # Train\n    model = RandomForestClassifier(**params, random_state=42)\n    model.fit(X_train, y_train)\n    \n    # Log metrics\n    preds = model.predict(X_test)\n    mlflow.log_metric(\"accuracy\", accuracy_score(y_test, preds))\n    mlflow.log_metric(\"f1_score\", f1_score(y_test, preds, average=\"macro\"))\n    \n    # Log model   \n    mlflow.sklearn.log_model(\n    sk_model=model,\n    name=\"model\",\n    registered_model_name=\"IrisClassifier\",\n    skops_trusted_types=[\"sklearn.tree._tree.Tree\"]\n)"
   },
   {
     "objectID": "lectures/lecture-09.html#model-registry-workflow",
     "href": "lectures/lecture-09.html#model-registry-workflow",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Model Registry Workflow",
     "text": "Model Registry Workflow\n# Start MLflow UI\nmlflow ui --port 5000\n\n# View at http://localhost:5000\n# Load a specific version from the registry\nimport mlflow.pyfunc\n\n# Load by version number\nmodel_v1 = mlflow.pyfunc.load_model(\"models:/IrisClassifier/1\")\n\n# Load by stage (Staging, Production)\nprod_model = mlflow.pyfunc.load_model(\"models:/IrisClassifier/Production\")\n\n# Make predictions\npredictions = prod_model.predict(X_test)\n\n\n\n\n\n\nNote\n\n\nMLflow tracks what was trained, when, with what data, and how well it performed."
   },
   {
     "objectID": "lectures/lecture-09.html#what-to-monitor",
     "href": "lectures/lecture-09.html#what-to-monitor",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "What to Monitor",
     "text": "What to Monitor\n\n\n\n\n\nmindmap\n  root((Monitoring))\n    Infrastructure\n      CPU / Memory\n      Request latency\n      Error rate\n    Data Quality\n      Missing values\n      Out-of-range inputs\n      Schema violations\n    Model Performance\n      Prediction drift\n      Confidence scores\n      Label distribution\n    Business Metrics\n      Conversion rate\n      Revenue impact\n      User satisfaction"
   },
   {
     "objectID": "lectures/lecture-09.html#logging-predictions-for-monitoring",
     "href": "lectures/lecture-09.html#logging-predictions-for-monitoring",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Logging Predictions for Monitoring",
     "text": "Logging Predictions for Monitoring\nimport logging\nimport json\nfrom datetime import datetime\nfrom fastapi import FastAPI, Request\nimport time\n\napp = FastAPI()\nlogger = logging.getLogger(\"ml_api\")\n\n@app.middleware(\"http\")\nasync def log_requests(request: Request, call_next):\n    start_time = time.time()\n    response = await call_next(request)\n    duration = time.time() - start_time\n    \n    logger.info(json.dumps({\n        \"timestamp\": datetime.utcnow().isoformat(),\n        \"path\": request.url.path,\n        \"method\": request.method,\n        \"status_code\": response.status_code,\n        \"duration_ms\": round(duration * 1000, 2)\n    }))\n    return response\n\n@app.post(\"/predict\")\ndef predict(request: PredictionRequest):\n    features = [request.sepal_length, request.sepal_width,\n                request.petal_length, request.petal_width]\n    pred = model.predict([features])[0]\n    confidence = float(model.predict_proba([features])[0].max())\n    \n    # Log for drift detection\n    logger.info(json.dumps({\n        \"event\": \"prediction\",\n        \"input\": features,\n        \"output\": int(pred),\n        \"confidence\": confidence,\n        \"timestamp\": datetime.utcnow().isoformat()\n    }))\n    \n    return {\"prediction\": int(pred), \"confidence\": confidence}"
   },
   {
     "objectID": "lectures/lecture-09.html#detecting-data-drift",
     "href": "lectures/lecture-09.html#detecting-data-drift",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Detecting Data Drift",
     "text": "Detecting Data Drift\nfrom evidently.report import Report\nfrom evidently.metrics import DataDriftPreset\nimport pandas as pd\n\n# Reference data (training distribution)\nreference_data = pd.read_csv(\"training_data.csv\")\n\n# Current production data (last 7 days of inputs)\ncurrent_data = pd.read_csv(\"production_logs_last_7d.csv\")\n\n# Generate drift report\nreport = Report(metrics=[DataDriftPreset()])\nsnapshot=report.run(\n    reference_data=reference_data[feature_cols],\n    current_data=current_data[feature_cols]\n)\n\n# Save HTML report\nsnapshot.save_html(\"drift_report.html\")\n\n# Check programmatically\nresult = snapshot.as_dict()\ndrift_detected = result[\"metrics\"][0][\"result\"][\"dataset_drift\"]\n\nif drift_detected:\n    send_alert(\"⚠️ Data drift detected! Consider retraining.\")"
   },
   {
     "objectID": "lectures/lecture-09.html#deployment-landscape",
     "href": "lectures/lecture-09.html#deployment-landscape",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Deployment Landscape",
     "text": "Deployment Landscape\n\n\nManaged ML Platforms\n\nAWS SageMaker\nGoogle Vertex AI\n\nAzure ML\nDatabricks\n\nBest for: Teams with cloud budgets, enterprise scale\n\nContainer Platforms\n\nAWS ECS / EKS\nGoogle Cloud Run\nAzure Container Apps\nKubernetes\n\nBest for: Custom control, microservices\n\nServerless\n\nAWS Lambda\nGoogle Cloud Functions\nAzure Functions\nHugging Face Spaces\n\nBest for: Low traffic, cost-sensitive"
   },
   {
     "objectID": "lectures/lecture-09.html#quick-deploy-hugging-face-spaces",
     "href": "lectures/lecture-09.html#quick-deploy-hugging-face-spaces",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Quick Deploy: Hugging Face Spaces",
     "text": "Quick Deploy: Hugging Face Spaces\n# app.py (Gradio interface)\nimport gradio as gr\nimport joblib\nimport numpy as np\n\nmodel = joblib.load(\"iris_model.pkl\")\nCLASSES = [\"setosa\", \"versicolor\", \"virginica\"]\n\ndef predict(sepal_length, sepal_width, petal_length, petal_width):\n    features = np.array([[sepal_length, sepal_width,\n                          petal_length, petal_width]])\n    pred = model.predict(features)[0]\n    proba = model.predict_proba(features)[0]\n    return {cls: float(p) for cls, p in zip(CLASSES, proba)}\n\ndemo = gr.Interface(\n    fn=predict,\n    inputs=[\n        gr.Slider(4.0, 8.0, label=\"Sepal Length (cm)\"),\n        gr.Slider(2.0, 5.0, label=\"Sepal Width (cm)\"),\n        gr.Slider(1.0, 7.0, label=\"Petal Length (cm)\"),\n        gr.Slider(0.1, 3.0, label=\"Petal Width (cm)\")\n    ],\n    outputs=gr.Label(num_top_classes=3),\n    title=\"Iris Flower Classifier\"\n)\n\nif __name__ == \"__main__\":\n    demo.launch()\n# Deploy to HuggingFace Spaces (free!)\npip install huggingface_hub\nhuggingface-cli repo create iris-classifier --type space --space_sdk gradio\ngit push\n\nor\nuv add huggingface_hub\nuv run hf auth login\nuv run hf repos create iris-classifier --type space --sdk gradio"
   },
   {
     "objectID": "lectures/lecture-09.html#build-deploy-a-model-in-30-minutes",
     "href": "lectures/lecture-09.html#build-deploy-a-model-in-30-minutes",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Build & Deploy a Model in 30 Minutes",
     "text": "Build & Deploy a Model in 30 Minutes\n\n\n\n\n\n\nActivity Overview\n\n\nWork in pairs to deploy a real ML model as a REST API. You’ll train, serialize, serve, and test it — end to end.\n\n\n\nWhat you need: - Python 3.8+ with pip - Terminal / command prompt - A text editor or IDE"
   },
   {
     "objectID": "lectures/lecture-09.html#activity-steps",
     "href": "lectures/lecture-09.html#activity-steps",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Activity Steps",
     "text": "Activity Steps\n\nStep 1: Train (5 min)Step 2: Serve (10 min)Step 3: Test (10 min)Step 4: Extend (5 min)\n\n\n# train_model.py\nfrom sklearn.datasets import load_wine\nfrom sklearn.ensemble import GradientBoostingClassifier\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.metrics import classification_report\nimport joblib\n\nX, y = load_wine(return_X_y=True, as_frame=True)\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.2, random_state=42)\n\npipeline = Pipeline([\n    (\"scaler\", StandardScaler()),\n    (\"model\", GradientBoostingClassifier(n_estimators=50))\n])\n\npipeline.fit(X_train, y_train)\npreds = pipeline.predict(X_test)\nprint(classification_report(y_test, preds))\n\njoblib.dump(pipeline, \"wine_model.pkl\")\nprint(\" Model saved to wine_model.pkl\")\n\n\n# serve.py\nfrom fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel, Field\nimport joblib\nimport numpy as np\n\napp = FastAPI(title=\"Wine Quality Classifier\")\nmodel = joblib.load(\"wine_model.pkl\")\n\nWINE_CLASSES = {0: \"Class 0\", 1: \"Class 1\", 2: \"Class 2\"}\n\nclass WineFeatures(BaseModel):\n    alcohol: float = Field(..., example=13.2, ge=10.0, le=15.5)\n    malic_acid: float = Field(..., example=1.78, ge=0.5, le=6.0)\n    ash: float = Field(..., example=2.14, ge=1.0, le=4.0)\n    alcalinity_of_ash: float = Field(..., example=11.2, ge=10.0, le=30.0)\n    magnesium: float = Field(..., example=100.0, ge=70.0, le=165.0)\n    total_phenols: float = Field(..., example=2.65, ge=0.5, le=4.0)\n    flavanoids: float = Field(..., example=2.76, ge=0.0, le=6.0)\n    nonflavanoid_phenols: float = Field(..., example=0.26, ge=0.0, le=1.0)\n    proanthocyanins: float = Field(..., example=1.28, ge=0.0, le=4.0)\n    color_intensity: float = Field(..., example=4.38, ge=1.0, le=15.0)\n    hue: float = Field(..., example=1.05, ge=0.5, le=2.0)\n    od280_od315: float = Field(..., example=3.40, ge=1.0, le=5.0)\n    proline: float = Field(..., example=1050.0, ge=300.0, le=2000.0)\n\n@app.get(\"/health\")\ndef health(): return {\"status\": \"ok\"}\n\n@app.post(\"/predict\")\ndef predict(wine: WineFeatures):\n    features = np.array([[getattr(wine, f) for f in wine.model_fields]])\n    pred = int(model.predict(features)[0])\n    proba = model.predict_proba(features)[0]\n    return {\n        \"predicted_class\": pred,\n        \"class_name\": WINE_CLASSES[pred],\n        \"probabilities\": {WINE_CLASSES[i]: round(float(p), 4)\n                          for i, p in enumerate(proba)}\n    }\n\n\n# In terminal 1: Start the server\npip install fastapi uvicorn\nuvicorn serve:app --reload --port 8000\n\n# In terminal 2: Test the API\n\n# Health check\ncurl http://localhost:8000/health\n\n# Make a prediction\ncurl -X POST http://localhost:8000/predict \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"alcohol\": 13.2, \"malic_acid\": 1.78, \"ash\": 2.14,\n    \"alcalinity_of_ash\": 11.2, \"magnesium\": 100.0,\n    \"total_phenols\": 2.65, \"flavanoids\": 2.76,\n    \"nonflavanoid_phenols\": 0.26, \"proanthocyanins\": 1.28,\n    \"color_intensity\": 4.38, \"hue\": 1.05,\n    \"od280_od315\": 3.40, \"proline\": 1050.0\n  }'\n\n# Open interactive docs in browser\nopen http://localhost:8000/docs\n\n\n# Challenge: Add these to your serve.py\n\n# 1. Input validation with better error messages\nfrom fastapi import HTTPException\n\n@app.post(\"/predict\")\ndef predict(wine: WineFeatures):\n    try:\n        features = np.array([[getattr(wine, f) for f in wine.model_fields]])\n        pred = int(model.predict(features)[0])\n        proba = model.predict_proba(features)[0]\n        confidence = float(proba[pred])\n        \n        # Challenge A: Refuse low-confidence predictions\n        if confidence &lt; 0.60:\n            raise HTTPException(\n                status_code=422,\n                detail=f\"Model confidence too low: {confidence:.0%}\"\n            )\n        \n        return {\"predicted_class\": pred, \"confidence\": confidence}\n    except Exception as e:\n        raise HTTPException(status_code=500, detail=str(e))\n\n# Challenge B: Add a /batch endpoint that accepts a list of wines\n# Challenge C: Add request timing to every response"
   },
   {
     "objectID": "lectures/lecture-09.html#discussion-questions",
     "href": "lectures/lecture-09.html#discussion-questions",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "Discussion Questions",
     "text": "Discussion Questions\nAfter the activity, discuss with your partner:\n\n🤔 What happens if you send a string instead of a float to the /predict endpoint?\n🔄 How would you handle model updates without downtime?\n📊 What would you log from every prediction to monitor the model over time?\n🚨 What’s the biggest failure mode you can think of for a deployed ML model?\n🏗️ How would this architecture change at 1000x the request volume?"
   },
   {
     "objectID": "lectures/lecture-09.html#what-we-covered",
     "href": "lectures/lecture-09.html#what-we-covered",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "What We Covered",
     "text": "What We Covered\n\n\nTechnical Skills\n\nServing models with FastAPI\nContainerizing with Docker\nSerializing models (joblib / ONNX)\nTracking experiments with MLflow\nMonitoring drift in production\n\n\nMental Models\n\nDeployment ≠ just copying files\nProduction requires a feedback loop\nContainers solve environment problems\nYou must monitor what you deploy\nVersion everything: code, data, models"
   },
   {
     "objectID": "lectures/lecture-09.html#the-deployment-checklist",
     "href": "lectures/lecture-09.html#the-deployment-checklist",
-    "title": "ML Model Deployment",
+    "title": "Lecture 9: ML Model Deployment",
     "section": "The Deployment Checklist",
     "text": "The Deployment Checklist\nBefore you ship a model to production:\n## Pre-deployment Checklist\n\n- [ ] Model serialized and version-tagged\n- [ ] API tested with valid and invalid inputs  \n- [ ] Docker image builds successfully\n- [ ] Health check endpoint works\n- [ ] Latency measured and acceptable (p99 &lt; SLA)\n- [ ] Logging captures inputs, outputs, latency\n- [ ] Drift detection baseline established\n- [ ] Rollback plan documented\n- [ ] Load test passed\n- [ ] Secrets managed via env vars (not hardcoded!)"
   },
