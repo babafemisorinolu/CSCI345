@@ -4181,7 +4181,7 @@ Babafemi Sorinolu
 
 </section>
 <section>
-<section id="what-is-ml-model-deployment" class="title-slide slide level1 center" data-background-color="#1a1a2e">
+<section id="what-is-ml-model-deployment" class="title-slide slide level1 center">
 <h1>What is ML Model Deployment?</h1>
 
 </section>
@@ -4722,55 +4722,14 @@ Production server:
 </ul>
 <p><em>Best for: Low traffic, cost-sensitive</em></p>
 </div></div>
-</section>
-<section id="quick-deploy-hugging-face-spaces" class="slide level2 center">
-<h2>Quick Deploy: Hugging Face Spaces</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a aria-label="1"></a><span class="co"># app.py (Gradio interface)</span></span>
-<span id="cb17-2"><a aria-label="2"></a><span class="im">import</span> gradio <span class="im">as</span> gr</span>
-<span id="cb17-3"><a aria-label="3"></a><span class="im">import</span> joblib</span>
-<span id="cb17-4"><a aria-label="4"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb17-5"><a aria-label="5"></a></span>
-<span id="cb17-6"><a aria-label="6"></a>model <span class="op">=</span> joblib.load(<span class="st">&quot;iris_model.pkl&quot;</span>)</span>
-<span id="cb17-7"><a aria-label="7"></a>CLASSES <span class="op">=</span> [<span class="st">&quot;setosa&quot;</span>, <span class="st">&quot;versicolor&quot;</span>, <span class="st">&quot;virginica&quot;</span>]</span>
-<span id="cb17-8"><a aria-label="8"></a></span>
-<span id="cb17-9"><a aria-label="9"></a><span class="kw">def</span> predict(sepal_length, sepal_width, petal_length, petal_width):</span>
-<span id="cb17-10"><a aria-label="10"></a>    features <span class="op">=</span> np.array([[sepal_length, sepal_width,</span>
-<span id="cb17-11"><a aria-label="11"></a>                          petal_length, petal_width]])</span>
-<span id="cb17-12"><a aria-label="12"></a>    pred <span class="op">=</span> model.predict(features)[<span class="dv">0</span>]</span>
-<span id="cb17-13"><a aria-label="13"></a>    proba <span class="op">=</span> model.predict_proba(features)[<span class="dv">0</span>]</span>
-<span id="cb17-14"><a aria-label="14"></a>    <span class="cf">return</span> {cls: <span class="bu">float</span>(p) <span class="cf">for</span> cls, p <span class="kw">in</span> <span class="bu">zip</span>(CLASSES, proba)}</span>
-<span id="cb17-15"><a aria-label="15"></a></span>
-<span id="cb17-16"><a aria-label="16"></a>demo <span class="op">=</span> gr.Interface(</span>
-<span id="cb17-17"><a aria-label="17"></a>    fn<span class="op">=</span>predict,</span>
-<span id="cb17-18"><a aria-label="18"></a>    inputs<span class="op">=</span>[</span>
-<span id="cb17-19"><a aria-label="19"></a>        gr.Slider(<span class="fl">4.0</span>, <span class="fl">8.0</span>, label<span class="op">=</span><span class="st">&quot;Sepal Length (cm)&quot;</span>),</span>
-<span id="cb17-20"><a aria-label="20"></a>        gr.Slider(<span class="fl">2.0</span>, <span class="fl">5.0</span>, label<span class="op">=</span><span class="st">&quot;Sepal Width (cm)&quot;</span>),</span>
-<span id="cb17-21"><a aria-label="21"></a>        gr.Slider(<span class="fl">1.0</span>, <span class="fl">7.0</span>, label<span class="op">=</span><span class="st">&quot;Petal Length (cm)&quot;</span>),</span>
-<span id="cb17-22"><a aria-label="22"></a>        gr.Slider(<span class="fl">0.1</span>, <span class="fl">3.0</span>, label<span class="op">=</span><span class="st">&quot;Petal Width (cm)&quot;</span>)</span>
-<span id="cb17-23"><a aria-label="23"></a>    ],</span>
-<span id="cb17-24"><a aria-label="24"></a>    outputs<span class="op">=</span>gr.Label(num_top_classes<span class="op">=</span><span class="dv">3</span>),</span>
-<span id="cb17-25"><a aria-label="25"></a>    title<span class="op">=</span><span class="st">&quot;Iris Flower Classifier&quot;</span></span>
-<span id="cb17-26"><a aria-label="26"></a>)</span>
-<span id="cb17-27"><a aria-label="27"></a></span>
-<span id="cb17-28"><a aria-label="28"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
-<span id="cb17-29"><a aria-label="29"></a>    demo.launch()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a aria-label="1"></a><span class="co"># Deploy to HuggingFace Spaces (free!)</span></span>
-<span id="cb18-2"><a aria-label="2"></a><span class="ex">pip</span> install huggingface_hub</span>
-<span id="cb18-3"><a aria-label="3"></a><span class="ex">huggingface-cli</span> repo create iris-classifier <span class="at">--type</span> space <span class="at">--space_sdk</span> gradio</span>
-<span id="cb18-4"><a aria-label="4"></a><span class="fu">git</span> push</span>
-<span id="cb18-5"><a aria-label="5"></a></span>
-<span id="cb18-6"><a aria-label="6"></a><span class="ex">or</span></span>
-<span id="cb18-7"><a aria-label="7"></a><span class="ex">uv</span> add huggingface_hub</span>
-<span id="cb18-8"><a aria-label="8"></a><span class="ex">uv</span> run hf auth login</span>
-<span id="cb18-9"><a aria-label="9"></a><span class="ex">uv</span> run hf repos create iris-classifier <span class="at">--type</span> space <span class="at">--sdk</span> gradio</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section></section>
 <section>
 <section id="class-activity" class="title-slide slide level1 center" data-background-color="#e94560">
 <h1>Class Activity</h1>
 
 </section>
-<section id="build-deploy-a-model-in-30-minutes" class="slide level2 center">
-<h2>Build &amp; Deploy a Model in 30 Minutes</h2>
+<section id="build-deploy-your-model" class="slide level2 center">
+<h2>Build &amp; Deploy your Model</h2>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -4780,11 +4739,10 @@ Production server:
 <p><strong>Activity Overview</strong></p>
 </div>
 <div class="callout-content">
-<p>Work in pairs to deploy a real ML model as a REST API. You’ll train, serialize, serve, and test it — end to end.</p>
+<p>Work in pairs to deploy a real ML model from previous Labs as a REST API. You’ll train, serialize, serve, and test it — end to end.</p>
 </div>
 </div>
 </div>
-<p><strong>What you need:</strong> - Python 3.8+ with pip - Terminal / command prompt - A text editor or IDE</p>
 </section>
 <section id="activity-steps" class="slide level2 smaller center">
 <h2>Activity Steps</h2>
@@ -4792,145 +4750,131 @@ Production server:
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default href="#tabset-2-1">Step 1: Train (5 min)</a></li><li><a href="#tabset-2-2">Step 2: Serve (10 min)</a></li><li><a href="#tabset-2-3">Step 3: Test (10 min)</a></li><li><a href="#tabset-2-4">Step 4: Extend (5 min)</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a aria-label="1"></a><span class="co"># train_model.py</span></span>
-<span id="cb19-2"><a aria-label="2"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_wine</span>
-<span id="cb19-3"><a aria-label="3"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingClassifier</span>
-<span id="cb19-4"><a aria-label="4"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb19-5"><a aria-label="5"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
-<span id="cb19-6"><a aria-label="6"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
-<span id="cb19-7"><a aria-label="7"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report</span>
-<span id="cb19-8"><a aria-label="8"></a><span class="im">import</span> joblib</span>
-<span id="cb19-9"><a aria-label="9"></a></span>
-<span id="cb19-10"><a aria-label="10"></a>X, y <span class="op">=</span> load_wine(return_X_y<span class="op">=</span><span class="va">True</span>, as_frame<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb19-11"><a aria-label="11"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb19-12"><a aria-label="12"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb19-13"><a aria-label="13"></a></span>
-<span id="cb19-14"><a aria-label="14"></a>pipeline <span class="op">=</span> Pipeline([</span>
-<span id="cb19-15"><a aria-label="15"></a>    (<span class="st">&quot;scaler&quot;</span>, StandardScaler()),</span>
-<span id="cb19-16"><a aria-label="16"></a>    (<span class="st">&quot;model&quot;</span>, GradientBoostingClassifier(n_estimators<span class="op">=</span><span class="dv">50</span>))</span>
-<span id="cb19-17"><a aria-label="17"></a>])</span>
-<span id="cb19-18"><a aria-label="18"></a></span>
-<span id="cb19-19"><a aria-label="19"></a>pipeline.fit(X_train, y_train)</span>
-<span id="cb19-20"><a aria-label="20"></a>preds <span class="op">=</span> pipeline.predict(X_test)</span>
-<span id="cb19-21"><a aria-label="21"></a><span class="bu">print</span>(classification_report(y_test, preds))</span>
-<span id="cb19-22"><a aria-label="22"></a></span>
-<span id="cb19-23"><a aria-label="23"></a>joblib.dump(pipeline, <span class="st">&quot;wine_model.pkl&quot;</span>)</span>
-<span id="cb19-24"><a aria-label="24"></a><span class="bu">print</span>(<span class="st">&quot; Model saved to wine_model.pkl&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a aria-label="1"></a><span class="co"># train_model.py</span></span>
+<span id="cb17-2"><a aria-label="2"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_wine</span>
+<span id="cb17-3"><a aria-label="3"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingClassifier</span>
+<span id="cb17-4"><a aria-label="4"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb17-5"><a aria-label="5"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb17-6"><a aria-label="6"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb17-7"><a aria-label="7"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report</span>
+<span id="cb17-8"><a aria-label="8"></a><span class="im">import</span> joblib</span>
+<span id="cb17-9"><a aria-label="9"></a></span>
+<span id="cb17-10"><a aria-label="10"></a>X, y <span class="op">=</span> load_wine(return_X_y<span class="op">=</span><span class="va">True</span>, as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-11"><a aria-label="11"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb17-12"><a aria-label="12"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb17-13"><a aria-label="13"></a></span>
+<span id="cb17-14"><a aria-label="14"></a>pipeline <span class="op">=</span> Pipeline([</span>
+<span id="cb17-15"><a aria-label="15"></a>    (<span class="st">&quot;scaler&quot;</span>, StandardScaler()),</span>
+<span id="cb17-16"><a aria-label="16"></a>    (<span class="st">&quot;model&quot;</span>, GradientBoostingClassifier(n_estimators<span class="op">=</span><span class="dv">50</span>))</span>
+<span id="cb17-17"><a aria-label="17"></a>])</span>
+<span id="cb17-18"><a aria-label="18"></a></span>
+<span id="cb17-19"><a aria-label="19"></a>pipeline.fit(X_train, y_train)</span>
+<span id="cb17-20"><a aria-label="20"></a>preds <span class="op">=</span> pipeline.predict(X_test)</span>
+<span id="cb17-21"><a aria-label="21"></a><span class="bu">print</span>(classification_report(y_test, preds))</span>
+<span id="cb17-22"><a aria-label="22"></a></span>
+<span id="cb17-23"><a aria-label="23"></a>joblib.dump(pipeline, <span class="st">&quot;wine_model.pkl&quot;</span>)</span>
+<span id="cb17-24"><a aria-label="24"></a><span class="bu">print</span>(<span class="st">&quot; Model saved to wine_model.pkl&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-2-2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a aria-label="1"></a><span class="co"># serve.py</span></span>
-<span id="cb20-2"><a aria-label="2"></a><span class="im">from</span> fastapi <span class="im">import</span> FastAPI, HTTPException</span>
-<span id="cb20-3"><a aria-label="3"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel, Field</span>
-<span id="cb20-4"><a aria-label="4"></a><span class="im">import</span> joblib</span>
-<span id="cb20-5"><a aria-label="5"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb20-6"><a aria-label="6"></a></span>
-<span id="cb20-7"><a aria-label="7"></a>app <span class="op">=</span> FastAPI(title<span class="op">=</span><span class="st">&quot;Wine Quality Classifier&quot;</span>)</span>
-<span id="cb20-8"><a aria-label="8"></a>model <span class="op">=</span> joblib.load(<span class="st">&quot;wine_model.pkl&quot;</span>)</span>
-<span id="cb20-9"><a aria-label="9"></a></span>
-<span id="cb20-10"><a aria-label="10"></a>WINE_CLASSES <span class="op">=</span> {<span class="dv">0</span>: <span class="st">&quot;Class 0&quot;</span>, <span class="dv">1</span>: <span class="st">&quot;Class 1&quot;</span>, <span class="dv">2</span>: <span class="st">&quot;Class 2&quot;</span>}</span>
-<span id="cb20-11"><a aria-label="11"></a></span>
-<span id="cb20-12"><a aria-label="12"></a><span class="kw">class</span> WineFeatures(BaseModel):</span>
-<span id="cb20-13"><a aria-label="13"></a>    alcohol: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">13.2</span>, ge<span class="op">=</span><span class="fl">10.0</span>, le<span class="op">=</span><span class="fl">15.5</span>)</span>
-<span id="cb20-14"><a aria-label="14"></a>    malic_acid: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">1.78</span>, ge<span class="op">=</span><span class="fl">0.5</span>, le<span class="op">=</span><span class="fl">6.0</span>)</span>
-<span id="cb20-15"><a aria-label="15"></a>    ash: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">2.14</span>, ge<span class="op">=</span><span class="fl">1.0</span>, le<span class="op">=</span><span class="fl">4.0</span>)</span>
-<span id="cb20-16"><a aria-label="16"></a>    alcalinity_of_ash: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">11.2</span>, ge<span class="op">=</span><span class="fl">10.0</span>, le<span class="op">=</span><span class="fl">30.0</span>)</span>
-<span id="cb20-17"><a aria-label="17"></a>    magnesium: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">100.0</span>, ge<span class="op">=</span><span class="fl">70.0</span>, le<span class="op">=</span><span class="fl">165.0</span>)</span>
-<span id="cb20-18"><a aria-label="18"></a>    total_phenols: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">2.65</span>, ge<span class="op">=</span><span class="fl">0.5</span>, le<span class="op">=</span><span class="fl">4.0</span>)</span>
-<span id="cb20-19"><a aria-label="19"></a>    flavanoids: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">2.76</span>, ge<span class="op">=</span><span class="fl">0.0</span>, le<span class="op">=</span><span class="fl">6.0</span>)</span>
-<span id="cb20-20"><a aria-label="20"></a>    nonflavanoid_phenols: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">0.26</span>, ge<span class="op">=</span><span class="fl">0.0</span>, le<span class="op">=</span><span class="fl">1.0</span>)</span>
-<span id="cb20-21"><a aria-label="21"></a>    proanthocyanins: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">1.28</span>, ge<span class="op">=</span><span class="fl">0.0</span>, le<span class="op">=</span><span class="fl">4.0</span>)</span>
-<span id="cb20-22"><a aria-label="22"></a>    color_intensity: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">4.38</span>, ge<span class="op">=</span><span class="fl">1.0</span>, le<span class="op">=</span><span class="fl">15.0</span>)</span>
-<span id="cb20-23"><a aria-label="23"></a>    hue: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">1.05</span>, ge<span class="op">=</span><span class="fl">0.5</span>, le<span class="op">=</span><span class="fl">2.0</span>)</span>
-<span id="cb20-24"><a aria-label="24"></a>    od280_od315: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">3.40</span>, ge<span class="op">=</span><span class="fl">1.0</span>, le<span class="op">=</span><span class="fl">5.0</span>)</span>
-<span id="cb20-25"><a aria-label="25"></a>    proline: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">1050.0</span>, ge<span class="op">=</span><span class="fl">300.0</span>, le<span class="op">=</span><span class="fl">2000.0</span>)</span>
-<span id="cb20-26"><a aria-label="26"></a></span>
-<span id="cb20-27"><a aria-label="27"></a><span class="at">@app.get</span>(<span class="st">&quot;/health&quot;</span>)</span>
-<span id="cb20-28"><a aria-label="28"></a><span class="kw">def</span> health(): <span class="cf">return</span> {<span class="st">&quot;status&quot;</span>: <span class="st">&quot;ok&quot;</span>}</span>
-<span id="cb20-29"><a aria-label="29"></a></span>
-<span id="cb20-30"><a aria-label="30"></a><span class="at">@app.post</span>(<span class="st">&quot;/predict&quot;</span>)</span>
-<span id="cb20-31"><a aria-label="31"></a><span class="kw">def</span> predict(wine: WineFeatures):</span>
-<span id="cb20-32"><a aria-label="32"></a>    features <span class="op">=</span> np.array([[<span class="bu">getattr</span>(wine, f) <span class="cf">for</span> f <span class="kw">in</span> wine.model_fields]])</span>
-<span id="cb20-33"><a aria-label="33"></a>    pred <span class="op">=</span> <span class="bu">int</span>(model.predict(features)[<span class="dv">0</span>])</span>
-<span id="cb20-34"><a aria-label="34"></a>    proba <span class="op">=</span> model.predict_proba(features)[<span class="dv">0</span>]</span>
-<span id="cb20-35"><a aria-label="35"></a>    <span class="cf">return</span> {</span>
-<span id="cb20-36"><a aria-label="36"></a>        <span class="st">&quot;predicted_class&quot;</span>: pred,</span>
-<span id="cb20-37"><a aria-label="37"></a>        <span class="st">&quot;class_name&quot;</span>: WINE_CLASSES[pred],</span>
-<span id="cb20-38"><a aria-label="38"></a>        <span class="st">&quot;probabilities&quot;</span>: {WINE_CLASSES[i]: <span class="bu">round</span>(<span class="bu">float</span>(p), <span class="dv">4</span>)</span>
-<span id="cb20-39"><a aria-label="39"></a>                          <span class="cf">for</span> i, p <span class="kw">in</span> <span class="bu">enumerate</span>(proba)}</span>
-<span id="cb20-40"><a aria-label="40"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a aria-label="1"></a><span class="co"># serve.py</span></span>
+<span id="cb18-2"><a aria-label="2"></a><span class="im">from</span> fastapi <span class="im">import</span> FastAPI, HTTPException</span>
+<span id="cb18-3"><a aria-label="3"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel, Field</span>
+<span id="cb18-4"><a aria-label="4"></a><span class="im">import</span> joblib</span>
+<span id="cb18-5"><a aria-label="5"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb18-6"><a aria-label="6"></a></span>
+<span id="cb18-7"><a aria-label="7"></a>app <span class="op">=</span> FastAPI(title<span class="op">=</span><span class="st">&quot;Wine Quality Classifier&quot;</span>)</span>
+<span id="cb18-8"><a aria-label="8"></a>model <span class="op">=</span> joblib.load(<span class="st">&quot;wine_model.pkl&quot;</span>)</span>
+<span id="cb18-9"><a aria-label="9"></a></span>
+<span id="cb18-10"><a aria-label="10"></a>WINE_CLASSES <span class="op">=</span> {<span class="dv">0</span>: <span class="st">&quot;Class 0&quot;</span>, <span class="dv">1</span>: <span class="st">&quot;Class 1&quot;</span>, <span class="dv">2</span>: <span class="st">&quot;Class 2&quot;</span>}</span>
+<span id="cb18-11"><a aria-label="11"></a></span>
+<span id="cb18-12"><a aria-label="12"></a><span class="kw">class</span> WineFeatures(BaseModel):</span>
+<span id="cb18-13"><a aria-label="13"></a>    alcohol: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">13.2</span>, ge<span class="op">=</span><span class="fl">10.0</span>, le<span class="op">=</span><span class="fl">15.5</span>)</span>
+<span id="cb18-14"><a aria-label="14"></a>    malic_acid: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">1.78</span>, ge<span class="op">=</span><span class="fl">0.5</span>, le<span class="op">=</span><span class="fl">6.0</span>)</span>
+<span id="cb18-15"><a aria-label="15"></a>    ash: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">2.14</span>, ge<span class="op">=</span><span class="fl">1.0</span>, le<span class="op">=</span><span class="fl">4.0</span>)</span>
+<span id="cb18-16"><a aria-label="16"></a>    alcalinity_of_ash: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">11.2</span>, ge<span class="op">=</span><span class="fl">10.0</span>, le<span class="op">=</span><span class="fl">30.0</span>)</span>
+<span id="cb18-17"><a aria-label="17"></a>    magnesium: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">100.0</span>, ge<span class="op">=</span><span class="fl">70.0</span>, le<span class="op">=</span><span class="fl">165.0</span>)</span>
+<span id="cb18-18"><a aria-label="18"></a>    total_phenols: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">2.65</span>, ge<span class="op">=</span><span class="fl">0.5</span>, le<span class="op">=</span><span class="fl">4.0</span>)</span>
+<span id="cb18-19"><a aria-label="19"></a>    flavanoids: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">2.76</span>, ge<span class="op">=</span><span class="fl">0.0</span>, le<span class="op">=</span><span class="fl">6.0</span>)</span>
+<span id="cb18-20"><a aria-label="20"></a>    nonflavanoid_phenols: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">0.26</span>, ge<span class="op">=</span><span class="fl">0.0</span>, le<span class="op">=</span><span class="fl">1.0</span>)</span>
+<span id="cb18-21"><a aria-label="21"></a>    proanthocyanins: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">1.28</span>, ge<span class="op">=</span><span class="fl">0.0</span>, le<span class="op">=</span><span class="fl">4.0</span>)</span>
+<span id="cb18-22"><a aria-label="22"></a>    color_intensity: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">4.38</span>, ge<span class="op">=</span><span class="fl">1.0</span>, le<span class="op">=</span><span class="fl">15.0</span>)</span>
+<span id="cb18-23"><a aria-label="23"></a>    hue: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">1.05</span>, ge<span class="op">=</span><span class="fl">0.5</span>, le<span class="op">=</span><span class="fl">2.0</span>)</span>
+<span id="cb18-24"><a aria-label="24"></a>    od280_od315: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">3.40</span>, ge<span class="op">=</span><span class="fl">1.0</span>, le<span class="op">=</span><span class="fl">5.0</span>)</span>
+<span id="cb18-25"><a aria-label="25"></a>    proline: <span class="bu">float</span> <span class="op">=</span> Field(..., example<span class="op">=</span><span class="fl">1050.0</span>, ge<span class="op">=</span><span class="fl">300.0</span>, le<span class="op">=</span><span class="fl">2000.0</span>)</span>
+<span id="cb18-26"><a aria-label="26"></a></span>
+<span id="cb18-27"><a aria-label="27"></a><span class="at">@app.get</span>(<span class="st">&quot;/health&quot;</span>)</span>
+<span id="cb18-28"><a aria-label="28"></a><span class="kw">def</span> health(): <span class="cf">return</span> {<span class="st">&quot;status&quot;</span>: <span class="st">&quot;ok&quot;</span>}</span>
+<span id="cb18-29"><a aria-label="29"></a></span>
+<span id="cb18-30"><a aria-label="30"></a><span class="at">@app.post</span>(<span class="st">&quot;/predict&quot;</span>)</span>
+<span id="cb18-31"><a aria-label="31"></a><span class="kw">def</span> predict(wine: WineFeatures):</span>
+<span id="cb18-32"><a aria-label="32"></a>    features <span class="op">=</span> np.array([[<span class="bu">getattr</span>(wine, f) <span class="cf">for</span> f <span class="kw">in</span> wine.model_fields]])</span>
+<span id="cb18-33"><a aria-label="33"></a>    pred <span class="op">=</span> <span class="bu">int</span>(model.predict(features)[<span class="dv">0</span>])</span>
+<span id="cb18-34"><a aria-label="34"></a>    proba <span class="op">=</span> model.predict_proba(features)[<span class="dv">0</span>]</span>
+<span id="cb18-35"><a aria-label="35"></a>    <span class="cf">return</span> {</span>
+<span id="cb18-36"><a aria-label="36"></a>        <span class="st">&quot;predicted_class&quot;</span>: pred,</span>
+<span id="cb18-37"><a aria-label="37"></a>        <span class="st">&quot;class_name&quot;</span>: WINE_CLASSES[pred],</span>
+<span id="cb18-38"><a aria-label="38"></a>        <span class="st">&quot;probabilities&quot;</span>: {WINE_CLASSES[i]: <span class="bu">round</span>(<span class="bu">float</span>(p), <span class="dv">4</span>)</span>
+<span id="cb18-39"><a aria-label="39"></a>                          <span class="cf">for</span> i, p <span class="kw">in</span> <span class="bu">enumerate</span>(proba)}</span>
+<span id="cb18-40"><a aria-label="40"></a>    }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-2-3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a aria-label="1"></a><span class="co"># In terminal 1: Start the server</span></span>
-<span id="cb21-2"><a aria-label="2"></a><span class="ex">pip</span> install fastapi uvicorn</span>
-<span id="cb21-3"><a aria-label="3"></a><span class="ex">uvicorn</span> serve:app <span class="at">--reload</span> <span class="at">--port</span> 8000</span>
-<span id="cb21-4"><a aria-label="4"></a></span>
-<span id="cb21-5"><a aria-label="5"></a><span class="co"># In terminal 2: Test the API</span></span>
-<span id="cb21-6"><a aria-label="6"></a></span>
-<span id="cb21-7"><a aria-label="7"></a><span class="co"># Health check</span></span>
-<span id="cb21-8"><a aria-label="8"></a><span class="ex">curl</span> http://localhost:8000/health</span>
-<span id="cb21-9"><a aria-label="9"></a></span>
-<span id="cb21-10"><a aria-label="10"></a><span class="co"># Make a prediction</span></span>
-<span id="cb21-11"><a aria-label="11"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8000/predict <span class="dt">\</span></span>
-<span id="cb21-12"><a aria-label="12"></a>  <span class="at">-H</span> <span class="st">&quot;Content-Type: application/json&quot;</span> <span class="dt">\</span></span>
-<span id="cb21-13"><a aria-label="13"></a>  <span class="at">-d</span> <span class="st">&#39;{</span></span>
-<span id="cb21-14"><a aria-label="14"></a><span class="st">    &quot;alcohol&quot;: 13.2, &quot;malic_acid&quot;: 1.78, &quot;ash&quot;: 2.14,</span></span>
-<span id="cb21-15"><a aria-label="15"></a><span class="st">    &quot;alcalinity_of_ash&quot;: 11.2, &quot;magnesium&quot;: 100.0,</span></span>
-<span id="cb21-16"><a aria-label="16"></a><span class="st">    &quot;total_phenols&quot;: 2.65, &quot;flavanoids&quot;: 2.76,</span></span>
-<span id="cb21-17"><a aria-label="17"></a><span class="st">    &quot;nonflavanoid_phenols&quot;: 0.26, &quot;proanthocyanins&quot;: 1.28,</span></span>
-<span id="cb21-18"><a aria-label="18"></a><span class="st">    &quot;color_intensity&quot;: 4.38, &quot;hue&quot;: 1.05,</span></span>
-<span id="cb21-19"><a aria-label="19"></a><span class="st">    &quot;od280_od315&quot;: 3.40, &quot;proline&quot;: 1050.0</span></span>
-<span id="cb21-20"><a aria-label="20"></a><span class="st">  }&#39;</span></span>
-<span id="cb21-21"><a aria-label="21"></a></span>
-<span id="cb21-22"><a aria-label="22"></a><span class="co"># Open interactive docs in browser</span></span>
-<span id="cb21-23"><a aria-label="23"></a><span class="ex">open</span> http://localhost:8000/docs</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a aria-label="1"></a><span class="co"># In terminal 1: Start the server</span></span>
+<span id="cb19-2"><a aria-label="2"></a><span class="ex">pip</span> install fastapi uvicorn</span>
+<span id="cb19-3"><a aria-label="3"></a><span class="ex">uvicorn</span> serve:app <span class="at">--reload</span> <span class="at">--port</span> 8000</span>
+<span id="cb19-4"><a aria-label="4"></a></span>
+<span id="cb19-5"><a aria-label="5"></a><span class="co"># In terminal 2: Test the API</span></span>
+<span id="cb19-6"><a aria-label="6"></a></span>
+<span id="cb19-7"><a aria-label="7"></a><span class="co"># Health check</span></span>
+<span id="cb19-8"><a aria-label="8"></a><span class="ex">curl</span> http://localhost:8000/health</span>
+<span id="cb19-9"><a aria-label="9"></a></span>
+<span id="cb19-10"><a aria-label="10"></a><span class="co"># Make a prediction</span></span>
+<span id="cb19-11"><a aria-label="11"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8000/predict <span class="dt">\</span></span>
+<span id="cb19-12"><a aria-label="12"></a>  <span class="at">-H</span> <span class="st">&quot;Content-Type: application/json&quot;</span> <span class="dt">\</span></span>
+<span id="cb19-13"><a aria-label="13"></a>  <span class="at">-d</span> <span class="st">&#39;{</span></span>
+<span id="cb19-14"><a aria-label="14"></a><span class="st">    &quot;alcohol&quot;: 13.2, &quot;malic_acid&quot;: 1.78, &quot;ash&quot;: 2.14,</span></span>
+<span id="cb19-15"><a aria-label="15"></a><span class="st">    &quot;alcalinity_of_ash&quot;: 11.2, &quot;magnesium&quot;: 100.0,</span></span>
+<span id="cb19-16"><a aria-label="16"></a><span class="st">    &quot;total_phenols&quot;: 2.65, &quot;flavanoids&quot;: 2.76,</span></span>
+<span id="cb19-17"><a aria-label="17"></a><span class="st">    &quot;nonflavanoid_phenols&quot;: 0.26, &quot;proanthocyanins&quot;: 1.28,</span></span>
+<span id="cb19-18"><a aria-label="18"></a><span class="st">    &quot;color_intensity&quot;: 4.38, &quot;hue&quot;: 1.05,</span></span>
+<span id="cb19-19"><a aria-label="19"></a><span class="st">    &quot;od280_od315&quot;: 3.40, &quot;proline&quot;: 1050.0</span></span>
+<span id="cb19-20"><a aria-label="20"></a><span class="st">  }&#39;</span></span>
+<span id="cb19-21"><a aria-label="21"></a></span>
+<span id="cb19-22"><a aria-label="22"></a><span class="co"># Open interactive docs in browser</span></span>
+<span id="cb19-23"><a aria-label="23"></a><span class="ex">open</span> http://localhost:8000/docs</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-2-4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a aria-label="1"></a><span class="co"># Challenge: Add these to your serve.py</span></span>
-<span id="cb22-2"><a aria-label="2"></a></span>
-<span id="cb22-3"><a aria-label="3"></a><span class="co"># 1. Input validation with better error messages</span></span>
-<span id="cb22-4"><a aria-label="4"></a><span class="im">from</span> fastapi <span class="im">import</span> HTTPException</span>
-<span id="cb22-5"><a aria-label="5"></a></span>
-<span id="cb22-6"><a aria-label="6"></a><span class="at">@app.post</span>(<span class="st">&quot;/predict&quot;</span>)</span>
-<span id="cb22-7"><a aria-label="7"></a><span class="kw">def</span> predict(wine: WineFeatures):</span>
-<span id="cb22-8"><a aria-label="8"></a>    <span class="cf">try</span>:</span>
-<span id="cb22-9"><a aria-label="9"></a>        features <span class="op">=</span> np.array([[<span class="bu">getattr</span>(wine, f) <span class="cf">for</span> f <span class="kw">in</span> wine.model_fields]])</span>
-<span id="cb22-10"><a aria-label="10"></a>        pred <span class="op">=</span> <span class="bu">int</span>(model.predict(features)[<span class="dv">0</span>])</span>
-<span id="cb22-11"><a aria-label="11"></a>        proba <span class="op">=</span> model.predict_proba(features)[<span class="dv">0</span>]</span>
-<span id="cb22-12"><a aria-label="12"></a>        confidence <span class="op">=</span> <span class="bu">float</span>(proba[pred])</span>
-<span id="cb22-13"><a aria-label="13"></a>        </span>
-<span id="cb22-14"><a aria-label="14"></a>        <span class="co"># Challenge A: Refuse low-confidence predictions</span></span>
-<span id="cb22-15"><a aria-label="15"></a>        <span class="cf">if</span> confidence <span class="op">&lt;</span> <span class="fl">0.60</span>:</span>
-<span id="cb22-16"><a aria-label="16"></a>            <span class="cf">raise</span> HTTPException(</span>
-<span id="cb22-17"><a aria-label="17"></a>                status_code<span class="op">=</span><span class="dv">422</span>,</span>
-<span id="cb22-18"><a aria-label="18"></a>                detail<span class="op">=</span><span class="ss">f&quot;Model confidence too low: </span><span class="sc">{</span>confidence<span class="sc">:.0%}</span><span class="ss">&quot;</span></span>
-<span id="cb22-19"><a aria-label="19"></a>            )</span>
-<span id="cb22-20"><a aria-label="20"></a>        </span>
-<span id="cb22-21"><a aria-label="21"></a>        <span class="cf">return</span> {<span class="st">&quot;predicted_class&quot;</span>: pred, <span class="st">&quot;confidence&quot;</span>: confidence}</span>
-<span id="cb22-22"><a aria-label="22"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb22-23"><a aria-label="23"></a>        <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">500</span>, detail<span class="op">=</span><span class="bu">str</span>(e))</span>
-<span id="cb22-24"><a aria-label="24"></a></span>
-<span id="cb22-25"><a aria-label="25"></a><span class="co"># Challenge B: Add a /batch endpoint that accepts a list of wines</span></span>
-<span id="cb22-26"><a aria-label="26"></a><span class="co"># Challenge C: Add request timing to every response</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a aria-label="1"></a><span class="co"># Challenge: Add these to your serve.py</span></span>
+<span id="cb20-2"><a aria-label="2"></a></span>
+<span id="cb20-3"><a aria-label="3"></a><span class="co"># 1. Input validation with better error messages</span></span>
+<span id="cb20-4"><a aria-label="4"></a><span class="im">from</span> fastapi <span class="im">import</span> HTTPException</span>
+<span id="cb20-5"><a aria-label="5"></a></span>
+<span id="cb20-6"><a aria-label="6"></a><span class="at">@app.post</span>(<span class="st">&quot;/predict&quot;</span>)</span>
+<span id="cb20-7"><a aria-label="7"></a><span class="kw">def</span> predict(wine: WineFeatures):</span>
+<span id="cb20-8"><a aria-label="8"></a>    <span class="cf">try</span>:</span>
+<span id="cb20-9"><a aria-label="9"></a>        features <span class="op">=</span> np.array([[<span class="bu">getattr</span>(wine, f) <span class="cf">for</span> f <span class="kw">in</span> wine.model_fields]])</span>
+<span id="cb20-10"><a aria-label="10"></a>        pred <span class="op">=</span> <span class="bu">int</span>(model.predict(features)[<span class="dv">0</span>])</span>
+<span id="cb20-11"><a aria-label="11"></a>        proba <span class="op">=</span> model.predict_proba(features)[<span class="dv">0</span>]</span>
+<span id="cb20-12"><a aria-label="12"></a>        confidence <span class="op">=</span> <span class="bu">float</span>(proba[pred])</span>
+<span id="cb20-13"><a aria-label="13"></a>        </span>
+<span id="cb20-14"><a aria-label="14"></a>        <span class="co"># Challenge A: Refuse low-confidence predictions</span></span>
+<span id="cb20-15"><a aria-label="15"></a>        <span class="cf">if</span> confidence <span class="op">&lt;</span> <span class="fl">0.60</span>:</span>
+<span id="cb20-16"><a aria-label="16"></a>            <span class="cf">raise</span> HTTPException(</span>
+<span id="cb20-17"><a aria-label="17"></a>                status_code<span class="op">=</span><span class="dv">422</span>,</span>
+<span id="cb20-18"><a aria-label="18"></a>                detail<span class="op">=</span><span class="ss">f&quot;Model confidence too low: </span><span class="sc">{</span>confidence<span class="sc">:.0%}</span><span class="ss">&quot;</span></span>
+<span id="cb20-19"><a aria-label="19"></a>            )</span>
+<span id="cb20-20"><a aria-label="20"></a>        </span>
+<span id="cb20-21"><a aria-label="21"></a>        <span class="cf">return</span> {<span class="st">&quot;predicted_class&quot;</span>: pred, <span class="st">&quot;confidence&quot;</span>: confidence}</span>
+<span id="cb20-22"><a aria-label="22"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb20-23"><a aria-label="23"></a>        <span class="cf">raise</span> HTTPException(status_code<span class="op">=</span><span class="dv">500</span>, detail<span class="op">=</span><span class="bu">str</span>(e))</span>
+<span id="cb20-24"><a aria-label="24"></a></span>
+<span id="cb20-25"><a aria-label="25"></a><span class="co"># Challenge B: Add a /batch endpoint that accepts a list of wines</span></span>
+<span id="cb20-26"><a aria-label="26"></a><span class="co"># Challenge C: Add request timing to every response</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
-</section>
-<section id="discussion-questions" class="slide level2 center">
-<h2>Discussion Questions</h2>
-<p>After the activity, discuss with your partner:</p>
-<ol type="1">
-<li class="fragment">🤔 What happens if you send a <strong>string</strong> instead of a float to the <code>/predict</code> endpoint?</li>
-<li class="fragment">🔄 How would you handle <strong>model updates</strong> without downtime?</li>
-<li class="fragment">📊 What would you <strong>log</strong> from every prediction to monitor the model over time?</li>
-<li class="fragment">🚨 What’s the biggest <strong>failure mode</strong> you can think of for a deployed ML model?</li>
-<li class="fragment">🏗️ How would this architecture change at <strong>1000x</strong> the request volume?</li>
-</ol>
-</section>
-<section class="slide level2 center">
-
 </section></section>
 <section>
-<section id="key-takeaways" class="title-slide slide level1 center" data-background-color="#1a1a2e">
+<section id="key-takeaways" class="title-slide slide level1 center">
 <h1>Key Takeaways</h1>
 
 </section>
@@ -4960,18 +4904,18 @@ Production server:
 <section id="the-deployment-checklist" class="slide level2 center">
 <h2>The Deployment Checklist</h2>
 <p>Before you ship a model to production:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb23-1"><a aria-label="1"></a><span class="fu">## Pre-deployment Checklist</span></span>
-<span id="cb23-2"><a aria-label="2"></a></span>
-<span id="cb23-3"><a aria-label="3"></a><span class="ss">- </span><span class="va">[ ]</span> Model serialized and version-tagged</span>
-<span id="cb23-4"><a aria-label="4"></a><span class="ss">- </span><span class="va">[ ]</span> API tested with valid and invalid inputs  </span>
-<span id="cb23-5"><a aria-label="5"></a><span class="ss">- </span><span class="va">[ ]</span> Docker image builds successfully</span>
-<span id="cb23-6"><a aria-label="6"></a><span class="ss">- </span><span class="va">[ ]</span> Health check endpoint works</span>
-<span id="cb23-7"><a aria-label="7"></a><span class="ss">- </span><span class="va">[ ]</span> Latency measured and acceptable (p99 &lt; SLA)</span>
-<span id="cb23-8"><a aria-label="8"></a><span class="ss">- </span><span class="va">[ ]</span> Logging captures inputs, outputs, latency</span>
-<span id="cb23-9"><a aria-label="9"></a><span class="ss">- </span><span class="va">[ ]</span> Drift detection baseline established</span>
-<span id="cb23-10"><a aria-label="10"></a><span class="ss">- </span><span class="va">[ ]</span> Rollback plan documented</span>
-<span id="cb23-11"><a aria-label="11"></a><span class="ss">- </span><span class="va">[ ]</span> Load test passed</span>
-<span id="cb23-12"><a aria-label="12"></a><span class="ss">- </span><span class="va">[ ]</span> Secrets managed via env vars (not hardcoded!)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb21-1"><a aria-label="1"></a><span class="fu">## Pre-deployment Checklist</span></span>
+<span id="cb21-2"><a aria-label="2"></a></span>
+<span id="cb21-3"><a aria-label="3"></a><span class="ss">- </span><span class="va">[ ]</span> Model serialized and version-tagged</span>
+<span id="cb21-4"><a aria-label="4"></a><span class="ss">- </span><span class="va">[ ]</span> API tested with valid and invalid inputs  </span>
+<span id="cb21-5"><a aria-label="5"></a><span class="ss">- </span><span class="va">[ ]</span> Docker image builds successfully</span>
+<span id="cb21-6"><a aria-label="6"></a><span class="ss">- </span><span class="va">[ ]</span> Health check endpoint works</span>
+<span id="cb21-7"><a aria-label="7"></a><span class="ss">- </span><span class="va">[ ]</span> Latency measured and acceptable (p99 &lt; SLA)</span>
+<span id="cb21-8"><a aria-label="8"></a><span class="ss">- </span><span class="va">[ ]</span> Logging captures inputs, outputs, latency</span>
+<span id="cb21-9"><a aria-label="9"></a><span class="ss">- </span><span class="va">[ ]</span> Drift detection baseline established</span>
+<span id="cb21-10"><a aria-label="10"></a><span class="ss">- </span><span class="va">[ ]</span> Rollback plan documented</span>
+<span id="cb21-11"><a aria-label="11"></a><span class="ss">- </span><span class="va">[ ]</span> Load test passed</span>
+<span id="cb21-12"><a aria-label="12"></a><span class="ss">- </span><span class="va">[ ]</span> Secrets managed via env vars (not hardcoded!)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section></section>
